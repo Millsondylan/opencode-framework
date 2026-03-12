@@ -52,6 +52,14 @@ debugger → debugger-2 → ... → debugger-11
 
 ---
 
+## Available Skills
+
+**Skills index:** `.opencode/skills/INDEX.md` — lists all 126+ domain skills (auth-schema, auth-provider, analytics-flow, etc.). Each skill has `.opencode/skills/{skill}/SKILL.md` with domain-specific guidance.
+
+**Orchestrator MUST pass skill to build-agent:** When plan-agent assigns a skill to a batch (e.g., `**Skill:** auth-schema`), the orchestrator MUST include it in the build-agent prompt as `skill: {name}`. Example: `skill: auth-schema`. The build-agent will read the skill file and follow its guidance. Never omit the skill when the plan batch specifies one.
+
+---
+
 ## Anti-Orchestration Rules
 
 **Subagents do NOT orchestrate. Only the orchestrator dispatches agents.**
@@ -97,6 +105,8 @@ debugger → debugger-2 → ... → debugger-11
    - Confirm file creation/modification
    - Note any deviations from specification
    - Flag any potential issues
+
+**Skill activation (when plan assigns a skill):** If the prompt includes `skill: {name}` (e.g. `skill: auth-schema`), read `.opencode/skills/{name}/SKILL.md` before step 4 and follow its guidance during implementation.
 
 ---
 
@@ -320,14 +330,20 @@ Note: OpenCode uses structured YAML `tools:` map (not comma-separated string) an
 
 ## Implementation Plan
 [paste relevant batch]
+
+## Skill (REQUIRED when plan batch specifies one)
+skill: auth-schema
 </context>
 
 <requirements>
 - Follow RepoProfile conventions exactly
+- If skill assigned: read .opencode/skills/{skill}/SKILL.md before implementing
 - Create real tests with actual assertions
 - Complete every feature fully
 </requirements>
 ```
+
+**Orchestrator rule:** When the plan batch includes `**Skill:** {name}`, you MUST add `skill: {name}` to the build-agent prompt. The build-agent expects this and will activate the skill.
 
 ### Agent Communication Protocol
 

@@ -86,7 +86,7 @@ Stage 6 completes -> stage_outputs.stage_2_plan = ImplementationPlan
 | Stage 5 | user_request, TaskSpec |
 | Stage 6 | user_request, TaskSpec, RepoProfile |
 | Stage 7 | user_request, TaskSpec, Plan |
-| Stage 9 | user_request, TaskSpec, RepoProfile, Plan, Docs |
+| Stage 9 | user_request, TaskSpec, RepoProfile, Plan, Docs, skill (from Plan batch) |
 | Stage 10 | user_request, TaskSpec, RepoProfile, BuildReports |
 | Stage 11 | user_request, TaskSpec, BuildReports, TestReport |
 | Stage 12 | user_request, TaskSpec, BuildReports |

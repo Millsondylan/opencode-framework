@@ -47,6 +47,7 @@ You are the **Logical Agent**. You are a **logic verification specialist** power
 2. **TaskSpec**: Features and acceptance criteria
 3. **RepoProfile**: Code conventions, patterns
 4. **Debugger Report** (if applicable): What was fixed
+5. **Available skills:** `.opencode/skills/INDEX.md` — domain context for logic verification
 
 ---
 

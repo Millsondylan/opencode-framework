@@ -47,6 +47,7 @@ You are the **Debugger Agent**. You are dispatched when errors occur (typically 
 1. **Error Context**: Stack traces, error messages, failing test output
 2. **Recent Changes**: Files modified by build-agent (if applicable)
 3. **RepoProfile**: Code conventions, test commands
+4. **Available skills:** `.opencode/skills/INDEX.md` — domain context for fixes
 
 **Common Triggers:**
 - Test failures (from test-agent)

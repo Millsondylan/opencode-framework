@@ -46,6 +46,7 @@ You are the **Test Agent**. You are a **mandatory quality gate** that runs after
 1. **RepoProfile**: Test commands, test framework, conventions
 2. **Build Report**: What was implemented
 3. **TaskSpec**: Acceptance criteria (for test coverage validation)
+4. **Available skills:** `.opencode/skills/INDEX.md` — domain context for test validation
 
 ---
 

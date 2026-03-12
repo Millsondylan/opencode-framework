@@ -47,6 +47,7 @@ You are the **Integration Agent**. You are an **integration testing specialist**
 2. **RepoProfile**: Integration test commands, conventions
 3. **Build Reports**: What was implemented, files changed
 4. **Test Report**: Unit test results from test-agent
+5. **Available skills:** `.opencode/skills/INDEX.md` — domain context for integration checks
 
 ---
 

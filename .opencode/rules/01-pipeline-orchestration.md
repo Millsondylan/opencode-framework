@@ -246,6 +246,11 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
     - JUST DO THE FUCKING TASK
     - Keep running the pipeline until decide-agent outputs COMPLETE
 
+11. **PASS SKILL TO BUILD-AGENT**
+    - When plan-agent assigns a skill to a batch (e.g., `**Skill:** auth-schema`), you MUST include it in the build-agent prompt as `skill: {name}`
+    - Example: if Batch 2 has `**Skill:** auth-provider`, your build-agent prompt must include `skill: auth-provider`
+    - Build-agents activate assigned skills by reading `.opencode/skills/{name}/SKILL.md`
+
 ---
 
 ## PIPELINE STATUS (display after each dispatch)

@@ -43,6 +43,7 @@ You are the **Review Agent**. You are a **mandatory quality gate** that reviews 
 **Inputs:**
 1. **TaskSpec**: Features (F1, F2, ...) with acceptance criteria
 2. **RepoProfile**: Code conventions, quality standards
+3. **Available skills:** `.opencode/skills/INDEX.md` — domain skills for review context
 3. **Build Report(s)**: What was implemented, files changed
 4. **Test Report**: Test results (should be PASS)
 

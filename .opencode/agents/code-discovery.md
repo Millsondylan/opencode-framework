@@ -45,6 +45,7 @@ You are the **Code Discovery Agent** (also known as code-scout-core). You are th
 - TaskSpec from task-breakdown agent
 - TaskSpec contains: features, acceptance criteria, risks, assumptions
 - User's original request context
+- **Available skills:** `.opencode/skills/INDEX.md` — domain skills for RepoProfile context
 
 **Example:**
 ```markdown

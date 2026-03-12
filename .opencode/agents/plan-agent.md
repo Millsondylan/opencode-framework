@@ -44,6 +44,7 @@ You are the **Plan Agent**. You receive a TaskSpec (from task-breakdown) and Rep
 **Inputs:**
 1. **TaskSpec**: Features (F1, F2, ...), acceptance criteria, risks, assumptions
 2. **RepoProfile**: Tech stack, directory structure, conventions, test commands
+3. **Available skills:** `.opencode/skills/INDEX.md` — assign when batch maps to a domain
 
 ---
 
@@ -57,6 +58,7 @@ You are the **Plan Agent**. You receive a TaskSpec (from task-breakdown) and Rep
 ### 2. Create Feature Batches
 - Group features into micro-batches of 1-2 files per build-agent
 - Assign each batch to a build-agent instance (build-agent-1, build-agent-2, etc.)
+- **MUST assign a skill to each batch** when the batch maps to a domain (e.g. auth-schema, auth-provider, analytics-flow). See `.opencode/skills/INDEX.md` for all 126+ skills. You MUST tell the orchestrator which skill each build-agent should activate.
 - Ensure batch order respects dependencies
 - Prefer smaller batches for better isolation and parallel debugging
 
@@ -87,6 +89,7 @@ You are the **Plan Agent**. You receive a TaskSpec (from task-breakdown) and Rep
 
 ### Batch 1: [Feature IDs]
 **Assigned to:** build-agent-1
+**Skill:** [skill-name] (REQUIRED when batch maps to a domain — e.g. auth-schema, auth-provider. See `.opencode/skills/INDEX.md`. Omit only if no domain match.)
 **Features:** F1, F2
 
 #### F1: [Feature Name]
@@ -111,6 +114,7 @@ You are the **Plan Agent**. You receive a TaskSpec (from task-breakdown) and Rep
 
 ### Batch 2: [Feature IDs]
 **Assigned to:** build-agent-2
+**Skill:** [skill-name] (REQUIRED when batch maps to a domain)
 **Features:** F3, F4
 
 [... similar structure ...]
@@ -164,6 +168,7 @@ You are the **Plan Agent**. You receive a TaskSpec (from task-breakdown) and Rep
 - [ ] All TaskSpec features are included
 - [ ] Features are batched appropriately
 - [ ] Each batch targets at most 1-2 files
+- [ ] **Each batch has a Skill assigned** when it maps to a domain (see INDEX.md)
 - [ ] Each feature has implementation steps
 - [ ] Files to modify/create are specified
 - [ ] Test criteria are defined
@@ -175,6 +180,7 @@ You are the **Plan Agent**. You receive a TaskSpec (from task-breakdown) and Rep
 
 **Before outputting, verify your output contains:**
 - [ ] Batches defined with feature assignments
+- [ ] **Skill:** {skill-name} for each batch that maps to a domain
 - [ ] Files mapped to each feature (modify/create/test)
 - [ ] Dependencies and order documented
 - [ ] Test criteria specified

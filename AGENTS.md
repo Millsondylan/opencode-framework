@@ -187,6 +187,7 @@ format, dependency gate logic, and aggregated final review protocol.
 7. **Evaluate every output** — ACCEPT / RETRY / CONTINUE / HANDLE REQUEST
 8. **Persist until complete** — No artificial limits, no timeouts, no retry caps
 9. **Multi-run** — If ScalingPlan has N > 1 runs, execute full pipeline per run; see rule 06
+10. **Pass skill to build-agent** — When plan-agent assigns `**Skill:** {name}` to a batch, include `skill: {name}` in the build-agent prompt. Build-agents activate skills by reading `.opencode/skills/{name}/SKILL.md`.
 
 <!-- BASE RULES - DO NOT MODIFY - END -->
 
@@ -223,6 +224,7 @@ Agents receive context-rich prompts from orchestrator
 - Task type
 - Full original request
 - Any special requirements
+- **For build-agents:** When the plan batch includes `**Skill:** {name}`, include `skill: {name}` in the prompt. The build-agent will activate the skill and follow its guidance.
 
 **The orchestrator acts as the prompt router after Stage 3.**
 

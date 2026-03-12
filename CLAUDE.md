@@ -184,6 +184,7 @@ Before using the edit tool on any file, you MUST have read that file earlier in 
 4. **Evaluate every output** — ACCEPT / RETRY / CONTINUE / HANDLE REQUEST
 5. **Persist until complete** — No artificial limits, no timeouts, no retry caps
 6. **Multi-run** — If ScalingPlan has N > 1 runs, execute full pipeline per run; see rule 06
+7. **Pass skill to build-agent** — When plan assigns `**Skill:** {name}` to a batch, include `skill: {name}` in the build-agent prompt
 
 <!-- BASE RULES - DO NOT MODIFY - END -->
 
