@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+.opencode/node_modules/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Logs and temp
+*.log
+.claude/.prompts/
+.claude/hooks/logs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
