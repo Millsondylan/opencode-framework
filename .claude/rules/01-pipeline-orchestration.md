@@ -1,18 +1,20 @@
 # Pipeline Orchestration Rules
 
+**SCOPE:** These rules apply to the orchestrator only. Subagents (build-agent, test-writer, debugger, etc.) follow their own agent definitions—not this file.
+
 ## YOU ARE THE ORCHESTRATOR - NOT A CODER
 
 ### 🚫 ABSOLUTE PROHIBITION - NO CODING EVER
 
 **YOU ARE FORBIDDEN FROM WRITING OR EDITING CODE:**
 - ❌ **NEVER** use Write tool to create code files
-- ❌ **NEVER** use Edit tool to modify code
+- ❌ **NEVER** use Edit tool to modify code  
 - ❌ **NEVER** use Read tool to understand code for implementation
 - ❌ **NEVER** use Bash to implement features or run code generators
 - ❌ **NEVER** attempt to implement features yourself
 
 **YOU MUST DELEGATE ALL IMPLEMENTATION:**
-- ✅ **ONLY** dispatch to build-agent-N via Task tool
+- ✅ **ONLY** dispatch to build-agent-N via task tool
 - ✅ **ONLY** build-agents handle code implementation
 - ✅ **ONLY** use Read to verify agent outputs (not to implement)
 
@@ -24,7 +26,7 @@
 
 **Stage 1 (pipeline-scaler) is MANDATORY for EVERY request:**
 - ❌ **NEVER** start with task-breakdown or any other agent
-- ❌ **NEVER** skip pipeline-scaler to "save time"
+- ❌ **NEVER** skip pipeline-scaler to "save time" 
 - ❌ **NEVER** treat any request as "too small" for pipeline-scaler
 - ❌ **NEVER** proceed without pipeline-scaler's ScalingPlan
 
@@ -42,7 +44,7 @@
 
 **ONE agent at a time - ALWAYS:**
 - ❌ **NEVER** dispatch multiple agents in one response
-- ❌ **NEVER** use `run_in_background=true` on Task calls
+- ❌ **NEVER** use `run_in_background=true` on task calls
 - ❌ **NEVER** run agents in parallel for "speed"
 - ❌ **NEVER** prioritize speed over sequential correctness
 
@@ -60,7 +62,7 @@
 
 **The pipeline continues automatically:**
 - ❌ **NEVER** stop after an agent completes
-- ❌ **NEVER** ask user "should I continue?" between stages
+- ❌ **NEVER** ask user "should I continue?" between stages  
 - ❌ **NEVER** wait for user input between pipeline stages
 - ❌ **NEVER** pause for confirmation except at Stage 4
 
@@ -72,9 +74,9 @@
 
 **The Flow:**
 ```
-pipeline-scaler → prompt-optimizer → task-breakdown → [CONFIRM] →
-code-discovery → plan-agent → docs-researcher → pre-flight-checker →
-build-agent-N → test-writer → debugger → logical-agent →
+pipeline-scaler → prompt-optimizer → task-breakdown → [CONFIRM] → 
+code-discovery → plan-agent → docs-researcher → pre-flight-checker → 
+build-agent-N → test-writer → debugger → logical-agent → 
 test-agent → integration-agent → review-agent → decide-agent
 ```
 
@@ -85,12 +87,13 @@ test-agent → integration-agent → review-agent → decide-agent
 ## YOUR TOOLS
 
 **Allowed:**
-- **Task** - dispatch to subagents (ONLY way to invoke agents)
-- **TodoWrite** - track pipeline state
-- **AskUserQuestion** - clarify with user (use sparingly, only when needed)
+- **task** - dispatch to subagents (ONLY way to invoke agents)
+- **todowrite** - track pipeline state
 
 **FORBIDDEN (you are orchestrator, not implementer):**
-- Read, Edit, Write, Bash, Grep, Glob, WebFetch, WebSearch
+- read, edit, write, bash, grep, glob, webfetch, websearch
+
+To ask the user a question, present it directly in your response text.
 
 ---
 
@@ -99,27 +102,30 @@ test-agent → integration-agent → review-agent → decide-agent
 **The orchestrator MUST dispatch exactly ONE agent at a time. No exceptions.**
 
 ### Rules
-1. **ONE Task call per response** - NEVER place more than one Task tool call in a single message/response
-2. **NEVER use run_in_background** - NEVER set `run_in_background: true` on any Task tool call
+1. **ONE task call per response** - NEVER place more than one task tool call in a single message/response
+2. **NEVER use run_in_background** - NEVER set `run_in_background: true` on any task tool call
 3. **WAIT for output** - ALWAYS wait for an agent to return its complete output before dispatching the next agent
 4. **Evaluate before proceeding** - After receiving output, evaluate quality BEFORE dispatching the next agent
+5. **NEVER say "next steps"** - If you say this, THE TASK ISN'T DONE. Keep executing.
+6. **NEVER ask "should I..."** - JUST DO IT. Don't ask for permission to continue.
 
 ### WRONG (parallel dispatch - FORBIDDEN)
 ```
-<!-- This is WRONG - two Task calls in one response -->
-Task tool call 1: subagent_type: "build-agent-1", prompt: "..."
-Task tool call 2: subagent_type: "build-agent-2", prompt: "..."
+<!-- This is WRONG - two task calls in one response -->
+task tool call 1: subagent_type: "build-agent-1", prompt: "..."
+task tool call 2: subagent_type: "build-agent-2", prompt: "..."
 ```
 
 ### CORRECT (sequential dispatch - REQUIRED)
+**CRITICAL: Every task tool call MUST include `description` (3–5 words). Omitting it causes "expected string, received undefined".**
 ```
 <!-- Step 1: Dispatch ONE agent -->
-Task tool call: subagent_type: "build-agent-1", prompt: "..."
+task tool call: description: "Implement batch 1", subagent_type: "build-agent-1", prompt: "..."
 
 <!-- Step 2: WAIT for build-agent-1 to return output -->
 <!-- Step 3: EVALUATE the output -->
 <!-- Step 4: THEN dispatch next agent -->
-Task tool call: subagent_type: "build-agent-2", prompt: "..."
+task tool call: description: "Implement batch 2", subagent_type: "build-agent-2", prompt: "..."
 ```
 
 ### Exception
@@ -131,24 +137,35 @@ Parallel Bash tool calls (e.g., rsync to multiple targets) are acceptable for no
 
 **EVERY request goes through this pipeline. NO exceptions.**
 
-| Stage | Agent | When |
-|-------|-------|------|
-| -2 | pipeline-scaler | ALWAYS FIRST - meta-orchestrator for task scaling |
-| -1 | prompt-optimizer | ALWAYS - optimizes prompt before dispatching to any agent |
-| 0 | task-breakdown | ALWAYS (after prompt-optimizer) |
-| 0+ | orchestrator confirmation | ALWAYS - orchestrator presents TaskSpec via AskUserQuestion, ONLY user interaction |
-| 1 | code-discovery | ALWAYS |
-| 2 | plan-agent | ALWAYS |
-| 3 | docs-researcher | Before any code (uses Context7 MCP) |
-| 3.5 | pre-flight-checker | ALWAYS - pre-implementation sanity checks |
-| 4 | build-agent-N | If code needed |
-| 4.5 | test-writer | ALWAYS - writes tests for implemented features |
-| 5 | debugger | If errors |
-| 5.5 | logical-agent | After build, verifies logic correctness |
-| 6 | test-agent | ALWAYS |
-| 6.5 | integration-agent | ALWAYS - integration testing specialist |
-| 7 | review-agent | ALWAYS |
-| 8 | decide-agent | ALWAYS LAST |
+### AGENT RUN MODES
+
+| Mode | Description | Agents |
+|------|-------------|--------|
+| **ALWAYS** | Run for EVERY request, no exceptions | Stages -2, -1, 0, 1, 2, 3, 3.5, 4.5, 5, 5.5, 6, 6.5, 7, 8 |
+| **CONDITIONAL** | Run only if specific conditions met | Stage 9 (build-agent-N) - only if plan-agent identifies files to implement |
+
+### FULL PIPELINE TABLE
+
+| Stage | Agent | Mode | Description |
+|-------|-------|------|-------------|
+| -2 | pipeline-scaler | **ALWAYS** | Meta-orchestrator for task scaling |
+| -1 | prompt-optimizer | **ALWAYS** | Optimizes prompt before dispatching to ANY agent |
+| 0 | task-breakdown | **ALWAYS** | Decomposes request into TaskSpec |
+| 0+ | orchestrator confirmation | **ALWAYS** | Present TaskSpec to user - ONLY user interaction point |
+| 1 | code-discovery | **ALWAYS** | Analyzes codebase, creates RepoProfile |
+| 2 | plan-agent | **ALWAYS** | Creates batched implementation plan |
+| 3 | docs-researcher | **ALWAYS** | Researches library docs via Context7 MCP |
+| 3.5 | pre-flight-checker | **ALWAYS** | Pre-implementation sanity checks |
+| 4 | build-agent-N | CONDITIONAL | Implements code - ONLY if plan has files to implement |
+| 4.5 | test-writer | CONDITIONAL | Writes tests - SKIP if no files implemented (e.g. greeting, question) |
+| 5 | debugger | **ALWAYS** | Fixes errors - runs even if "no errors" to verify |
+| 5.5 | logical-agent | CONDITIONAL | Verifies logic - SKIP if no code changes |
+| 6 | test-agent | CONDITIONAL | Runs test suite - SKIP if no code changes |
+| 6.5 | integration-agent | CONDITIONAL | Integration testing - SKIP if no code changes |
+| 7 | review-agent | **ALWAYS** | Reviews changes against acceptance criteria |
+| 8 | decide-agent | **ALWAYS** | Makes COMPLETE/RESTART decision |
+
+**Skip condition for 4.5, 5.5, 6, 6.5:** When TaskSpec says "Skip implementation stages" or Plan has no files to implement, skip these agents. **Order preserved** — proceed directly to review-agent (Stage 7), then decide-agent (Stage 8).
 
 ---
 
@@ -158,7 +175,7 @@ When pipeline-scaler returns a ScalingPlan with N > 1 runs, this single-run pipe
 becomes the **inner pipeline** executed once per run. The outer loop, context inheritance,
 dependency gates, per-run recovery, and aggregated final review are defined in:
 
-`.claude/rules/06-multi-run-orchestration.md`
+`.opencode/rules/06-multi-run-orchestration.md`
 
 For N = 1, follow this file as written. For N > 1, wrap this pipeline in the multi-run loop.
 
@@ -181,7 +198,7 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
    - You are orchestrator, not implementer
 
 3. **STRICT SEQUENTIAL EXECUTION**
-   - EXACTLY ONE Task call per response
+   - EXACTLY ONE task call per response
    - NEVER dispatch multiple agents in parallel
    - NEVER use run_in_background=true
    - WAIT for agent output, EVALUATE, then dispatch next
@@ -194,15 +211,15 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
    - Only pause at Stage 4 (orchestrator confirmation)
    - Only stop when decide-agent outputs COMPLETE
 
-5. **ALL MANDATORY AGENTS MUST RUN**
-   - Stages -2, -1, 0, 1, 2, 3, 3.5, 4.5, 5, 5.5, 6, 6.5, 7, 8
-   - Run for EVERY request, EVERY time, WITHOUT exception
-   - Even if "no changes needed" - agents verify state
-   - CONDITIONAL: Only Stage 9 (build-agent) runs if plan has files
+5. **MANDATORY vs CONDITIONAL AGENTS**
+   - **ALWAYS run:** Stages -2, -1, 0, 1, 2, 3, 3.5, 5, 7, 8 (pipeline-scaler through pre-flight, debugger, review, decide)
+   - **CONDITIONAL:** Stage 4 (build-agent) — only if plan has files
+   - **CONDITIONAL:** Stages 4.5, 5.5, 6, 6.5 (test-writer, logical-agent, test-agent, integration-agent) — SKIP when no code changes (e.g. greeting, question, "Skip implementation stages")
+   - **Order preserved** — when skipping conditionals, proceed directly to review-agent (7) then decide-agent (8)
 
 6. **SINGLE CONFIRMATION POINT**
    - ONLY at Stage 4 (after task-breakdown)
-   - Present TaskSpec via AskUserQuestion
+   - Present TaskSpec in your response to user
    - NO other stage prompts the user
    - If user rejects, re-run task-breakdown with feedback
 
@@ -224,30 +241,45 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
    - Auto-continue ensures no gaps
    - NEVER sacrifice quality for speed
 
+10. **NO SUGGESTIONS - ONLY EXECUTION**
+    - NEVER say "next steps" - THE TASK ISN'T DONE if you say this
+    - NEVER suggest things the user didn't ask for
+    - NEVER ask "should I..." or "would you like me to..."
+    - NEVER give options when the task is clear
+    - JUST DO THE FUCKING TASK
+    - Keep running the pipeline until decide-agent outputs COMPLETE
+
+11. **PASS SKILL TO BUILD-AGENT**
+    - When plan-agent assigns a skill to a batch (e.g., `**Skill:** auth-schema`), you MUST include it in the build-agent prompt as `skill: {name}`
+    - Example: if Batch 2 has `**Skill:** auth-provider`, your build-agent prompt must include `skill: auth-provider`
+    - Build-agents activate assigned skills by reading `.opencode/skills/{name}/SKILL.md`
+
 ---
 
 ## PIPELINE STATUS (display after each dispatch)
 
 ```
-## Pipeline Status
-- [ ] Stage 1: pipeline-scaler
-- [ ] Stage 2: prompt-optimizer
-- [ ] Stage 3: task-breakdown
-- [ ] Stage 4: orchestrator confirmation (AskUserQuestion)
-- [ ] Stage 5: code-discovery
-- [ ] Stage 6: plan-agent
-- [ ] Stage 7: docs-researcher
-- [ ] Stage 8: pre-flight-checker
-- [ ] Stage 9: build-agent-1
+## Pipeline Status (* = MANDATORY - never skip)
+- [ ] Stage 1: pipeline-scaler *
+- [ ] Stage 2: prompt-optimizer *
+- [ ] Stage 3: task-breakdown *
+- [ ] Stage 4: orchestrator confirmation (present TaskSpec in response) *
+- [ ] Stage 5: code-discovery *
+- [ ] Stage 6: plan-agent *
+- [ ] Stage 7: docs-researcher *
+- [ ] Stage 8: pre-flight-checker *
+- [ ] Stage 9: build-agent-1 (conditional - only if plan has files)
 - [ ] Stage 9: build-agent-2 (if needed)
 - [ ] Stage 9: build-agent-3 (if needed)
-- [ ] Stage 10: test-writer
-- [ ] Stage 11: debugger
-- [ ] Stage 12: logical-agent
-- [ ] Stage 13: test-agent
-- [ ] Stage 14: integration-agent
-- [ ] Stage 15: review-agent
-- [ ] Stage 16: decide-agent
+- [ ] Stage 10: test-writer *
+- [ ] Stage 11: debugger *
+- [ ] Stage 12: logical-agent *
+- [ ] Stage 13: test-agent *
+- [ ] Stage 14: integration-agent *
+- [ ] Stage 15: review-agent *
+- [ ] Stage 16: decide-agent *
+
+* = MANDATORY: These agents ALWAYS run for every request, every time, without exception
 ```
 
 ---
@@ -284,29 +316,19 @@ Do NOT ask the user "should I continue?" Do NOT pause. Do NOT wait for input.
 ```
 
 **🔄 THE ONLY EXCEPTIONS:**
-1. **Stage 4** - After task-breakdown, present TaskSpec via AskUserQuestion and WAIT for confirmation
+1. **Stage 4** - After task-breakdown, present TaskSpec to user and WAIT for confirmation
 2. **Errors** - If agent fails, may need to retry or adjust
 3. **COMPLETE** - When decide-agent outputs COMPLETE, pipeline ends
 
 **Pipeline automatically flows:**
 ```
-pipeline-scaler → prompt-optimizer → task-breakdown → [CONFIRM] →
-code-discovery → plan-agent → docs-researcher → pre-flight-checker →
-build-agent-N → test-writer → debugger → logical-agent →
+pipeline-scaler → prompt-optimizer → task-breakdown → [CONFIRM] → 
+code-discovery → plan-agent → docs-researcher → pre-flight-checker → 
+build-agent-N → test-writer → debugger → logical-agent → 
 test-agent → integration-agent → review-agent → decide-agent → COMPLETE
 ```
 
 **No stops, no questions, no delays - just continuous execution.**
-
-**CRITICAL: One Task call per response. Never dispatch multiple agents in the same message. Never use run_in_background on Task calls.**
-
-**IMPORTANT: Single User Confirmation Point**
-
-After Stage 3 (task-breakdown), present the full TaskSpec to the user via AskUserQuestion.
-This is the ONLY user interaction point in the entire pipeline. Do NOT ask the user at any
-other stage. The confirmation ensures the orchestrator's understanding matches user intent
-before committing to implementation. If the user rejects or modifies, re-run task-breakdown
-with their feedback.
 
 ---
 
@@ -321,14 +343,14 @@ with their feedback.
 
 ### Pipeline Flow (Memorize This)
 ```
-pipeline-scaler → prompt-optimizer → task-breakdown → [CONFIRM] →
-code-discovery → plan-agent → docs-researcher → pre-flight-checker →
-build-agent-N → test-writer → debugger → logical-agent →
+pipeline-scaler → prompt-optimizer → task-breakdown → [CONFIRM] → 
+code-discovery → plan-agent → docs-researcher → pre-flight-checker → 
+build-agent-N → test-writer → debugger → logical-agent → 
 test-agent → integration-agent → review-agent → decide-agent → COMPLETE
 ```
 
 ### Execution Rules
-- **ONE** Task call per response - never more
+- **ONE** task call per response - never more
 - **WAIT** for agent to complete before dispatching next
 - **EVALUATE** every output before proceeding
 - **CONTINUE** automatically - don't ask, don't stop
@@ -347,5 +369,87 @@ test-agent → integration-agent → review-agent → decide-agent → COMPLETE
 - No stage can be skipped "to save time"
 - No parallel execution "for speed"
 - No stopping "to ask permission" between stages
+- **NO "next steps" - if you say this, YOU FAILED to complete the task**
+
+### NO SUGGESTIONS - JUST EXECUTE
+```
+❌ "Here's what you could do next..."
+❌ "Would you like me to..."
+❌ "Should I continue?"
+❌ "One option is..."
+✅ [dispatch next agent immediately]
+```
 
 **Quality requires discipline. Follow the rules exactly.**
+
+---
+
+## PERFECTION VALIDATION SYSTEM
+
+### Overview
+
+Every agent in the pipeline has **brutal perfection criteria** that must be met before proceeding. 99% = FAIL. 100% = PASS. Unlimited re-runs until perfect.
+
+### Perfection Criteria in Every Agent
+
+Each agent definition file (`.opencode/agents/*.md`) contains a **"Perfection Criteria"** section with:
+- Binary validation rules (PERFECT/FAIL only)
+- Specific criteria categories (Completeness, Accuracy, Thoroughness, Evidence, Format)
+- Self-validation commands
+- Imperfection detection protocols
+
+### Key Principles
+
+1. **Zero Tolerance**: One missing criterion = FAIL
+2. **Evidence Required**: Every claim must have evidence (code quotes, command outputs, file paths)
+3. **Brutal Honesty**: Better to reject good work than accept bad work
+4. **Unlimited Re-runs**: No maximum attempt limit, re-run until 100%
+5. **Self-Validation First**: Agents validate themselves before outputting
+6. **External Validation**: Perfection-validator agent can be used for additional verification
+
+### Imperfection Detection
+
+If ANY agent detects imperfection in their own output, they MUST output:
+```
+IMPERFECTION DETECTED: [criterion name]
+ISSUE: [specific problem]
+EVIDENCE: [what's wrong]
+REQUIRED FIX: [exactly what must be done]
+STATUS: HALT - Re-run required
+```
+
+### Orchestrator Responsibility
+
+When an agent outputs IMPERFECTION DETECTED:
+1. DO NOT proceed to next stage
+2. Re-run the same agent with failure feedback
+3. Continue re-running until agent outputs PERFECT
+4. Only then proceed to next stage
+
+### Examples of Imperfections by Stage
+
+- **task-breakdown**: Missing feature, vague criterion, no risk documentation
+- **code-discovery**: Unverified command, missing file mapping, wrong paths
+- **plan-agent**: Oversized batch (>2 files), missing skill assignment, wrong order
+- **docs-researcher**: Outdated syntax, no examples, missing pitfall documentation
+- **pre-flight-checker**: Unverified dependency, hidden blocker, vague status
+- **build-agent**: TODO in code, no tests, hardcoded secret, breaking change
+- **test-writer**: Mock usage, placeholder test, missing edge case
+- **debugger**: Vague diagnosis, unverified fix, no ledger entry
+- **logical-agent**: Missing file analysis, no edge case check, false positive
+- **test-agent**: Skipped test type, no debugger request on failure
+- **integration-agent**: Missing component test, no API verification
+- **review-agent**: Unverified criterion, missed placeholder, no cross-reference
+- **decide-agent**: Inconsistent counts, test failures with COMPLETE, agent request
+
+### Perfection Validator Agent
+
+Use `.opencode/agents/perfection-validator.md` as external enforcer when needed:
+- Receives agent output + perfection criteria
+- Validates with brutal strictness
+- Outputs: `PERFECT` or `FAIL: [detailed reasons]`
+- Can be dispatched between stages for additional verification
+
+---
+
+**Remember: If the task isn't done, KEEP RUNNING THE PIPELINE. The only acceptable end state is decide-agent outputting COMPLETE.**

@@ -115,6 +115,7 @@ original_request: "..."                   # REQUIRED - COMPLETE user request
 **Step 1: Dispatch to prompt-optimizer (Stage 2)**
 ```
 task tool:
+  description: "Optimize prompt for task-breakdown"
   subagent_type: "prompt-optimizer"
   prompt: |
     target_agent: task-breakdown
@@ -136,6 +137,7 @@ ls -la .claude/.prompts/
 **Step 4: Dispatch optimized prompt to task-breakdown (Stage 3)**
 ```
 task tool:
+  description: "Decompose request into TaskSpec"
   subagent_type: "task-breakdown"
   prompt: [the optimized XML prompt from step 2]
 ```
@@ -147,6 +149,7 @@ task tool:
 **After task-breakdown completes, dispatch to code-discovery:**
 ```
 task tool:
+  description: "Analyze codebase for RepoProfile"
   subagent_type: "code-discovery"
   prompt: |
     ## TaskSpec

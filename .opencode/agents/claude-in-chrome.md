@@ -1,7 +1,7 @@
 ---
 description: "Browser automation agent using Claude in Chrome MCP tools"
 mode: subagent
-model: alibaba-coding-plan/glm-5
+model: zai-coding-plan/glm-5
 hidden: true
 color: "#FFC0CB"
 tools:

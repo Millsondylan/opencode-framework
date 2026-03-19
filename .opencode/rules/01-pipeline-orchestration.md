@@ -1,5 +1,7 @@
 # Pipeline Orchestration Rules
 
+**SCOPE:** These rules apply to the orchestrator only. Subagents (build-agent, test-writer, debugger, etc.) follow their own agent definitions—not this file.
+
 ## YOU ARE THE ORCHESTRATOR - NOT A CODER
 
 ### 🚫 ABSOLUTE PROHIBITION - NO CODING EVER
@@ -115,14 +117,15 @@ task tool call 2: subagent_type: "build-agent-2", prompt: "..."
 ```
 
 ### CORRECT (sequential dispatch - REQUIRED)
+**CRITICAL: Every task tool call MUST include `description` (3–5 words). Omitting it causes "expected string, received undefined".**
 ```
 <!-- Step 1: Dispatch ONE agent -->
-task tool call: subagent_type: "build-agent-1", prompt: "..."
+task tool call: description: "Implement batch 1", subagent_type: "build-agent-1", prompt: "..."
 
 <!-- Step 2: WAIT for build-agent-1 to return output -->
 <!-- Step 3: EVALUATE the output -->
 <!-- Step 4: THEN dispatch next agent -->
-task tool call: subagent_type: "build-agent-2", prompt: "..."
+task tool call: description: "Implement batch 2", subagent_type: "build-agent-2", prompt: "..."
 ```
 
 ### Exception
@@ -378,5 +381,75 @@ test-agent → integration-agent → review-agent → decide-agent → COMPLETE
 ```
 
 **Quality requires discipline. Follow the rules exactly.**
+
+---
+
+## PERFECTION VALIDATION SYSTEM
+
+### Overview
+
+Every agent in the pipeline has **brutal perfection criteria** that must be met before proceeding. 99% = FAIL. 100% = PASS. Unlimited re-runs until perfect.
+
+### Perfection Criteria in Every Agent
+
+Each agent definition file (`.opencode/agents/*.md`) contains a **"Perfection Criteria"** section with:
+- Binary validation rules (PERFECT/FAIL only)
+- Specific criteria categories (Completeness, Accuracy, Thoroughness, Evidence, Format)
+- Self-validation commands
+- Imperfection detection protocols
+
+### Key Principles
+
+1. **Zero Tolerance**: One missing criterion = FAIL
+2. **Evidence Required**: Every claim must have evidence (code quotes, command outputs, file paths)
+3. **Brutal Honesty**: Better to reject good work than accept bad work
+4. **Unlimited Re-runs**: No maximum attempt limit, re-run until 100%
+5. **Self-Validation First**: Agents validate themselves before outputting
+6. **External Validation**: Perfection-validator agent can be used for additional verification
+
+### Imperfection Detection
+
+If ANY agent detects imperfection in their own output, they MUST output:
+```
+IMPERFECTION DETECTED: [criterion name]
+ISSUE: [specific problem]
+EVIDENCE: [what's wrong]
+REQUIRED FIX: [exactly what must be done]
+STATUS: HALT - Re-run required
+```
+
+### Orchestrator Responsibility
+
+When an agent outputs IMPERFECTION DETECTED:
+1. DO NOT proceed to next stage
+2. Re-run the same agent with failure feedback
+3. Continue re-running until agent outputs PERFECT
+4. Only then proceed to next stage
+
+### Examples of Imperfections by Stage
+
+- **task-breakdown**: Missing feature, vague criterion, no risk documentation
+- **code-discovery**: Unverified command, missing file mapping, wrong paths
+- **plan-agent**: Oversized batch (>2 files), missing skill assignment, wrong order
+- **docs-researcher**: Outdated syntax, no examples, missing pitfall documentation
+- **pre-flight-checker**: Unverified dependency, hidden blocker, vague status
+- **build-agent**: TODO in code, no tests, hardcoded secret, breaking change
+- **test-writer**: Mock usage, placeholder test, missing edge case
+- **debugger**: Vague diagnosis, unverified fix, no ledger entry
+- **logical-agent**: Missing file analysis, no edge case check, false positive
+- **test-agent**: Skipped test type, no debugger request on failure
+- **integration-agent**: Missing component test, no API verification
+- **review-agent**: Unverified criterion, missed placeholder, no cross-reference
+- **decide-agent**: Inconsistent counts, test failures with COMPLETE, agent request
+
+### Perfection Validator Agent
+
+Use `.opencode/agents/perfection-validator.md` as external enforcer when needed:
+- Receives agent output + perfection criteria
+- Validates with brutal strictness
+- Outputs: `PERFECT` or `FAIL: [detailed reasons]`
+- Can be dispatched between stages for additional verification
+
+---
 
 **Remember: If the task isn't done, KEEP RUNNING THE PIPELINE. The only acceptable end state is decide-agent outputting COMPLETE.**

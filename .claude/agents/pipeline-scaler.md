@@ -2,7 +2,7 @@
 name: pipeline-scaler
 description: Stage 1 meta-orchestrator. Analyzes raw user request complexity to determine how many full sequential pipeline runs are needed. Runs BEFORE prompt-optimizer.
 tools: Read, Grep, Glob, Bash
-model: opus
+model: sonnet
 color: purple
 hooks:
   validator: .claude/hooks/validators/validate-pipeline-scaler.sh

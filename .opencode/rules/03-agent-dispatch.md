@@ -2,10 +2,13 @@
 
 ## HOW TO DISPATCH
 
+**CRITICAL: The task tool REQUIRES `description` (3–5 words). NEVER omit it — the tool will fail with "expected string, received undefined".**
+
 **Use agent name as subagent_type:**
 
 ```
 task tool:
+  description: "Decompose request into TaskSpec"
   subagent_type: "task-breakdown"
   prompt: "[context from previous stages + user's request]"
 ```
@@ -111,6 +114,8 @@ debugger → debugger-2 → ... → debugger-11
 ---
 
 ## BUILD SUB-PIPELINE
+
+**ORCHESTRATOR-ONLY:** The sub-pipeline (pre-checks, build, post-checks, debug loop) is managed by the orchestrator. Build agents do NOT run this sub-pipeline; they implement 1–2 files per invocation.
 
 Each build-agent invocation is wrapped in a nested sub-pipeline to ensure quality at every step:
 
@@ -283,7 +288,7 @@ tools:
 ---
 ```
 
-Note: OpenCode uses structured YAML `tools:` map (not comma-separated string) and full model IDs like `kimi-for-coding/k2p5` and `alibaba-coding-plan/glm-5` (not shorthand like `opus`, `sonnet`, `haiku`). plan-agent uses `alibaba-coding-plan/kimi-k2.5` per default model.
+Note: OpenCode uses structured YAML `tools:` map (not comma-separated string) and full model IDs like `kimi-for-coding/k2p5` and `zai-coding-plan/glm-5` (not shorthand like `opus`, `sonnet`, `haiku`). plan-agent uses `kimi-for-coding/k2p5` per default model.
 
 ### Agent Capabilities by Type
 
@@ -313,6 +318,15 @@ Note: OpenCode uses structured YAML `tools:` map (not comma-separated string) an
 3. **RepoProfile** - Codebase conventions and patterns
 4. **Implementation Plan** - Specific files and changes
 5. **Previous stage outputs** - Any relevant context
+
+**Task tool call format (REQUIRED parameters):**
+```
+task tool:
+  description: "Implement batch 1"   # REQUIRED - 3-5 words. Omitting causes "expected string, received undefined"
+  subagent_type: "build-agent-1"
+  prompt: |
+    [prompt content below]
+```
 
 **Build agent prompt template:**
 ```markdown

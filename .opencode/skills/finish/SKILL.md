@@ -56,7 +56,7 @@ The orchestrator uses the `task` tool to dispatch agents sequentially and evalua
 - **HANDLE REQUEST** - Agent requested another agent
 
 ## Tool Usage
-- `task` - dispatches to each pipeline agent sequentially
+- `task` - dispatches to each pipeline agent sequentially. **REQUIRED:** Always include `description` (3–5 words) in every task call — e.g. `description: "Scale task complexity"`, `description: "Decompose into TaskSpec"`. Omitting it causes "expected string, received undefined".
 - `todowrite` - tracks pipeline state and stage progress
 - `question` - single confirmation point after task-breakdown (only user interaction)
 

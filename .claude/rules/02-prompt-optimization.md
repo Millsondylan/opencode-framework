@@ -2,105 +2,177 @@
 
 ## PROMPT-OPTIMIZER DISPATCH RULES
 
-**EVERY prompt you create for ANY sub-agent MUST go through prompt-optimizer first.**
+**Prompt-optimizer runs ONCE after pipeline-scaler (Stage 2), NOT before every agent.**
 
-This applies to ALL pipeline stages:
-- Stage 1: pipeline-scaler
-- Stage 3: task-breakdown
-- Stage 5: code-discovery
-- Stage 6: plan-agent
-- Stage 7: docs-researcher
-- Stage 8: pre-flight-checker
-- Stage 9: build-agent-1 through build-agent-55
-- Stage 10: test-writer
-- Stage 11: debugger
-- Stage 12: logical-agent
-- Stage 13: test-agent
-- Stage 14: integration-agent
-- Stage 15: review-agent
-- Stage 16: decide-agent
+The prompt-optimizer's job is to:
+1. Take the raw user request after pipeline-scaler
+2. Optimize it into a structured format for task-breakdown (Stage 3)
+3. Save the optimized prompt for reference
+4. Return the XML-structured prompt to the orchestrator
 
-### The Flow (MANDATORY)
+**Subsequent agents (Stages 1+) receive prompts prepared directly by the orchestrator** with proper context from previous stages.
+
+---
+
+## When to Use Prompt-Optimizer
+
+### ALWAYS Use (Stage 2 → Stage 3)
 ```
-1. Orchestrator prepares prompt for target agent
-2. Orchestrator dispatches to prompt-optimizer:
-   - target_agent: [the agent name]
-   - stage: [the stage number]
-   - raw_prompt: [the prompt you prepared]
-3. prompt-optimizer returns optimized prompt
-4. Orchestrator dispatches optimized prompt to target agent
+User Request
+    ↓
+Stage 1: pipeline-scaler
+    ↓
+Stage 2: DISPATCH to prompt-optimizer
+    ↓
+prompt-optimizer optimizes for task-breakdown
+    ↓
+Stage 3: task-breakdown receives optimized prompt
 ```
 
-### Exception: Skip if Already XML-Structured
-If the prompt already contains XML structure (`<task>`, `<context>`, `<requirements>`), skip prompt-optimizer.
-
-### Detection Logic
+### NEVER Use (Stages 1+)
+For subsequent agents, the orchestrator prepares prompts directly:
 ```
-IF prompt contains XML tags (<task>, <context>, <requirements>, etc.):
-  → SKIP prompt-optimizer
-  → Send directly to target agent
-
-ELSE:
-  → DISPATCH to prompt-optimizer FIRST
-  → Get optimized prompt back
-  → THEN dispatch optimized prompt to target agent
-```
-
-### Flow Diagram
-```
-Raw Prompt → Check for XML → [Has XML?]
-                                │
-                    ┌───────────┴───────────┐
-                   YES                      NO
-                    │                        │
-                    ▼                        ▼
-           Send directly to         Send to prompt-optimizer
-           target agent                     │
-                                           ▼
-                                   Get optimized prompt
-                                           │
-                                           ▼
-                                   Send to target agent
+Stage 3: task-breakdown completes
+    ↓
+Orchestrator prepares prompt for Stage 5 (code-discovery)
+    ↓
+DISPATCH directly to code-discovery (no prompt-optimizer)
+    ↓
+Stage 5 completes
+    ↓
+Orchestrator prepares prompt for Stage 6 (plan-agent)
+    ↓
+DISPATCH directly to plan-agent (no prompt-optimizer)
 ```
 
-### Example: Dispatching to task-breakdown
+**The orchestrator acts as the prompt router after Stage 3.**
 
-**WRONG (direct dispatch):**
+---
+
+## The Flow
+
+### Stage 2: Prompt Optimizer (MANDATORY)
+
 ```
-Task tool:
-  subagent_type: "task-breakdown"
-  prompt: "User wants to add authentication"
+1. Orchestrator prepares prompt with:
+   - target_agent: "task-breakdown"
+   - stage: "0"
+   - task_type: [feature|bugfix|refactor]
+   - raw_prompt: [prepared prompt]
+   - original_request: [COMPLETE user request]
+
+2. DISPATCH to prompt-optimizer
+
+3. prompt-optimizer:
+   - Reads task-breakdown agent definition
+   - Optimizes into XML structure
+   - Saves to .claude/.prompts/{timestamp}_task-breakdown_stage0.md
+   - Returns optimized prompt
+
+4. Orchestrator receives optimized prompt
+
+5. DISPATCH optimized prompt to task-breakdown
 ```
 
-**CORRECT (via prompt-optimizer):**
+### Stages 1+: Orchestrator Prepares Directly
+
 ```
-Step 1: Dispatch to prompt-optimizer
-Task tool:
+1. Previous agent completes
+
+2. Orchestrator prepares prompt with:
+   - Context from all previous stages
+   - Target agent name
+   - Stage number
+   - Task type
+   - Full original request
+   - Special requirements
+
+3. DISPATCH directly to target agent
+
+4. Agent receives context-rich prompt
+```
+
+---
+
+## REQUIRED Fields for Stage 2 (Prompt Optimizer)
+
+When dispatching to prompt-optimizer (Stage 2), include:
+
+```yaml
+target_agent: "task-breakdown"           # REQUIRED - Always task-breakdown
+stage: "0"                                # REQUIRED - Stage 3
+task_type: "feature|bugfix|refactor|migrate"  # REQUIRED
+raw_prompt: "..."                         # REQUIRED - Your prepared prompt
+original_request: "..."                   # REQUIRED - COMPLETE user request
+```
+
+**CRITICAL:** The `original_request` field must contain the FULL user request, not a summary.
+
+---
+
+## Example: Stage 2 → Stage 3 Flow
+
+**Step 1: Dispatch to prompt-optimizer (Stage 2)**
+```
+task tool:
+  description: "Optimize prompt for task-breakdown"
   subagent_type: "prompt-optimizer"
   prompt: |
     target_agent: task-breakdown
     stage: 0
+    task_type: feature
     raw_prompt: "User wants to add authentication"
+    original_request: "User wants to add authentication with email/password signup, login, logout, and session management using JWT tokens stored in httpOnly cookies"
+```
 
-Step 2: Get optimized prompt back (XML structured)
+**Step 2: Get optimized prompt back**
+- Prompt-optimizer saves to `.claude/.prompts/{timestamp}_task-breakdown_stage0.md`
+- Returns XML-structured prompt
 
-Step 3: Dispatch optimized prompt to task-breakdown
-Task tool:
+**Step 3: Verify prompt file was created**
+```bash
+ls -la .claude/.prompts/
+```
+
+**Step 4: Dispatch optimized prompt to task-breakdown (Stage 3)**
+```
+task tool:
+  description: "Decompose request into TaskSpec"
   subagent_type: "task-breakdown"
   prompt: [the optimized XML prompt from step 2]
 ```
 
-### More Examples
+---
 
-**Skip prompt-optimizer (already has XML):**
-```xml
-<task>Add user authentication</task>
-<requirements>Use JWT tokens</requirements>
-```
--> Send directly to build-agent-1
+## Example: Stage 5+ (Orchestrator Prepares Directly)
 
-**Use prompt-optimizer (raw text):**
+**After task-breakdown completes, dispatch to code-discovery:**
 ```
-Add user authentication to the app
+task tool:
+  description: "Analyze codebase for RepoProfile"
+  subagent_type: "code-discovery"
+  prompt: |
+    ## TaskSpec
+    [TaskSpec from task-breakdown]
+    
+    ## Context
+    Original request: [full request]
+    
+    ## Your Task
+    Analyze the codebase and create a RepoProfile...
 ```
--> Send to prompt-optimizer first -> Get XML output -> Send to build-agent-1
+
+**NO prompt-optimizer needed** — orchestrator prepares the prompt directly.
+
+---
+
+## Summary
+
+| Stage | Use Prompt-Optimizer? | Who Prepares Prompt |
+|-------|----------------------|-------------------|
+| -2 | N/A (pipeline-scaler) | Orchestrator |
+| -1 | YES (optimizes for Stage 3) | Orchestrator → Prompt-Optimizer |
+| 0 | Receives optimized prompt | Prompt-Optimizer output |
+| 1+ | NO | Orchestrator prepares directly |
+
+**Rule:** Prompt-optimizer runs ONCE after pipeline-scaler. All other stages receive prompts prepared directly by the orchestrator.

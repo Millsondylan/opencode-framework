@@ -82,6 +82,17 @@
         ]
       }
     ],
+    "SubagentStop": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "INPUT=$(cat); CWD=$(echo \"$INPUT\" | python3 -c \"import sys,json; print(json.loads(sys.stdin.read()).get('cwd',''))\" 2>/dev/null); CWD=${CWD:-${CLAUDE_PROJECT_DIR:-$PWD}}; echo \"$INPUT\" | python3 \"$CWD/.claude/hooks/subagent-stop-skill-reminder.py\" 2>/dev/null || exit 0"
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "matcher": ".*",

@@ -27,7 +27,7 @@ TARGET_DIR="${REPO_ROOT}/.opencode/agents"
 # ---------------------------------------------------------------------------
 # Model provider constants.
 # ---------------------------------------------------------------------------
-PROVIDER_PRIMARY="alibaba-coding-plan/kimi-k2.5"
+PROVIDER_PRIMARY="kimi-for-coding/k2p5"
 PROVIDER_KIMI="kimi-for-coding/k2p5"
 PROVIDER_GLM="zai-coding-plan/glm-5"
 

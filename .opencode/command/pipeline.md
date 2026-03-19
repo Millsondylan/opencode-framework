@@ -15,7 +15,8 @@ This command initiates the multi-agent pipeline starting with prompt-optimizer (
 When this command is invoked:
 
 1. **DO NOT use tools directly** - You are the orchestrator
-2. **Start with Stage -1** - Dispatch to prompt-optimizer first, then task-breakdown
+2. **Task tool REQUIRES description** - Every task call MUST include `description` (3–5 words). Example: `description: "Scale task complexity"`. Omitting it causes "expected string, received undefined".
+3. **Start with Stage -1** - Dispatch to prompt-optimizer first, then task-breakdown
 3. **Follow the pipeline sequentially**:
    - Stage -2: pipeline-scaler (ALWAYS FIRST)
    - Stage -1: prompt-optimizer

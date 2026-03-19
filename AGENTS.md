@@ -2,8 +2,13 @@
 
 <!-- BASE RULES - DO NOT MODIFY - START -->
 
-## OpenCode Only
-This repo uses the **OpenCode** setup (`.opencode/`) exclusively. Agent definitions live in `.opencode/agents/`. Claude Code (`.claude/agents/`) and Codex are not used.
+## OpenCode + Claude Code (mirrored)
+
+**Canonical spec:** `.opencode/` defines agents, rules, commands, and skills.
+
+**Claude Code parity:** The same content is mirrored under `.claude/` (agents, rules, commands, skills). Hooks live in `.claude/settings.json` (`PostToolUse`/`PreToolUse`/`SubagentStop`, etc. — see [Hooks reference](https://code.claude.com/docs/en/hooks)). Skills: [Claude Code skills](https://docs.claude.com/en/docs/claude-code/skills).
+
+**Default:** Prefer **generative, agentic** execution (Task subagents, skills, tools) unless the user explicitly requests otherwise.
 
 ---
 
@@ -11,7 +16,10 @@ This repo uses the **OpenCode** setup (`.opencode/`) exclusively. Agent definiti
 
 ### 🚫 ABSOLUTE PROHIBITIONS - NEVER VIOLATE
 
-**1. NO CODING - EVER**
+**1. NO CODING - EVER (Cursor orchestrator role)**
+
+Applies when you are acting as the **pipeline orchestrator in Cursor** with only `task` + `todowrite`. Does not apply to **Claude Code** main sessions, which use `.claude/settings.json` permissions.
+
 ```
 YOU ARE FORBIDDEN FROM:
 ❌ Writing code (Write tool)
@@ -94,10 +102,22 @@ To ask the user a question, present it directly in your response text. Do NOT us
 | 14 | integration-agent | Integration testing |
 | 15 | review-agent | Reviews changes against acceptance criteria |
 | 16 | decide-agent | COMPLETE or RESTART decision |
+| (optional) | perfection-validator | Strict binary PERFECT/FAIL validation |
+
+### Model policy (`.claude/agents/`)
+
+| Agent | Model |
+|-------|--------|
+| code-discovery | haiku |
+| plan-agent | opus |
+| decide-agent | haiku |
+| All others | sonnet |
+
+OpenCode may list Kimi/GLM model IDs; Claude Code definitions use the table above (Sonnet ≈ former Kimi/GLM roles).
 
 ---
 
-## Detailed Rules (auto-loaded from .opencode/rules/)
+## Detailed Rules (auto-loaded from `.opencode/rules/`, mirrored under `.claude/rules/`)
 
 - `.opencode/rules/01-pipeline-orchestration.md` — Pipeline flow, sequential dispatch, status display, workflow, critical rules
 - `.opencode/rules/02-prompt-optimization.md` — Prompt-optimizer dispatch protocol, XML detection, examples
@@ -188,6 +208,8 @@ format, dependency gate logic, and aggregated final review protocol.
 8. **Persist until complete** — No artificial limits, no timeouts, no retry caps
 9. **Multi-run** — If ScalingPlan has N > 1 runs, execute full pipeline per run; see rule 06
 10. **Pass skill to build-agent** — When plan-agent assigns `**Skill:** {name}` to a batch, include `skill: {name}` in the build-agent prompt. Build-agents activate skills by reading `.opencode/skills/{name}/SKILL.md`.
+
+11. **Task tool REQUIRES description** — Every task tool call MUST include `description` (3–5 words). Example: `description: "Scale task complexity"`. Omitting it causes "expected string, received undefined".
 
 <!-- BASE RULES - DO NOT MODIFY - END -->
 

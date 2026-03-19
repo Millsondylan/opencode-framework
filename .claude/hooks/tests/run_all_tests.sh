@@ -108,7 +108,19 @@ if [ -f "$SCRIPTS_TESTS_DIR/test_sync_framework_run2.sh" ]; then
 else
     SYNC_RESULT=1
 fi
-if [ $MERGE_RESULT -eq 0 ] && [ $SYNC_RESULT -eq 0 ]; then
+if [ -f "$SCRIPTS_TESTS_DIR/test_alibaba_fix.sh" ]; then
+    bash "$SCRIPTS_TESTS_DIR/test_alibaba_fix.sh"
+    ALIBA_RESULT=$?
+else
+    ALIBA_RESULT=1
+fi
+if [ -f "$SCRIPTS_TESTS_DIR/test_anti_orchestration_fix.sh" ]; then
+    bash "$SCRIPTS_TESTS_DIR/test_anti_orchestration_fix.sh"
+    ANTI_ORCH_RESULT=$?
+else
+    ANTI_ORCH_RESULT=1
+fi
+if [ $MERGE_RESULT -eq 0 ] && [ $SYNC_RESULT -eq 0 ] && [ $ALIBA_RESULT -eq 0 ] && [ $ANTI_ORCH_RESULT -eq 0 ]; then
     SCRIPTS_RESULT=0
 else
     SCRIPTS_RESULT=1

@@ -22,21 +22,27 @@ ScalingPlan received (N runs)
 │     ├── Check dependency gate (R > 1 only)
 │     ├── Extract run R features from ScalingPlan
 │     ├── Execute full inner pipeline for run R:
-│     │     Stage 2: prompt-optimizer
-│     │     Stage  0: task-breakdown  ← receives ONLY run R features
-│     │     Stage 4: user confirmation (Run 1 only — see below)
-│     │     Stage  1: code-discovery  ← sees all files including prior runs
-│     │     Stage  2: plan-agent      ← knows what prior runs completed
-│     │     Stage  3: docs-researcher
-│     │     Stage 8: pre-flight-checker
-│     │     Stage  4: build-agent-N   ← implements run R features only
-│     │     Stage 10: test-writer
-│     │     Stage  5: debugger        ← if errors
-│     │     Stage 12: logical-agent
-│     │     Stage  6: test-agent
-│     │     Stage 14: integration-agent
-│     │     Stage  7: review-agent
-│     │     Stage  8: decide-agent    ← outputs COMPLETE or RESTART
+│     │
+│     │     MANDATORY AGENTS (ALWAYS RUN - NO EXCEPTIONS):
+│     │     Stage 2: prompt-optimizer   ← ALWAYS optimizes for next agent
+│     │     Stage  0: task-breakdown     ← receives ONLY run R features
+│     │     Stage 4: user confirmation  ← Run 1 only (see below)
+│     │     Stage  1: code-discovery     ← ALWAYS scans codebase
+│     │     Stage  2: plan-agent         ← ALWAYS creates implementation plan
+│     │     Stage  3: docs-researcher    ← ALWAYS researches if libs used
+│     │     Stage 8: pre-flight-checker ← ALWAYS validates environment
+│     │
+│     │     CONDITIONAL AGENTS (run based on plan):
+│     │     Stage  4: build-agent-N      ← ONLY if plan has files to implement
+│     │
+│     │     MANDATORY POST-BUILD AGENTS (ALWAYS RUN):
+│     │     Stage 10: test-writer       ← ALWAYS writes tests for any changes
+│     │     Stage  5: debugger           ← ALWAYS (even if no errors found)
+│     │     Stage 12: logical-agent     ← ALWAYS verifies logic
+│     │     Stage  6: test-agent         ← ALWAYS runs test suite
+│     │     Stage 14: integration-agent ← ALWAYS tests integrations
+│     │     Stage  7: review-agent       ← ALWAYS reviews all changes
+│     │     Stage  8: decide-agent       ← ALWAYS outputs COMPLETE/RESTART
 │     │
 │     ├── If decide-agent → RESTART: retry run R only (do not restart prior runs)
 │     └── If decide-agent → COMPLETE: proceed to run R+1
@@ -50,7 +56,7 @@ ScalingPlan received (N runs)
 
 **Single confirmation for the entire multi-run pipeline.**
 
-- Run 1 task-breakdown: present TaskSpec via AskUserQuestion as normal
+- Run 1 task-breakdown: present TaskSpec in response to user as normal
 - Run 2+ task-breakdown: NO user confirmation — proceed automatically
 - The user confirmed intent at Run 1. Subsequent runs are autonomous.
 
@@ -170,21 +176,23 @@ Display after each agent dispatch:
 ## Multi-Run Pipeline Status
 Runs: [R of N complete] | Current: Run R — "[title]"
 
-### Run R Inner Pipeline
-- [x] Stage 2: prompt-optimizer
-- [x] Stage  0: task-breakdown
-- [ ] Stage  1: code-discovery (IN PROGRESS)
-- [ ] Stage  2: plan-agent
-- [ ] Stage  3: docs-researcher
-- [ ] Stage 8: pre-flight-checker
-- [ ] Stage  4: build-agent
-- [ ] Stage 10: test-writer
-- [ ] Stage  5: debugger
-- [ ] Stage 12: logical-agent
-- [ ] Stage  6: test-agent
-- [ ] Stage 14: integration-agent
-- [ ] Stage  7: review-agent
-- [ ] Stage  8: decide-agent
+### Run R Inner Pipeline (MANDATORY agents marked with *)
+- [x] Stage 2: prompt-optimizer *
+- [x] Stage  0: task-breakdown *
+- [ ] Stage  1: code-discovery * (IN PROGRESS)
+- [ ] Stage  2: plan-agent *
+- [ ] Stage  3: docs-researcher *
+- [ ] Stage 8: pre-flight-checker *
+- [ ] Stage  4: build-agent-N (conditional - only if plan has files)
+- [ ] Stage 10: test-writer *
+- [ ] Stage  5: debugger *
+- [ ] Stage 12: logical-agent *
+- [ ] Stage  6: test-agent *
+- [ ] Stage 14: integration-agent *
+- [ ] Stage  7: review-agent *
+- [ ] Stage  8: decide-agent *
+
+* = NEVER SKIP - These agents ALWAYS run for every run
 
 ### Completed Runs
 - [x] Run 1: [title] — COMPLETE
@@ -194,11 +202,49 @@ Runs: [R of N complete] | Current: Run R — "[title]"
 
 ---
 
+## MANDATORY VS CONDITIONAL AGENTS
+
+### AGENTS THAT MUST ALWAYS RUN (NEVER SKIP)
+
+These agents run for **EVERY** run in **EVERY** pipeline, regardless of circumstances:
+
+| Stage | Agent | Why Mandatory |
+|-------|-------|---------------|
+| -1 | prompt-optimizer | Must optimize prompt for every target agent |
+| 0 | task-breakdown | Must create TaskSpec for each run's scope |
+| 1 | code-discovery | Must scan codebase for current state |
+| 2 | plan-agent | Must create implementation plan |
+| 3 | docs-researcher | Must verify library documentation |
+| 3.5 | pre-flight-checker | Must validate environment before implementation |
+| 4.5 | test-writer | Must write tests for ANY changes made |
+| 5 | debugger | Must verify no errors exist (even if none found) |
+| 5.5 | logical-agent | Must verify logic correctness |
+| 6 | test-agent | Must run full test suite |
+| 6.5 | integration-agent | Must test integrations |
+| 7 | review-agent | Must review all changes |
+| 8 | decide-agent | Must make final COMPLETE/RESTART decision |
+
+### CONDITIONAL AGENTS (Run Only If Needed)
+
+| Stage | Agent | When to Run |
+|-------|-------|-------------|
+| 4 | build-agent-1 through build-agent-55 | Only if plan-agent output contains files to implement |
+
+**Rule:** Check plan-agent output - if it lists files to implement, dispatch build-agent. If no files listed, skip to test-writer (which verifies nothing changed).
+
+---
+
 ## CRITICAL RULES (Multi-Run Specific)
 
-1. **Never restart prior runs** — A completed run stays complete. Only retry the failing run.
-2. **Single user confirmation** — Only after Run 1 task-breakdown. Runs 2+ are autonomous.
-3. **Always pass RunContext** — Every stage in every run must know which run it is and what prior runs completed.
-4. **Dependency gates are blocking** — Never start a run before its declared dependencies are complete.
-5. **Aggregated review is mandatory** — Even if each run passed its own review, run the final cross-run review-agent.
-6. **ONE Task call per response** — The sequential dispatch rule from 01-pipeline-orchestration.md applies inside every run.
+1. **PIPELINE-SCALER IS MANDATORY** — The outer loop starts ONLY after pipeline-scaler (Stage 1) completes. NEVER skip pipeline-scaler even for multi-run scaling.
+2. **NEVER restart prior runs** — A completed run stays complete. Only retry the failing run.
+3. **Single user confirmation** — Only after Run 1 task-breakdown. Runs 2+ are autonomous.
+4. **Always pass RunContext** — Every stage in every run must know which run it is and what prior runs completed.
+5. **Dependency gates are blocking** — Never start a run before its declared dependencies are complete.
+6. **Aggregated review is mandatory** — Even if each run passed its own review, run the final cross-run review-agent.
+7. **ONE task call per response** — The sequential dispatch rule from 01-pipeline-orchestration.md applies inside every run.
+8. **NEVER skip mandatory agents** — The mandatory agents listed above MUST run for every run, every time, without exception.
+9. **No "if no changes" shortcuts** — Even if a run has no code changes, mandatory agents still run (test-writer verifies no tests needed, debugger verifies no errors, etc.).
+10. **AUTO-CONTINUE across runs** — After Run R's decide-agent outputs COMPLETE, immediately start Run R+1 without asking.
+11. **NO PARALLEL RUNS** — Runs execute sequentially, one at a time. NEVER run multiple runs in parallel.
+12. **QUALITY OVER SPEED** — Multi-run pipelines take time. Sequential execution ensures each run builds correctly on prior runs.

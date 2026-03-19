@@ -134,7 +134,7 @@ When conflicts arise:
 ## Agent-Specific Rules
 
 ### Model Specifications
-- All pipeline agents use **Kimi K2.5** (YAML alias: `opus`, model ID: `alibaba-coding-plan/kimi-k2.5`)
+- All pipeline agents use **Kimi K2.5** (YAML alias: `opus`, model ID: `kimi-for-coding/k2p5`)
 - Context window: 256K tokens
 - Max output: 33K tokens
 - The `model: opus` value in agent YAML frontmatter is the correct alias — do NOT use full model IDs

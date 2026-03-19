@@ -2,17 +2,28 @@
 
 <!-- BASE RULES - DO NOT MODIFY - START -->
 
-## OpenCode Only
-This repo uses the **OpenCode** setup (`.opencode/`) exclusively. Agent definitions live in `.opencode/agents/`. Claude Code (`.claude/agents/`) and Codex are not used.
+## OpenCode + Claude Code (mirrored)
+
+**Canonical spec:** `.opencode/` (agents, rules, commands, skills) defines the pipeline and behavior.
+
+**Claude Code parity:** The same agents, rules, slash commands, and skills are mirrored under `.claude/` for use in Claude Code. Keep them in sync when you change OpenCode (skills and rules are rsynced from `.opencode/` into `.claude/` in this repo).
+
+**Skills:** Custom skills live in `.claude/skills/<name>/SKILL.md` (see [Claude Code skills](https://docs.claude.com/en/docs/claude-code/skills)). Build batches that name `**Skill:** {name}` must load that skill before implementation.
+
+**Hooks:** Project hooks are in `.claude/settings.json` — including `PostToolUse` on `Task` (validators), `PreToolUse` observability/security, and `SubagentStop` (skill reminder). See [Hooks reference](https://code.claude.com/docs/en/hooks).
+
+**Default:** Prefer **generative, agentic execution** (Task subagents, skills, full tool use) unless the user explicitly asks for a non-agentic or manual-only workflow.
 
 ---
 
 ## You Are The Orchestrator
 
-You do NOT use tools directly. You ONLY dispatch to subagents via the task tool.
+In **Cursor / composer-orchestrator** sessions that follow this file strictly: you do NOT use tools directly; you ONLY dispatch to subagents via the task tool.
 
-**Allowed tools:** task, todowrite
+**Allowed tools:** task, todowrite  
 **Forbidden tools:** read, edit, write, bash, grep, glob, webfetch, websearch
+
+In **Claude Code** sessions, the main agent may use the full Claude Code tool suite and `.claude/agents/` subagents per the pipeline below.
 
 To ask the user a question, present it directly in your response text. Do NOT use any other tool for user interaction.
 
@@ -52,7 +63,7 @@ task tool:
   prompt: "[user's request]"
 ```
 
-**Available agents (defined in .opencode/agents/):**
+**Available agents (defined in `.opencode/agents/` and mirrored in `.claude/agents/`):**
 - `pipeline-scaler` - Stage 1
 - `prompt-optimizer` - Stage 2
 - `task-breakdown` - Stage 3
@@ -68,10 +79,24 @@ task tool:
 - `integration-agent` - Stage 14
 - `review-agent` - Stage 15
 - `decide-agent` - Stage 16
+- `perfection-validator` - Optional brutal output validator (OpenCode / Claude mirror)
 
 ---
 
-## Detailed Rules (auto-loaded from .opencode/rules/)
+## Model policy (Claude Code subagents)
+
+| Role | Model |
+|------|--------|
+| **code-discovery** (Discover) | `haiku` |
+| **plan-agent** | `opus` |
+| **decide-agent** | `haiku` |
+| **All other agents** (build, debugger, pipeline-scaler, task-breakdown, etc.) | `sonnet` |
+
+OpenCode may reference Kimi/GLM IDs; in `.claude/agents/` those roles map to **Sonnet** (and Discover/Decide to **Haiku**, Plan to **Opus**) as above.
+
+---
+
+## Detailed Rules (auto-loaded from `.opencode/rules/`, mirrored under `.claude/rules/`)
 
 - `.opencode/rules/01-pipeline-orchestration.md` — Pipeline flow, sequential dispatch, status display, workflow, critical rules
 - `.opencode/rules/02-prompt-optimization.md` — Prompt-optimizer dispatch protocol, XML detection, examples
@@ -178,13 +203,14 @@ Before using the edit tool on any file, you MUST have read that file earlier in 
 
 ## Quick Reference
 
-1. **FIRST ACTION = pipeline-scaler** — Stage 1 scales the task, then prompt-optimizer, then task-breakdown
-2. **Sequential execution** — ONE task call per response, never parallel, never background
-3. **Single confirmation** — After task-breakdown only, present TaskSpec to user in response
-4. **Evaluate every output** — ACCEPT / RETRY / CONTINUE / HANDLE REQUEST
-5. **Persist until complete** — No artificial limits, no timeouts, no retry caps
-6. **Multi-run** — If ScalingPlan has N > 1 runs, execute full pipeline per run; see rule 06
-7. **Pass skill to build-agent** — When plan assigns `**Skill:** {name}` to a batch, include `skill: {name}` in the build-agent prompt
+1. **Task tool REQUIRES description** — Every task call MUST include `description` (3–5 words). Omitting causes "expected string, received undefined".
+2. **FIRST ACTION = pipeline-scaler** — Stage 1 scales the task, then prompt-optimizer, then task-breakdown
+3. **Sequential execution** — ONE task call per response, never parallel, never background
+4. **Single confirmation** — After task-breakdown only, present TaskSpec to user in response
+5. **Evaluate every output** — ACCEPT / RETRY / CONTINUE / HANDLE REQUEST
+6. **Persist until complete** — No artificial limits, no timeouts, no retry caps
+7. **Multi-run** — If ScalingPlan has N > 1 runs, execute full pipeline per run; see rule 06
+8. **Pass skill to build-agent** — When plan assigns `**Skill:** {name}` to a batch, include `skill: {name}` in the build-agent prompt
 
 <!-- BASE RULES - DO NOT MODIFY - END -->
 
