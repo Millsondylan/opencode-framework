@@ -2,9 +2,17 @@
 
 This directory contains the agent definition files for the multi-agent framework. Each agent has a specific role in the multi-stage pipeline (Stages -1 through 8, including sub-stages).
 
-## Model Selection
+## Model selection (repo policy)
 
-All agents are configured with `model: inherit` so sub-agents follow the active model selected by the user (`/model`, `--model`, or `cc-model`).
+| Agent | `model:` in frontmatter |
+|-------|-------------------------|
+| code-discovery | `haiku` |
+| plan-agent | `opus` |
+| decide-agent | `haiku` |
+| perfection-validator | `haiku` |
+| All other agents (including build-agent-*, debugger*, pipeline-scaler, …) | `sonnet` |
+
+OpenCode YAML may reference Kimi/GLM; Claude Code definitions use the table above.
 
 ## Agent Files
 
@@ -12,8 +20,8 @@ All agents are configured with `model: inherit` so sub-agents follow the active 
 **Role:** Intercepts and optimizes prompts before they reach target sub-agents
 **Always required:** YES (MANDATORY - runs FIRST before any agent dispatch)
 **Re-run eligible:** YES
-**Special:** Outputs ONLY the optimized prompt, uses opus model for thorough processing
-**Model:** Inherit (active model)
+**Special:** Outputs ONLY the optimized prompt
+**Model:** `sonnet`
 
 ### Stage 3: task-breakdown.md
 **Role:** Analyzes user requests and creates structured TaskSpec
@@ -59,7 +67,7 @@ All agents are configured with `model: inherit` so sub-agents follow the active 
 **Always required:** YES (when build-agent runs)
 **Re-run eligible:** YES
 **Special:** Creates unit tests, edge case tests, and error path tests. NO mocks, NO placeholders, NO assert True. Maps tests to acceptance criteria. Targets 100% coverage.
-**Model:** Inherit (active model)
+**Model:** `sonnet`
 
 ### Stage 11: debugger through debugger-11
 **Role:** Diagnoses and fixes errors, test failures, and bugs
@@ -72,7 +80,7 @@ All agents are configured with `model: inherit` so sub-agents follow the active 
 **Always required:** NO (triggered after build-agent, before test-agent)
 **Re-run eligible:** YES
 **Special:** Read-only verification, detects off-by-one, race conditions, null handling, edge cases
-**Model:** Inherit (active model)
+**Model:** `sonnet`
 
 ### Stage 13: test-agent.md
 **Role:** Runs test suite and reports results (NEVER blocks)
@@ -105,9 +113,17 @@ All agents are configured with `model: inherit` so sub-agents follow the active 
 
 ### Utility: claude-in-chrome.md
 **Role:** Browser automation specialist using Claude in Chrome MCP tools
-**Trigger:** On-demand for browser automation tasks
+**Trigger:** **Mandatory** when the user asks for Chrome, live website interaction, real-page screenshots, forms/clicks/DOM—not replaceable by WebFetch alone
 **Re-run eligible:** YES
-**Special:** Controls Chrome browser via MCP tools (navigate, click, type, screenshot)
+**Special:** MCP tools + **Read, WebSearch, WebFetch** for URLs and local context
+**Model:** `sonnet`
+
+### Optional: perfection-validator.md
+**Role:** Binary PERFECT/FAIL validation of another agent’s output against strict criteria
+**Always required:** NO
+**Re-run eligible:** N/A
+**Model:** `haiku`
+**Hooks:** `.claude/hooks/validators/validate-perfection-validator.sh`
 
 ## Usage
 

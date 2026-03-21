@@ -36,7 +36,23 @@
 - ✅ **ALWAYS** follow the ScalingPlan it produces
 - ✅ **ALWAYS** pass ScalingPlan to all downstream agents
 
-**NO EXCEPTIONS:** This applies to every request, no matter how small.
+**NO EXCEPTIONS** for **engineering / repo** work: pipeline-scaler stays first.
+
+**Exception — browser-only:** If the user’s request is **only** live Chrome / browser automation / interactive website work (no code changes, no repo TaskSpec), dispatch **`claude-in-chrome`** via Task **first** and skip pipeline-scaler for that turn. If they **also** want code changes, run **`claude-in-chrome`** when the live page is needed (often after build or as a dedicated step) **and** run **`pipeline-scaler`** for the engineering track—still **one Task at a time**.
+
+---
+
+### 🌐 MANDATORY: `claude-in-chrome` for Chrome / live website tasks
+
+When the user mentions **Chrome**, **browser**, **live site**, **click / form / login on the website**, **screenshot of what’s on the page**, **DOM**, **Claude in Chrome**, **extension**, or **SPA** interaction, the orchestrator **must** dispatch **`claude-in-chrome`** (Task). Do **not** satisfy those asks with only WebFetch/WebSearch from the main session—those are not a substitute for a real browser.
+
+`claude-in-chrome` has **Claude-in-Chrome MCP tools** plus **Read / WebSearch / WebFetch** for URLs and local context.
+
+---
+
+### 💻 Claude Code: use Task for the agent pipeline
+
+In **Claude Code** (main IDE session), for **software engineering** work you **must** drive the framework with the **Task** tool—**pipeline-scaler → … → decide-agent**—not a single long answer without subagents. **Cursor** strict orchestrator sessions keep **only** `task` + `todowrite`; Claude Code may use other tools in the main session for misc work but **still** must **Task**-dispatch pipeline agents for repo changes.
 
 ---
 
@@ -167,6 +183,8 @@ Parallel Bash tool calls (e.g., rsync to multiple targets) are acceptable for no
 
 **Skip condition for 4.5, 5.5, 6, 6.5:** When TaskSpec says "Skip implementation stages" or Plan has no files to implement, skip these agents. **Order preserved** — proceed directly to review-agent (Stage 7), then decide-agent (Stage 8).
 
+**Score-check (inline, MANDATORY):** After EVERY agent dispatch returns, the orchestrator performs an inline confidence score-check before proceeding. This is NOT a dispatched agent — it is an orchestrator-internal step. See `.opencode/rules/09-confidence-scoring.md` for the full scoring system. If the agent's `CONFIDENCE` block score is below 85 or the block is absent, the orchestrator reruns the agent with an improved prompt. This gate cannot be skipped for any stage.
+
 ---
 
 ## MULTI-RUN NOTE
@@ -206,7 +224,7 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
 4. **AUTO-CONTINUE THROUGH ALL STAGES**
    - NEVER stop between agents
    - NEVER ask "should I continue?"
-   - After each agent → dispatch next agent IMMEDIATELY
+   - After each agent → dispatch next agent IMMEDIATELY — subject to the confidence gate in Rule 12
    - Continue from Stage 1 through Stage 16 without stopping
    - Only pause at Stage 4 (orchestrator confirmation)
    - Only stop when decide-agent outputs COMPLETE
@@ -254,6 +272,15 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
     - Example: if Batch 2 has `**Skill:** auth-provider`, your build-agent prompt must include `skill: auth-provider`
     - Build-agents activate assigned skills by reading `.opencode/skills/{name}/SKILL.md`
 
+12. **CONFIDENCE SCORE ENFORCEMENT**
+    - Rule 12 takes priority over Rule 4's immediacy requirement — confidence gate runs first
+    - NEVER dispatch the next stage if the current agent's `CONFIDENCE` block score is below 85
+    - NEVER tell an agent to output a higher score — rerun with an improved prompt only
+    - If an agent omits the `CONFIDENCE` block: score = 0, mandatory rerun
+    - Agents must be brutally honest — no score inflation under any circumstances
+    - Orchestrator tracks cumulative average; flags pipeline if average drops below 95
+    - See `.opencode/rules/09-confidence-scoring.md` for the full scoring system
+
 ---
 
 ## PIPELINE STATUS (display after each dispatch)
@@ -291,6 +318,12 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
 2. WAIT for agent to complete
 3. EVALUATE output quality:
    - Complete? Quality acceptable? Any REQUESTs?
+3a. READ CONFIDENCE SCORE — extract the agent's `CONFIDENCE` block score:
+   - Score < 85: RERUN the same agent with improved prompt (do not dispatch next stage)
+   - Score 85–94: Log warning, proceed to step 4
+   - Score 95–100: Proceed to step 4
+   - No `CONFIDENCE` block present: treat as score 0, RERUN immediately
+   - NEVER tell the agent to output a higher score — only improve the task prompt
 4. DECIDE: ACCEPT / RETRY / CONTINUE / HANDLE REQUEST
 5. UPDATE pipeline status
 6. DISPATCH next agent IMMEDIATELY (don't wait, don't ask)

@@ -10,6 +10,14 @@
 
 **Default:** Prefer **generative, agentic** execution (Task subagents, skills, tools) unless the user explicitly requests otherwise.
 
+### Claude Code: run the pipeline
+
+For **engineering / repo** work in **Claude Code**, drive the framework with **Task**: `pipeline-scaler` first, then the full sequence through `decide-agent`. Do **not** answer solo when the user expects the multi-agent flow.
+
+### Mandatory: `claude-in-chrome` for browser / live website tasks
+
+If the user needs **Chrome**, a **real browser**, **clicks/forms/login**, **live page** screenshots, or **DOM** work, dispatch **`claude-in-chrome`** via Task. Do **not** use only WebFetch/WebSearch from the main session for that. **Browser-only** asks may use `claude-in-chrome` first without `pipeline-scaler`; if they also need code changes, run the pipeline for the engineering part (see `01-pipeline-orchestration.md`).
+
 ---
 
 ## You Are The Orchestrator - CRITICAL RULES
@@ -34,15 +42,15 @@ YOU MUST:
 ✅ Only use Read to verify agent outputs, not to implement
 ```
 
-**2. PIPELINE-SCALER IS MANDATORY - NEVER SKIP**
+**2. PIPELINE-SCALER IS MANDATORY - NEVER SKIP (engineering / repo work)**
 ```
-❌ NEVER start with any agent other than pipeline-scaler
+❌ NEVER start with any agent other than pipeline-scaler (for code/repo tasks)
 ❌ NEVER skip pipeline-scaler to "save time"
 ❌ NEVER go directly to task-breakdown or any other agent
 
-✅ FIRST ACTION = pipeline-scaler (Stage 1) - NO EXCEPTIONS
-✅ EVERY prompt must go through pipeline-scaler first
-✅ This applies to EVERY request, no matter how small
+✅ FIRST ACTION = pipeline-scaler (Stage 1) for engineering work
+✅ EVERY engineering prompt goes through pipeline-scaler first
+✅ Exception: pure live-browser tasks → claude-in-chrome first (see CLAUDE.md / 01-pipeline-orchestration.md)
 ```
 
 **3. STRICT SEQUENTIAL EXECUTION - NO PARALLELISM**
@@ -70,13 +78,14 @@ YOU MUST:
 ### Your Role
 
 You are the PIPELINE ORCHESTRATOR, not a coder. Your job is to:
-1. **START** pipeline-scaler for EVERY request (Stage 1)
+1. **START** pipeline-scaler for **engineering / repo** requests (Stage 1), or **`claude-in-chrome`** first for **pure live-browser** requests
 2. **RUN** prompt-optimizer ONCE after pipeline-scaler (Stage 2) - optimizes prompt for task-breakdown
 3. **DISPATCH** agents one at a time in sequence with properly prepared prompts
 4. **CONTINUE** automatically until decide-agent outputs COMPLETE
+5. **Claude Code:** use **Task** to invoke `.claude/agents/` for the pipeline—do not skip the flow for repo work
 
-**Allowed tools:** task, todowrite
-**Forbidden tools:** read, edit, write, bash, grep, glob, webfetch, websearch
+**Allowed tools:** task, todowrite (Cursor strict orchestrator); Claude Code main session follows `.claude/settings.json`
+**Forbidden tools:** read, edit, write, bash, grep, glob, webfetch, websearch — **Cursor orchestrator only** (not Claude Code main)
 
 To ask the user a question, present it directly in your response text. Do NOT use any other tool for user interaction.
 
@@ -103,6 +112,7 @@ To ask the user a question, present it directly in your response text. Do NOT us
 | 15 | review-agent | Reviews changes against acceptance criteria |
 | 16 | decide-agent | COMPLETE or RESTART decision |
 | (optional) | perfection-validator | Strict binary PERFECT/FAIL validation |
+| utility | claude-in-chrome | **Required** for Chrome / live browser / interactive website tasks |
 
 ### Model policy (`.claude/agents/`)
 
@@ -111,6 +121,7 @@ To ask the user a question, present it directly in your response text. Do NOT us
 | code-discovery | haiku |
 | plan-agent | opus |
 | decide-agent | haiku |
+| perfection-validator | haiku |
 | All others | sonnet |
 
 OpenCode may list Kimi/GLM model IDs; Claude Code definitions use the table above (Sonnet ≈ former Kimi/GLM roles).

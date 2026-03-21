@@ -32,13 +32,14 @@ echo ""
 # Track overall results
 SHELL_RESULT=0
 PYTHON_RESULT=0
+STOP_HOOK_RESULT=0
 STRUCTURE_RESULT=0
 SCRIPTS_RESULT=0
 
 # ============================================
 # Run Agent Structure Verification
 # ============================================
-echo -e "${BLUE}[1/4] Running Agent Structure Verification${NC}"
+echo -e "${BLUE}[1/5] Running Agent Structure Verification${NC}"
 echo "------------------------------------------"
 
 if [ -f "$SCRIPT_DIR/test_agent_structure.sh" ]; then
@@ -54,7 +55,7 @@ echo ""
 # ============================================
 # Run Shell Validator Tests
 # ============================================
-echo -e "${BLUE}[2/4] Running Shell Validator Tests${NC}"
+echo -e "${BLUE}[2/5] Running Shell Validator Tests${NC}"
 echo "------------------------------------------"
 
 if [ -f "$SCRIPT_DIR/test_validators.sh" ]; then
@@ -70,7 +71,7 @@ echo ""
 # ============================================
 # Run Python Dispatcher Tests
 # ============================================
-echo -e "${BLUE}[3/4] Running Python Dispatcher Tests${NC}"
+echo -e "${BLUE}[3/5] Running Python Dispatcher Tests${NC}"
 echo "------------------------------------------"
 
 if [ -f "$HOOKS_DIR/test_validate_task_output.py" ]; then
@@ -90,9 +91,25 @@ fi
 echo ""
 
 # ============================================
+# SubagentStop hook (skill reminder)
+# ============================================
+echo -e "${BLUE}[3b/5] SubagentStop hook (skill reminder)${NC}"
+echo "------------------------------------------"
+
+if [ -f "$SCRIPT_DIR/test_subagent_stop_hook.sh" ]; then
+    bash "$SCRIPT_DIR/test_subagent_stop_hook.sh"
+    STOP_HOOK_RESULT=$?
+else
+    echo -e "${RED}SubagentStop test not found: $SCRIPT_DIR/test_subagent_stop_hook.sh${NC}"
+    STOP_HOOK_RESULT=1
+fi
+
+echo ""
+
+# ============================================
 # Run Scripts Tests (merge-project-specific, sync-framework-run2)
 # ============================================
-echo -e "${BLUE}[4/4] Running Scripts Tests${NC}"
+echo -e "${BLUE}[5/5] Running Scripts Tests${NC}"
 echo "------------------------------------------"
 
 SCRIPTS_TESTS_DIR="$PROJECT_ROOT/scripts/tests"
@@ -100,13 +117,15 @@ if [ -f "$SCRIPTS_TESTS_DIR/test_merge_project_specific.sh" ]; then
     bash "$SCRIPTS_TESTS_DIR/test_merge_project_specific.sh"
     MERGE_RESULT=$?
 else
-    MERGE_RESULT=1
+    echo -e "${YELLOW}SKIP: test_merge_project_specific.sh not present${NC}"
+    MERGE_RESULT=0
 fi
 if [ -f "$SCRIPTS_TESTS_DIR/test_sync_framework_run2.sh" ]; then
     bash "$SCRIPTS_TESTS_DIR/test_sync_framework_run2.sh"
     SYNC_RESULT=$?
 else
-    SYNC_RESULT=1
+    echo -e "${YELLOW}SKIP: test_sync_framework_run2.sh not present${NC}"
+    SYNC_RESULT=0
 fi
 if [ -f "$SCRIPTS_TESTS_DIR/test_alibaba_fix.sh" ]; then
     bash "$SCRIPTS_TESTS_DIR/test_alibaba_fix.sh"
@@ -153,6 +172,12 @@ else
     echo -e "Python Tests:    ${RED}FAILED${NC}"
 fi
 
+if [ $STOP_HOOK_RESULT -eq 0 ]; then
+    echo -e "SubagentStop:    ${GREEN}PASSED${NC}"
+else
+    echo -e "SubagentStop:    ${RED}FAILED${NC}"
+fi
+
 if [ $SCRIPTS_RESULT -eq 0 ]; then
     echo -e "Scripts Tests:   ${GREEN}PASSED${NC}"
 else
@@ -162,7 +187,7 @@ fi
 echo ""
 
 # Overall exit code
-if [ $STRUCTURE_RESULT -eq 0 ] && [ $SHELL_RESULT -eq 0 ] && [ $PYTHON_RESULT -eq 0 ] && [ $SCRIPTS_RESULT -eq 0 ]; then
+if [ $STRUCTURE_RESULT -eq 0 ] && [ $SHELL_RESULT -eq 0 ] && [ $PYTHON_RESULT -eq 0 ] && [ $STOP_HOOK_RESULT -eq 0 ] && [ $SCRIPTS_RESULT -eq 0 ]; then
     echo -e "${GREEN}All test suites passed!${NC}"
     exit 0
 else

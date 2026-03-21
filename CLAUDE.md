@@ -14,6 +14,23 @@
 
 **Default:** Prefer **generative, agentic execution** (Task subagents, skills, full tool use) unless the user explicitly asks for a non-agentic or manual-only workflow.
 
+### Claude Code: run the pipeline (do not skip agents)
+
+In **Claude Code**, for **engineering / repo work** (features, bugs, refactors, tests, reviews), the **main session must drive the multi-agent flow** using the **Task** tool:
+
+1. **First dispatch:** `pipeline-scaler` (always), then `prompt-optimizer`, then `task-breakdown`, and continue the mandatory pipeline through `decide-agent` as in the table below.
+2. **Do not** answer end-to-end from the main model alone when the user expects the framework—**subagents carry the work**.
+
+### Mandatory: `claude-in-chrome` for browser / live website tasks
+
+If the user asks for anything that needs a **real browser** or **live page** (not just a static HTTP fetch), dispatch **`claude-in-chrome`** via Task **before** trying to substitute WebFetch/WebSearch alone.
+
+**Dispatch `claude-in-chrome` when the request includes (non-exhaustive):** Chrome, Chromium, browser, “open this URL”, “click”, “fill the form”, “log in on the site”, “screenshot of the page”, “what I see on the website”, “DOM”, “Claude in Chrome”, “use the extension”, SPA interaction, or **website UI verification** that requires rendering.
+
+**Pure browser-only** (no code/repo changes): dispatch **`claude-in-chrome`** via Task **without** requiring `pipeline-scaler` first.
+
+**After** browser work, **start or resume** the normal pipeline if they also asked for code changes.
+
 ---
 
 ## You Are The Orchestrator
@@ -23,7 +40,7 @@ In **Cursor / composer-orchestrator** sessions that follow this file strictly: y
 **Allowed tools:** task, todowrite  
 **Forbidden tools:** read, edit, write, bash, grep, glob, webfetch, websearch
 
-In **Claude Code** sessions, the main agent may use the full Claude Code tool suite and `.claude/agents/` subagents per the pipeline below.
+In **Claude Code** sessions, the main agent uses the full tool suite **and must use Task** to run `.claude/agents/` for pipeline work and for **`claude-in-chrome`** when browser tasks apply (see above).
 
 To ask the user a question, present it directly in your response text. Do NOT use any other tool for user interaction.
 
@@ -80,6 +97,7 @@ task tool:
 - `review-agent` - Stage 15
 - `decide-agent` - Stage 16
 - `perfection-validator` - Optional brutal output validator (OpenCode / Claude mirror)
+- `claude-in-chrome` - **Required** for Chrome / live browser / interactive website tasks (see above)
 
 ---
 
@@ -90,6 +108,7 @@ task tool:
 | **code-discovery** (Discover) | `haiku` |
 | **plan-agent** | `opus` |
 | **decide-agent** | `haiku` |
+| **perfection-validator** | `haiku` |
 | **All other agents** (build, debugger, pipeline-scaler, task-breakdown, etc.) | `sonnet` |
 
 OpenCode may reference Kimi/GLM IDs; in `.claude/agents/` those roles map to **Sonnet** (and Discover/Decide to **Haiku**, Plan to **Opus**) as above.
@@ -104,6 +123,7 @@ OpenCode may reference Kimi/GLM IDs; in `.claude/agents/` those roles map to **S
 - `.opencode/rules/04-evaluation-and-context.md` — Orchestrator evaluation, context passing, prompt engineering templates
 - `.opencode/rules/05-operational-policies.md` — ACM, retry guidance, token management, anti-destruction, persistence
 - `.opencode/rules/06-multi-run-orchestration.md` — Multi-run loop, context inheritance, dependency gates, per-run recovery, aggregated final review
+- `.opencode/rules/09-confidence-scoring.md` — Confidence scoring system, per-agent rubrics, anti-cheating rules, orchestrator thresholds
 
 ---
 
@@ -204,13 +224,16 @@ Before using the edit tool on any file, you MUST have read that file earlier in 
 ## Quick Reference
 
 1. **Task tool REQUIRES description** — Every task call MUST include `description` (3–5 words). Omitting causes "expected string, received undefined".
-2. **FIRST ACTION = pipeline-scaler** — Stage 1 scales the task, then prompt-optimizer, then task-breakdown
-3. **Sequential execution** — ONE task call per response, never parallel, never background
-4. **Single confirmation** — After task-breakdown only, present TaskSpec to user in response
-5. **Evaluate every output** — ACCEPT / RETRY / CONTINUE / HANDLE REQUEST
-6. **Persist until complete** — No artificial limits, no timeouts, no retry caps
-7. **Multi-run** — If ScalingPlan has N > 1 runs, execute full pipeline per run; see rule 06
-8. **Pass skill to build-agent** — When plan assigns `**Skill:** {name}` to a batch, include `skill: {name}` in the build-agent prompt
+2. **FIRST ACTION** — **Engineering / repo:** `pipeline-scaler` → prompt-optimizer → task-breakdown… **Pure live browser / Chrome:** `claude-in-chrome` first (no pipeline-scaler required).
+3. **Claude Code** — Use **Task** to run pipeline agents for repo work; do not skip the flow.
+4. **Sequential execution** — ONE task call per response, never parallel, never background
+5. **Single confirmation** — After task-breakdown only, present TaskSpec to user in response
+6. **Evaluate every output** — ACCEPT / RETRY / CONTINUE / HANDLE REQUEST
+7. **Persist until complete** — No artificial limits, no timeouts, no retry caps
+8. **Multi-run** — If ScalingPlan has N > 1 runs, execute full pipeline per run; see rule 06
+9. **Confidence scoring** — Every agent outputs a CONFIDENCE block (0–100). Orchestrator reruns if score < 85; flags pipeline if average < 95. See rule 09
+10. **Pass skill to build-agent** — When plan assigns `**Skill:** {name}` to a batch, include `skill: {name}` in the build-agent prompt
+11. **Chrome / live website** — Task `claude-in-chrome` (MCP + Read/WebSearch/WebFetch); not WebFetch-only from the main session
 
 <!-- BASE RULES - DO NOT MODIFY - END -->
 

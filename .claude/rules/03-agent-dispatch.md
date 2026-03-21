@@ -29,6 +29,19 @@ task tool:
 - `integration-agent` - Stage 14 (integration testing specialist)
 - `review-agent` - Stage 15
 - `decide-agent` - Stage 16
+- `claude-in-chrome` - Utility — **required** for Chrome, live browser, interactive websites, real-page screenshots/DOM (see `01-pipeline-orchestration.md`); has MCP + Read/WebSearch/WebFetch
+- `project-customizer`, `perfection-validator`, `web-syntax-researcher` — optional / utility per agent definitions
+
+### `claude-in-chrome` (browser / website)
+
+Dispatch with Task when the user needs a **real browser** (not static fetch only). **Example:**
+
+```
+task tool:
+  description: "Automate Chrome for user task"
+  subagent_type: "claude-in-chrome"
+  prompt: "[URLs, steps, what to verify on the live page]"
+```
 
 **Build Agent Chaining (Stage 9) - CYCLES:**
 ```
