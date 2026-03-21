@@ -1,16 +1,26 @@
 # Agent Dispatch & Build Pipeline Rules
 
-## HOW TO DISPATCH
+## HOW TO DISPATCH (Claude Code)
 
-**CRITICAL: The task tool REQUIRES `description` (3–5 words). NEVER omit it — the tool will fail with "expected string, received undefined".**
+**CRITICAL: The Agent tool's `subagent_type` only accepts built-in types (`general-purpose`, `Explore`, `Plan`, etc.) — NOT custom agent names like `pipeline-scaler` or `build-agent-1`. Using a custom name silently falls back to a generic agent WITHOUT loading the specialized instructions.**
 
-**Use agent name as subagent_type:**
+**Correct dispatch pattern:**
+1. **Read** the agent definition file: `.claude/agents/{agent-name}.md`
+2. **Set `model`** per the Model Policy (code-discovery/decide-agent → `haiku`, plan-agent → `opus`, all others → `sonnet`)
+3. **Embed** the full agent definition content at the top of the prompt
+4. **Do NOT set `subagent_type`** for custom agents
 
 ```
-task tool:
+Agent tool:
   description: "Decompose request into TaskSpec"
-  subagent_type: "task-breakdown"
-  prompt: "[context from previous stages + user's request]"
+  model: "sonnet"
+  prompt: |
+    [FULL CONTENT OF .claude/agents/task-breakdown.md]
+
+    ---
+
+    ## Your Task
+    [context from previous stages + user's request]
 ```
 
 **Available agents (defined in .opencode/agents/):**
@@ -34,13 +44,19 @@ task tool:
 
 ### `claude-in-chrome` (browser / website)
 
-Dispatch with Task when the user needs a **real browser** (not static fetch only). **Example:**
+Dispatch with the Agent tool when the user needs a **real browser** (not static fetch only). **Example:**
 
 ```
-task tool:
+Agent tool:
   description: "Automate Chrome for user task"
-  subagent_type: "claude-in-chrome"
-  prompt: "[URLs, steps, what to verify on the live page]"
+  model: "sonnet"
+  prompt: |
+    [FULL CONTENT OF .claude/agents/claude-in-chrome.md]
+
+    ---
+
+    ## Your Task
+    [URLs, steps, what to verify on the live page]
 ```
 
 **Build Agent Chaining (Stage 9) - CYCLES:**
@@ -332,14 +348,20 @@ Note: OpenCode uses structured YAML `tools:` map (not comma-separated string) an
 4. **Implementation Plan** - Specific files and changes
 5. **Previous stage outputs** - Any relevant context
 
-**Task tool call format (REQUIRED parameters):**
+**Agent tool call format (Claude Code):**
 ```
-task tool:
-  description: "Implement batch 1"   # REQUIRED - 3-5 words. Omitting causes "expected string, received undefined"
-  subagent_type: "build-agent-1"
+Agent tool:
+  description: "Implement batch 1"   # REQUIRED - 3-5 words
+  model: "sonnet"                    # Per Model Policy table
   prompt: |
-    [prompt content below]
+    [FULL CONTENT OF .claude/agents/build-agent-1.md]
+
+    ---
+
+    [task-specific prompt content below]
 ```
+
+**CRITICAL:** Do NOT use `subagent_type` for custom agents. Read the agent definition file and embed its full content in the prompt. Set `model` per the Model Policy (code-discovery/decide-agent → haiku, plan-agent → opus, all others → sonnet).
 
 **Build agent prompt template:**
 ```markdown
