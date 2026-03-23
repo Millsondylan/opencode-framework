@@ -103,18 +103,20 @@ test-agent → integration-agent → review-agent → decide-agent
 ## YOUR TOOLS (Claude Code)
 
 **Allowed:**
-- **Agent** - dispatch to subagents (ONLY way to invoke pipeline agents)
-- **Read** - read agent definition files before dispatching (REQUIRED for every dispatch)
+- **Agent** - dispatch to subagents via `subagent_type` (ONLY way to invoke pipeline agents)
 - **todowrite** - track pipeline state
 
-**CRITICAL DISPATCH RULE:** The Agent tool's `subagent_type` only accepts built-in types (`general-purpose`, `Explore`, `Plan`). Custom agents like `pipeline-scaler`, `build-agent-1`, etc. are NOT valid subagent_types. You MUST:
-1. **Read** `.claude/agents/{agent-name}.md` to get the agent's instructions
-2. **Set `model`** per Model Policy (code-discovery/decide-agent → `haiku`, plan-agent → `opus`, all others → `sonnet`)
-3. **Embed** the agent definition content at the top of the prompt
-4. **Do NOT use `subagent_type`** for custom pipeline agents
+**Dispatch:** Use `subagent_type` with the agent's `name` from its frontmatter. Custom agents in `.claude/agents/` are loaded at session start. The agent's `model` and `tools` are defined in its file — do NOT override them.
+
+```
+Agent tool:
+  subagent_type: "pipeline-scaler"
+  description: "Scale task complexity"
+  prompt: "[user's request]"
+```
 
 **FORBIDDEN (you are orchestrator, not implementer):**
-- edit, write, bash, grep, glob, webfetch, websearch (except Read for agent definitions)
+- read, edit, write, bash, grep, glob, webfetch, websearch
 
 To ask the user a question, present it directly in your response text.
 
@@ -132,44 +134,28 @@ To ask the user a question, present it directly in your response text.
 5. **NEVER say "next steps"** - If you say this, THE TASK ISN'T DONE. Keep executing.
 6. **NEVER ask "should I..."** - JUST DO IT. Don't ask for permission to continue.
 
-### WRONG (using subagent_type for custom agents - BROKEN)
-```
-<!-- This is WRONG - subagent_type only works for built-in types -->
-Agent tool: subagent_type: "build-agent-1", prompt: "..."
-<!-- This silently falls back to generic agent WITHOUT loading build-agent instructions -->
-```
-
 ### WRONG (parallel dispatch - FORBIDDEN)
 ```
-<!-- This is WRONG - two Agent calls in one response -->
-Agent tool 1: description: "Implement batch 1", prompt: "..."
-Agent tool 2: description: "Implement batch 2", prompt: "..."
+<!-- WRONG - two Agent calls in one response -->
+Agent tool 1: subagent_type: "build-agent-1", prompt: "..."
+Agent tool 2: subagent_type: "build-agent-2", prompt: "..."
 ```
 
-### CORRECT (sequential dispatch with embedded agent definition - REQUIRED)
+### CORRECT (sequential dispatch - REQUIRED)
 ```
-<!-- Step 1: Read agent definition -->
-Read tool: .claude/agents/build-agent-1.md
-
-<!-- Step 2: Dispatch ONE agent with embedded definition -->
+<!-- Step 1: Dispatch ONE agent -->
 Agent tool:
+  subagent_type: "build-agent-1"
   description: "Implement batch 1"
-  model: "sonnet"
-  prompt: |
-    [FULL CONTENT OF .claude/agents/build-agent-1.md]
-    ---
-    [task-specific context and instructions]
+  prompt: "[context + instructions]"
 
-<!-- Step 3: WAIT for agent to return output -->
-<!-- Step 4: EVALUATE the output (including CONFIDENCE score) -->
-<!-- Step 5: Read next agent definition, THEN dispatch -->
+<!-- Step 2: WAIT for output -->
+<!-- Step 3: EVALUATE (including CONFIDENCE score) -->
+<!-- Step 4: THEN dispatch next -->
 Agent tool:
+  subagent_type: "build-agent-2"
   description: "Implement batch 2"
-  model: "sonnet"
-  prompt: |
-    [FULL CONTENT OF .claude/agents/build-agent-2.md]
-    ---
-    [continuation context + task instructions]
+  prompt: "[continuation context]"
 ```
 
 ### Exception

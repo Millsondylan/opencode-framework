@@ -1,16 +1,8 @@
 ---
+name: test-writer
 description: "Writes comprehensive, real, fully functional tests with 100% coverage for implemented features. NO mocks, NO placeholders, NO assert True, NO pass stubs. Maps every test to TaskSpec acceptance criteria."
-mode: subagent
-model: kimi-for-coding/k2p5
-hidden: true
-color: "#00FFFF"
-tools:
-  write: true
-  read: true
-  edit: true
-  grep: true
-  glob: true
-  bash: true
+model: sonnet
+tools: Write, Read, Edit, Grep, Glob, Bash
 ---
 
 # Test Writer Agent

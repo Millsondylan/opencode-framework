@@ -1,14 +1,8 @@
 ---
+name: pipeline-scaler
 description: "Stage 1 meta-orchestrator. Analyzes raw user request complexity to determine how many full sequential pipeline runs are needed. Runs BEFORE prompt-optimizer."
-mode: subagent
-model: kimi-for-coding/k2p5
-hidden: false
-color: "#800080"
-tools:
-  read: true
-  grep: true
-  glob: true
-  bash: true
+model: sonnet
+tools: Read, Grep, Glob, Bash
 ---
 
 # Pipeline Scaler Agent

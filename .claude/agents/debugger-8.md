@@ -1,15 +1,8 @@
 ---
+name: debugger-8
 description: "Eighth debugger agent. Continues from debugger-7. If incomplete, passes to debugger-9."
-mode: subagent
-model: zai-coding-plan/glm-5
-hidden: true
-color: "#FF0000"
-tools:
-  read: true
-  edit: true
-  grep: true
-  glob: true
-  bash: true
+model: sonnet
+tools: Read, Edit, Grep, Glob, Bash
 ---
 
 # Debugger Agent 8

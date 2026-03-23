@@ -1,16 +1,8 @@
 ---
+name: build-agent
 description: "DEPRECATED - Use build-agent-1 through build-agent-5 instead. This is the base template."
-mode: subagent
-model: kimi-for-coding/k2p5
-hidden: true
-color: "#0000FF"
-tools:
-  read: true
-  edit: true
-  write: true
-  grep: true
-  glob: true
-  bash: true
+model: sonnet
+tools: Read, Edit, Write, Grep, Glob, Bash
 ---
 
 # Build Agent (BASE TEMPLATE)

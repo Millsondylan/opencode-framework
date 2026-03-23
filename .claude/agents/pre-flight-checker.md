@@ -1,13 +1,8 @@
 ---
+name: pre-flight-checker
 description: "Pre-implementation sanity checks before build-agent starts. Verifies environment, dependencies, and prerequisites are ready. Fast validation to catch issues early."
-mode: subagent
-model: kimi-for-coding/k2p5
-hidden: true
-color: "#FFA500"
-tools:
-  read: true
-  bash: true
-  glob: true
+model: sonnet
+tools: Read, Bash, Glob
 ---
 
 # Pre-Flight Checker

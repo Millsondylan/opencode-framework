@@ -1,13 +1,8 @@
 ---
+name: integration-agent
 description: "Integration testing specialist that verifies components work together correctly. Runs integration tests, checks API contracts, and validates end-to-end workflows."
-mode: subagent
-model: kimi-for-coding/k2p5
-hidden: true
-color: "#008000"
-tools:
-  read: true
-  bash: true
-  grep: true
+model: sonnet
+tools: Read, Bash, Grep
 ---
 
 # Integration Agent

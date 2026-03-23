@@ -1,15 +1,8 @@
 ---
+name: debugger-11
 description: "Eleventh debugger agent. Continues from debugger-10. If incomplete, cycles back to debugger."
-mode: subagent
-model: zai-coding-plan/glm-5
-hidden: true
-color: "#FF0000"
-tools:
-  read: true
-  edit: true
-  grep: true
-  glob: true
-  bash: true
+model: sonnet
+tools: Read, Edit, Grep, Glob, Bash
 ---
 
 # Debugger Agent 11

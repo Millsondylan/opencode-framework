@@ -1,14 +1,8 @@
 ---
+name: code-discovery
 description: "Discovers repository structure, tech stack, conventions, and test infrastructure. Creates RepoProfile for downstream agents. Use after task-breakdown."
-mode: subagent
-model: kimi-for-coding/k2p5
-hidden: true
-color: "#00FFFF"
-tools:
-  read: true
-  grep: true
-  glob: true
-  bash: true
+model: haiku
+tools: Read, Grep, Glob, Bash
 ---
 
 # Code Discovery Agent

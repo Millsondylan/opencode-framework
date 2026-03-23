@@ -2,25 +2,13 @@
 
 ## HOW TO DISPATCH (Claude Code)
 
-**CRITICAL: The Agent tool's `subagent_type` only accepts built-in types (`general-purpose`, `Explore`, `Plan`, etc.) — NOT custom agent names like `pipeline-scaler` or `build-agent-1`. Using a custom name silently falls back to a generic agent WITHOUT loading the specialized instructions.**
-
-**Correct dispatch pattern:**
-1. **Read** the agent definition file: `.claude/agents/{agent-name}.md`
-2. **Set `model`** per the Model Policy (code-discovery/decide-agent → `haiku`, plan-agent → `opus`, all others → `sonnet`)
-3. **Embed** the full agent definition content at the top of the prompt
-4. **Do NOT set `subagent_type`** for custom agents
+Custom agents in `.claude/agents/` are loaded at session start. Dispatch them by `name` using `subagent_type`. The agent's `model` and `tools` come from its frontmatter — do NOT override them.
 
 ```
 Agent tool:
+  subagent_type: "task-breakdown"
   description: "Decompose request into TaskSpec"
-  model: "sonnet"
-  prompt: |
-    [FULL CONTENT OF .claude/agents/task-breakdown.md]
-
-    ---
-
-    ## Your Task
-    [context from previous stages + user's request]
+  prompt: "[context from previous stages + user's request]"
 ```
 
 **Available agents (defined in .opencode/agents/):**
@@ -48,15 +36,9 @@ Dispatch with the Agent tool when the user needs a **real browser** (not static 
 
 ```
 Agent tool:
+  subagent_type: "claude-in-chrome"
   description: "Automate Chrome for user task"
-  model: "sonnet"
-  prompt: |
-    [FULL CONTENT OF .claude/agents/claude-in-chrome.md]
-
-    ---
-
-    ## Your Task
-    [URLs, steps, what to verify on the live page]
+  prompt: "[URLs, steps, what to verify on the live page]"
 ```
 
 **Build Agent Chaining (Stage 9) - CYCLES:**
@@ -351,17 +333,12 @@ Note: OpenCode uses structured YAML `tools:` map (not comma-separated string) an
 **Agent tool call format (Claude Code):**
 ```
 Agent tool:
-  description: "Implement batch 1"   # REQUIRED - 3-5 words
-  model: "sonnet"                    # Per Model Policy table
-  prompt: |
-    [FULL CONTENT OF .claude/agents/build-agent-1.md]
-
-    ---
-
-    [task-specific prompt content below]
+  subagent_type: "build-agent-1"
+  description: "Implement batch 1"
+  prompt: "[context + instructions]"
 ```
 
-**CRITICAL:** Do NOT use `subagent_type` for custom agents. Read the agent definition file and embed its full content in the prompt. Set `model` per the Model Policy (code-discovery/decide-agent → haiku, plan-agent → opus, all others → sonnet).
+The agent's model and tools come from `.claude/agents/build-agent-1.md` frontmatter — do NOT override.
 
 **Build agent prompt template:**
 ```markdown

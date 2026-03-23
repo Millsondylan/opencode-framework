@@ -71,26 +71,17 @@ To ask the user a question, present it directly in your response text. Do NOT us
 
 ## How To Dispatch (Claude Code)
 
-**CRITICAL:** The Agent tool's `subagent_type` only accepts built-in types (`general-purpose`, `Explore`, `Plan`, etc.) — NOT custom agent names. Custom agents live in `.claude/agents/{name}.md` and must be loaded by **reading the file and embedding its content in the prompt**.
+Custom agents are defined in `.claude/agents/{name}.md` with a `name` field in frontmatter. They are loaded at session start and available via `subagent_type`.
 
 **Dispatch pattern:**
-1. **Read** the agent definition: `.claude/agents/{agent-name}.md`
-2. **Set `model`** per the Model Policy table below (haiku/sonnet/opus)
-3. **Include** the agent definition content at the top of the prompt
-4. **Do NOT use `subagent_type`** for custom agents — it will silently fall back to a generic agent
-
 ```
 Agent tool:
+  subagent_type: "pipeline-scaler"
   description: "Scale task complexity"
-  model: "sonnet"
-  prompt: |
-    [PASTE FULL CONTENT OF .claude/agents/pipeline-scaler.md HERE]
-
-    ---
-
-    ## Your Task
-    [user's request and context from previous stages]
+  prompt: "[user's request]"
 ```
+
+The agent's `model` and `tools` are defined in its frontmatter — do NOT override them in the Agent call.
 
 **Available agents (defined in `.opencode/agents/` and mirrored in `.claude/agents/`):**
 - `pipeline-scaler` - Stage 1

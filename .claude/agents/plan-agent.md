@@ -1,14 +1,8 @@
 ---
+name: plan-agent
 description: "Creates batched implementation plan with feature assignments. Use after code-discovery to plan implementation."
-mode: subagent
-model: anthropic/claude-opus-4-6
-hidden: true
-color: "#800080"
-tools:
-  read: true
-  grep: true
-  glob: true
-  bash: true
+model: opus
+tools: Read, Grep, Glob, Bash
 ---
 
 # Plan Agent
@@ -272,7 +266,7 @@ done
 grep -i "TBD\|TODO\|later" plan.md && echo "FAIL" || echo "PASS"
 
 # Verify skill assignments
-grep -c "^\\*\\*Skill:" plan.md
+grep -c "^\*\*Skill:" plan.md
 # Should equal number of batches
 ```
 

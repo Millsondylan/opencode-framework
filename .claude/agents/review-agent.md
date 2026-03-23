@@ -1,13 +1,8 @@
 ---
+name: review-agent
 description: "MANDATORY. Reviews changes against acceptance criteria. Checks for anti-destruction violations (overwrites, unnecessary files, placeholder tests). Read-only."
-mode: subagent
-model: zai-coding-plan/glm-5
-hidden: true
-color: "#FFA500"
-tools:
-  read: true
-  grep: true
-  glob: true
+model: sonnet
+tools: Read, Grep, Glob
 ---
 
 # Review Agent

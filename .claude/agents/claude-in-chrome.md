@@ -1,25 +1,8 @@
 ---
+name: claude-in-chrome
 description: "REQUIRED for Chrome, browser automation, live websites, real-page screenshots, clicks/forms/DOM. Claude-in-Chrome MCP plus read/web for context."
-mode: subagent
-model: zai-coding-plan/glm-5
-hidden: true
-color: "#FFC0CB"
-tools:
-  read: true
-  websearch: true
-  webfetch: true
-  mcp__claude-in-chrome__computer: true
-  mcp__claude-in-chrome__navigate: true
-  mcp__claude-in-chrome__read_page: true
-  mcp__claude-in-chrome__find: true
-  mcp__claude-in-chrome__form_input: true
-  mcp__claude-in-chrome__javascript_tool: true
-  mcp__claude-in-chrome__get_page_text: true
-  mcp__claude-in-chrome__tabs_context_mcp: true
-  mcp__claude-in-chrome__tabs_create_mcp: true
-  mcp__claude-in-chrome__screenshot: true
-  mcp__claude-in-chrome__upload_image: true
-  mcp__claude-in-chrome__gif_creator: true
+model: sonnet
+tools: Read, WebSearch, WebFetch, mcp__claude-in-chrome__computer, mcp__claude-in-chrome__navigate, mcp__claude-in-chrome__read_page, mcp__claude-in-chrome__find, mcp__claude-in-chrome__form_input, mcp__claude-in-chrome__javascript_tool, mcp__claude-in-chrome__get_page_text, mcp__claude-in-chrome__tabs_context_mcp, mcp__claude-in-chrome__tabs_create_mcp, mcp__claude-in-chrome__screenshot, mcp__claude-in-chrome__upload_image, mcp__claude-in-chrome__gif_creator
 ---
 
 # Claude in Chrome Agent

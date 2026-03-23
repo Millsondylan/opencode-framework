@@ -1,13 +1,8 @@
 ---
+name: docs-researcher
 description: "MANDATORY before build-agent. Researches current library/framework documentation via Context7 MCP. Ensures correct, up-to-date syntax and best practices."
-mode: subagent
-model: kimi-for-coding/k2p5
-hidden: true
-color: "#00FFFF"
-tools:
-  read: true
-  websearch: true
-  webfetch: true
+model: sonnet
+tools: Read, WebSearch, WebFetch
 ---
 
 # Docs Researcher Agent

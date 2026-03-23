@@ -1,14 +1,8 @@
 ---
+name: prompt-optimizer
 description: "Intercepts and optimizes all prompts before they reach target sub-agents. Runs first, outputs only the optimized prompt."
-mode: subagent
-model: kimi-for-coding/k2p5
-hidden: true
-color: "#FFC0CB"
-tools:
-  read: true
-  grep: true
-  glob: true
-  bash: true
+model: sonnet
+tools: Read, Grep, Glob, Bash
 ---
 
 # PROMPT OPTIMIZER SUB-AGENT

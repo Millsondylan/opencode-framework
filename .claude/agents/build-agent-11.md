@@ -1,17 +1,8 @@
 ---
+name: build-agent-11
 description: "Implements 1-2 files as part of the sequential build pipeline. Specialist for writing 1-2 specific files based on detailed instructions and context. Dispatched by the orchestrator only."
-mode: subagent
-model: kimi-for-coding/k2p5
-hidden: true
-color: "#0000FF"
-tools:
-  write: true
-  read: true
-  edit: true
-  grep: true
-  glob: true
-  bash: true
-  todowrite: true
+model: sonnet
+tools: Write, Read, Edit, Grep, Glob, Bash, TodoWrite
 ---
 
 # build-agent

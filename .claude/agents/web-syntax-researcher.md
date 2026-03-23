@@ -1,13 +1,8 @@
 ---
+name: web-syntax-researcher
 description: "DEPRECATED - use docs-researcher instead. Researches APIs, frameworks, and syntax patterns via web search."
-mode: subagent
-model: kimi-for-coding/k2p5
-hidden: true
-color: "#FFC0CB"
-tools:
-  websearch: true
-  webfetch: true
-  read: true
+model: sonnet
+tools: WebSearch, WebFetch, Read
 ---
 
 # Web Syntax Researcher Agent

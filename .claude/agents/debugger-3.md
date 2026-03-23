@@ -1,15 +1,8 @@
 ---
+name: debugger-3
 description: "Third debugger agent. Continues from debugger-2. If incomplete, passes to debugger-4."
-mode: subagent
-model: zai-coding-plan/glm-5
-hidden: true
-color: "#FF0000"
-tools:
-  read: true
-  edit: true
-  grep: true
-  glob: true
-  bash: true
+model: sonnet
+tools: Read, Edit, Grep, Glob, Bash
 ---
 
 # Debugger Agent 3

@@ -1,11 +1,8 @@
 ---
+name: decide-agent
 description: "TERMINAL STAGE. Makes final decision COMPLETE or RESTART. Cannot request other agents. Runs only after all stages complete."
-mode: subagent
-model: kimi-for-coding/k2p5
-hidden: true
-color: "#FFA500"
-tools:
-  read: true
+model: haiku
+tools: Read
 ---
 
 # Decide Agent

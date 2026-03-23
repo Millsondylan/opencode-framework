@@ -1,12 +1,8 @@
 ---
+name: perfection-validator
 description: "External perfection validator. Brutally validates agent outputs against perfection criteria. 99% = FAIL. Unlimited re-runs until 100% perfect."
-mode: subagent
-model: anthropic/claude-haiku-4-6
-hidden: true
-color: "#FF0000"
-tools:
-  read: true
-  grep: true
+model: haiku
+tools: Read, Grep
 ---
 
 # Perfection Validator Agent

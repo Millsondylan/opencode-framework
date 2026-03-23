@@ -1,14 +1,8 @@
 ---
+name: test-agent
 description: "MANDATORY. Runs test suite and reports results. NEVER blocks pipeline - always requests debugger on failure. Detects placeholder tests."
-mode: subagent
-model: kimi-for-coding/k2p5
-hidden: true
-color: "#008000"
-tools:
-  read: true
-  bash: true
-  grep: true
-  glob: true
+model: sonnet
+tools: Read, Bash, Grep, Glob
 ---
 
 # Test Agent
