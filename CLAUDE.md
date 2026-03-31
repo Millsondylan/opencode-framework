@@ -111,7 +111,8 @@ The agent's `model` and `tools` are defined in its frontmatter — do NOT overri
 | **decide-agent** | `sonnet` |
 | **perfection-validator** | `sonnet` |
 | **build-agent-1** through **build-agent-55** (and `build-agent`) | `opus` |
-| **All other agents** (debugger, pipeline-scaler, task-breakdown, etc.) | `sonnet` |
+| **debugger** through **debugger-11** | `opus` |
+| **All other agents** (pipeline-scaler, task-breakdown, etc.) | `sonnet` |
 
 In `.claude/agents/`, `model` is set per **Sonnet** by default, **Opus** for plan-agent and all **build-agent** roles, as above.
 

@@ -1,7 +1,7 @@
 ---
 name: debugger-9
 description: "Ninth debugger agent. Continues from debugger-8. If incomplete, passes to debugger-10."
-model: sonnet
+model: opus
 color: "#992836"
 tools: Read, Edit, Grep, Glob, Bash
 ---

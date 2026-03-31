@@ -1,7 +1,7 @@
 ---
 description: "Fourth debugger agent. Continues from debugger-3. If incomplete, passes to debugger-5."
 mode: subagent
-model: zai-coding-plan/glm-5
+model: anthropic/claude-opus-4-6
 hidden: true
 color: "#c33345"
 tools:

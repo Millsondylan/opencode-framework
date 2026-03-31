@@ -123,9 +123,10 @@ To ask the user a question, present it directly in your response text. Do NOT us
 | decide-agent | sonnet |
 | perfection-validator | sonnet |
 | build-agent-1 … build-agent-55, build-agent | opus |
+| debugger … debugger-11 | opus |
 | All others | sonnet |
 
-Use the table above for `model` in each agent’s frontmatter (build-agents use **Opus**; most other roles use **Sonnet** unless a file states otherwise).
+Use the table above for `model` in each agent’s frontmatter (build-agents and debugger chain use **Opus**; most other roles use **Sonnet** unless a file states otherwise).
 
 ---
 

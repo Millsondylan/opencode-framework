@@ -1,7 +1,7 @@
 ---
 name: debugger-8
 description: "Eighth debugger agent. Continues from debugger-7. If incomplete, passes to debugger-9."
-model: sonnet
+model: opus
 color: "#9f2a38"
 tools: Read, Edit, Grep, Glob, Bash
 ---

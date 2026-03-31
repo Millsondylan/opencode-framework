@@ -1,7 +1,7 @@
 ---
 name: debugger-11
 description: "Eleventh debugger agent. Continues from debugger-10. If incomplete, cycles back to debugger."
-model: sonnet
+model: opus
 color: "#992836"
 tools: Read, Edit, Grep, Glob, Bash
 ---

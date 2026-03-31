@@ -1,7 +1,7 @@
 ---
 description: "Diagnoses and fixes errors, test failures, and bugs. Dispatched when errors occur. Makes minimal fixes."
 mode: subagent
-model: zai-coding-plan/glm-5
+model: anthropic/claude-opus-4-6
 hidden: true
 color: "#ce4959"
 tools:

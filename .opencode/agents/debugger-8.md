@@ -1,7 +1,7 @@
 ---
 description: "Eighth debugger agent. Continues from debugger-7. If incomplete, passes to debugger-9."
 mode: subagent
-model: zai-coding-plan/glm-5
+model: anthropic/claude-opus-4-6
 hidden: true
 color: "#9f2a38"
 tools:

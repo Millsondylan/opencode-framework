@@ -299,7 +299,7 @@ tools:
 ---
 ```
 
-Note: **Claude Code** loads each agent from `.claude/agents/{name}.md`. Frontmatter includes `model` (`opus`, `sonnet`, etc., per the project model policy in `CLAUDE.md`), a `tools:` list (comma-separated tool names for this agent), and optional `color: "#hex"` for visual distinction. **plan-agent** and all **build-agent** roles use **Opus**; most other pipeline agents use **Sonnet**, unless a file states otherwise.
+Note: **Claude Code** loads each agent from `.claude/agents/{name}.md`. Frontmatter includes `model` (`opus`, `sonnet`, etc., per the project model policy in `CLAUDE.md`), a `tools:` list (comma-separated tool names for this agent), and optional `color: "#hex"` for visual distinction. **plan-agent**, all **build-agent** roles, and **debugger** through **debugger-11** use **Opus**; most other pipeline agents use **Sonnet**, unless a file states otherwise.
 
 ### Agent Capabilities by Type
 

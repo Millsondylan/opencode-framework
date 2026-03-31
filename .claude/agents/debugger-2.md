@@ -1,7 +1,7 @@
 ---
 name: debugger-2
 description: "Second debugger agent. Continues from debugger. If incomplete, passes to debugger-3."
-model: sonnet
+model: opus
 color: "#cc4051"
 tools: Read, Edit, Grep, Glob, Bash
 ---

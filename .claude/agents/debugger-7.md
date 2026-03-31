@@ -1,7 +1,7 @@
 ---
 name: debugger-7
 description: "Seventh debugger agent. Continues from debugger-6. If incomplete, passes to debugger-8."
-model: sonnet
+model: opus
 color: "#a82c3b"
 tools: Read, Edit, Grep, Glob, Bash
 ---

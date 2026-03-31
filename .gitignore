@@ -9,6 +9,7 @@ node_modules/
 
 # Logs and temp
 *.log
+# Claude Code (also .claude/.gitignore — travels with framework rsync)
 .claude/.prompts/
 .claude/hooks/logs/
 

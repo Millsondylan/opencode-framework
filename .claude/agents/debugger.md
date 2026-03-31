@@ -1,7 +1,7 @@
 ---
 name: debugger
 description: "Diagnoses and fixes errors, test failures, and bugs. Dispatched when errors occur. Makes minimal fixes."
-model: sonnet
+model: opus
 color: "#ce4959"
 tools: Read, Edit, Grep, Glob, Bash
 ---

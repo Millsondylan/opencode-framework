@@ -1,7 +1,7 @@
 ---
 name: debugger-4
 description: "Fourth debugger agent. Continues from debugger-3. If incomplete, passes to debugger-5."
-model: sonnet
+model: opus
 color: "#c33345"
 tools: Read, Edit, Grep, Glob, Bash
 ---

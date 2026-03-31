@@ -49,7 +49,7 @@ Agent definitions in `.claude/agents/*.md` set `model` in frontmatter. Project p
 
 | Role | Typical `model` |
 |------|------------------|
-| **plan-agent**, all **build-agent** roles (including numbered) | `opus` |
+| **plan-agent**, all **build-agent** roles (including numbered), **debugger** … **debugger-11** | `opus` |
 | **code-discovery**, **decide-agent**, **perfection-validator**, most other pipeline agents | `sonnet` |
 
 Do not override `model` from `Task` calls; it comes from each agent file.

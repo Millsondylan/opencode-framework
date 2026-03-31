@@ -1,7 +1,7 @@
 ---
 description: "Eleventh debugger agent. Continues from debugger-10. If incomplete, cycles back to debugger."
 mode: subagent
-model: zai-coding-plan/glm-5
+model: anthropic/claude-opus-4-6
 hidden: true
 color: "#992836"
 tools:

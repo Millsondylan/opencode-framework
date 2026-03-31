@@ -1,7 +1,7 @@
 ---
 name: debugger-6
 description: "Sixth debugger agent. Continues from debugger-5. If incomplete, passes to debugger-7."
-model: sonnet
+model: opus
 color: "#b12f3e"
 tools: Read, Edit, Grep, Glob, Bash
 ---
