@@ -2,7 +2,7 @@
 # Verification script for agent structure and rules
 #
 # Confirms:
-# (a) All agent .md files in .opencode/agents/ contain "Anti-Orchestration" or "NEVER use the Task tool"
+# (a) All agent .md files in .claude/agents/ contain "Anti-Orchestration" or "NEVER use the Task tool"
 # (b) 03-agent-dispatch.md contains "Anti-Orchestration Rules"
 # (c) 04-evaluation-and-context.md contains "Anti-Orchestration Rules"
 #
@@ -18,8 +18,8 @@ NC='\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-AGENTS_DIR="$PROJECT_ROOT/.opencode/agents"
-RULES_DIR="$PROJECT_ROOT/.opencode/rules"
+AGENTS_DIR="$PROJECT_ROOT/.claude/agents"
+RULES_DIR="$PROJECT_ROOT/.claude/rules"
 
 FAILED=0
 PASSED=0
@@ -29,6 +29,7 @@ echo "--- Agent files: Anti-Orchestration / NEVER use the Task tool ---"
 MISSING=()
 for f in "$AGENTS_DIR"/*.md; do
     [ -f "$f" ] || continue
+    [ "$(basename "$f")" = "README.md" ] && continue
     if grep -qE 'Anti-Orchestration|NEVER use the Task tool' "$f" 2>/dev/null; then
         PASSED=$((PASSED + 1))
     else

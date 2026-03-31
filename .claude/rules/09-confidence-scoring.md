@@ -1,6 +1,6 @@
 # Confidence Scoring System
 
-Every agent self-reports a confidence score (0–100) at the end of its output. The orchestrator enforces thresholds: rerun any agent below 85, flag the pipeline if cumulative average drops below 95.
+Every agent self-reports a confidence score (0–100) at the end of its output. **Numeric pass/fail thresholds are defined only in orchestrator rules** (`.claude/rules/01-pipeline-orchestration.md`). This document defines how to score; it does **not** state minimum scores, rerun percentages, or fail rates — agents must not optimize for a numeric bar.
 
 ---
 
@@ -9,18 +9,20 @@ Every agent self-reports a confidence score (0–100) at the end of its output. 
 - Confidence score = a single integer from 0 to 100
 - Self-assigned by each agent at the **END** of its output, after all other content
 - Measures the agent's own honest assessment of output quality against its perfection criteria
-- The score must be assigned **BEFORE** the agent knows if it will be rerun — based on actual quality, not desired outcome
+- Assign the score from actual quality of the work product, not from guessing what the orchestrator might prefer
 
 ---
 
-## Scoring Scale
+## Scoring Scale (qualitative — for self-assessment only)
 
-| Band | Score | Label | Pipeline Consequence |
-|------|-------|-------|---------------------|
-| 1 | 0–59 | Unacceptable | Mandatory rerun; output is incomplete, wrong, or missing major sections |
-| 2 | 60–84 | Below Threshold | Mandatory rerun; output has gaps or significant quality issues |
-| 3 | 85–94 | Acceptable | Log warning and proceed; minor caveats noted |
-| 4 | 95–100 | Pipeline-Safe | Proceed normally; output fully meets all criteria with evidence |
+| Band | Score | Label | Meaning (for your rubric — not a policy table) |
+|------|-------|-------|-----------------------------------------------|
+| 1 | 0–59 | Unacceptable | Incomplete, wrong, or missing major sections |
+| 2 | 60–79 | Weak | Gaps or significant quality issues |
+| 3 | 80–94 | Mixed | Usable with caveats; some dimensions strong, some weak |
+| 4 | 95–100 | Strong | Fully meets criteria with clear evidence |
+
+The orchestrator maps these to its own gate. **Do not** infer a cutoff from this file.
 
 ---
 
@@ -41,20 +43,18 @@ These rules are **CRITICAL** and all are mandatory:
 
 - Agents must be **brutally honest** — a harsh accurate score is always better than a generous inaccurate one
 - **No inflation** under any circumstances
-- Written justification **required** for ALL scores — for scores below 85, the justification must enumerate the specific gaps by rubric dimension so the orchestrator can construct a meaningful improved prompt
-- Missing CONFIDENCE block = automatic score of **0** and mandatory rerun
+- Written justification **required** for ALL scores — when you deduct points, the justification must enumerate specific gaps by rubric dimension so the orchestrator can construct a meaningful improved prompt
+- Missing CONFIDENCE block = orchestrator treats output as valid for retry handling per pipeline rules
 - Orchestrator **CANNOT** instruct an agent to output a higher score
-- Agents **CANNOT** reference the threshold to game the system (e.g., "I need 85 so I will say 85")
-- If an agent's score is consistently high but quality is visibly poor, the orchestrator must treat the score as 0 and rerun
+- **Do not** game the system: never choose a score because you believe it will avoid a rerun, satisfy a threshold, or match a target percentage — you do not know those rules
+- **Do not** reference pass marks, minimum scores, or “high enough to proceed” in your justification
+- If an agent's score is consistently high but quality is visibly poor, the orchestrator must treat the output as failed and rerun
 
 ---
 
-## Thresholds
+## Orchestrator enforcement (read only from Rule 01)
 
-Two enforcement levels:
-
-- **Individual agent:** score < 85 → mandatory rerun with improved prompt before dispatching next stage
-- **Pipeline-level:** if cumulative rolling average across all agent invocations in the current run drops below 95 → orchestrator logs a pipeline-level warning and reviews which stages are dragging the average
+Thresholds, mandatory reruns, rolling averages, and escalation live in **`.claude/rules/01-pipeline-orchestration.md`**. Agents must **not** read those sections to adjust scoring behavior.
 
 ---
 
@@ -78,6 +78,7 @@ Rules for the block:
 - Justification must be honest — if full marks, explain what evidence was provided; if deducted, explain what was missing
 - The block heading must be exactly `### CONFIDENCE` (case-sensitive)
 - No content may appear after the CONFIDENCE block
+- When you deduct any dimension: enumerate which rubric dimensions fell short and why
 
 ---
 
@@ -85,12 +86,10 @@ Rules for the block:
 
 - Log the score for every agent invocation (agent name, stage number, score)
 - Maintain a rolling average across all invocations in the current pipeline run
-- **Trigger rerun when:** individual score < 85 OR CONFIDENCE block is absent
-- **Flag pipeline when:** rolling average < 95
+- Apply the confidence gate exactly as specified in **Rule 01** (individual score gate and pipeline average gate)
 - Orchestrator **CANNOT** instruct the agent to output a higher score — only improve the task prompt and rerun
-- Orchestrator **CANNOT** accept output lacking a CONFIDENCE block — treat as score 0
-- Rerun limit: **none** — reruns continue until score ≥ 85 (no artificial cap)
-- **Escalation after 5 consecutive reruns below 85:** If the same agent scores below 85 on 5 consecutive attempts, the orchestrator must pause, log a diagnostic summary of all 5 scores and justifications, and surface the issue to the user rather than continuing to loop. This is the only defined exit from the rerun loop other than reaching ≥ 85.
+- Orchestrator **CANNOT** accept output lacking a valid `CONFIDENCE` block when the gate requires it — treat as failing the gate per Rule 01
+- Rerun limit: **none** — reruns continue until the gate passes (no artificial cap), except where Rule 01 defines escalation to the user after repeated failures
 - When rerunning: improve the prompt with specific guidance about what was deficient — do NOT say "score higher"
 
 ---

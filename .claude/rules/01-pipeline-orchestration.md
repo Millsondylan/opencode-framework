@@ -197,7 +197,7 @@ Parallel Bash tool calls (e.g., rsync to multiple targets) are acceptable for no
 
 **Skip condition for 4.5, 5.5, 6, 6.5:** When TaskSpec says "Skip implementation stages" or Plan has no files to implement, skip these agents. **Order preserved** — proceed directly to review-agent (Stage 7), then decide-agent (Stage 8).
 
-**Score-check (inline, MANDATORY):** After EVERY agent dispatch returns, the orchestrator performs an inline confidence score-check before proceeding. This is NOT a dispatched agent — it is an orchestrator-internal step. See `.opencode/rules/09-confidence-scoring.md` for the full scoring system. If the agent's `CONFIDENCE` block score is below 85 or the block is absent, the orchestrator reruns the agent with an improved prompt. This gate cannot be skipped for any stage.
+**Score-check (inline, MANDATORY):** After EVERY agent dispatch returns, the orchestrator performs an inline confidence score-check before proceeding. This is NOT a dispatched agent — it is an orchestrator-internal step. Agent-facing rubric and output format: `.claude/rules/09-confidence-scoring.md`. **Orchestrator-only gate:** if the agent's `CONFIDENCE` block score is **strictly below 90** or the block is absent / invalid, the orchestrator **fails** that invocation and reruns the same agent with an improved prompt before dispatching the next stage. This gate cannot be skipped for any stage.
 
 ---
 
@@ -207,7 +207,7 @@ When pipeline-scaler returns a ScalingPlan with N > 1 runs, this single-run pipe
 becomes the **inner pipeline** executed once per run. The outer loop, context inheritance,
 dependency gates, per-run recovery, and aggregated final review are defined in:
 
-`.opencode/rules/06-multi-run-orchestration.md`
+`.claude/rules/06-multi-run-orchestration.md`
 
 For N = 1, follow this file as written. For N > 1, wrap this pipeline in the multi-run loop.
 
@@ -284,16 +284,17 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
 11. **PASS SKILL TO BUILD-AGENT**
     - When plan-agent assigns a skill to a batch (e.g., `**Skill:** auth-schema`), you MUST include it in the build-agent prompt as `skill: {name}`
     - Example: if Batch 2 has `**Skill:** auth-provider`, your build-agent prompt must include `skill: auth-provider`
-    - Build-agents activate assigned skills by reading `.opencode/skills/{name}/SKILL.md`
+    - Build-agents activate assigned skills by reading `.claude/skills/{name}/SKILL.md`
 
 12. **CONFIDENCE SCORE ENFORCEMENT**
     - Rule 12 takes priority over Rule 4's immediacy requirement — confidence gate runs first
-    - NEVER dispatch the next stage if the current agent's `CONFIDENCE` block score is below 85
+    - NEVER dispatch the next stage if the current agent's `CONFIDENCE` block score is **below 90** (fail — mandatory rerun of that agent)
     - NEVER tell an agent to output a higher score — rerun with an improved prompt only
-    - If an agent omits the `CONFIDENCE` block: score = 0, mandatory rerun
+    - If an agent omits the `CONFIDENCE` block or it is invalid: treat as **fail**, mandatory rerun
     - Agents must be brutally honest — no score inflation under any circumstances
-    - Orchestrator tracks cumulative average; flags pipeline if average drops below 95
-    - See `.opencode/rules/09-confidence-scoring.md` for the full scoring system
+    - Orchestrator tracks cumulative average; flags pipeline if rolling average drops below 95
+    - **Escalation:** If the **same** agent fails the gate (**score below 90** or missing block) on **5 consecutive** invocations, pause, log all five scores and justifications, and surface to the user — do not loop silently past that point
+    - Rubric and `CONFIDENCE` block format: `.claude/rules/09-confidence-scoring.md` (agents do not receive numeric thresholds from that file)
 
 ---
 
@@ -333,11 +334,11 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
 3. EVALUATE output quality:
    - Complete? Quality acceptable? Any REQUESTs?
 3a. READ CONFIDENCE SCORE — extract the agent's `CONFIDENCE` block score:
-   - Score < 85: RERUN the same agent with improved prompt (do not dispatch next stage)
-   - Score 85–94: Log warning, proceed to step 4
+   - Score < 90: **FAIL** — RERUN the same agent with improved prompt (do not dispatch next stage)
+   - Score 90–94: Log warning, proceed to step 4
    - Score 95–100: Proceed to step 4
-   - No `CONFIDENCE` block present: treat as score 0, RERUN immediately
-   - NEVER tell the agent to output a higher score — only improve the task prompt
+   - No `CONFIDENCE` block present (or invalid): **FAIL** — RERUN immediately
+   - NEVER tell the agent the numeric gate, their “fail rate,” or to output a higher score — only improve the task prompt
 4. DECIDE: ACCEPT / RETRY / CONTINUE / HANDLE REQUEST
 5. UPDATE pipeline status
 6. DISPATCH next agent IMMEDIATELY (don't wait, don't ask)
@@ -439,7 +440,7 @@ Every agent in the pipeline has **brutal perfection criteria** that must be met 
 
 ### Perfection Criteria in Every Agent
 
-Each agent definition file (`.opencode/agents/*.md`) contains a **"Perfection Criteria"** section with:
+Each agent definition file (`.claude/agents/*.md`) contains a **"Perfection Criteria"** section with:
 - Binary validation rules (PERFECT/FAIL only)
 - Specific criteria categories (Completeness, Accuracy, Thoroughness, Evidence, Format)
 - Self-validation commands
@@ -491,7 +492,7 @@ When an agent outputs IMPERFECTION DETECTED:
 
 ### Perfection Validator Agent
 
-Use `.opencode/agents/perfection-validator.md` as external enforcer when needed:
+Use `.claude/agents/perfection-validator.md` as external enforcer when needed:
 - Receives agent output + perfection criteria
 - Validates with brutal strictness
 - Outputs: `PERFECT` or `FAIL: [detailed reasons]`

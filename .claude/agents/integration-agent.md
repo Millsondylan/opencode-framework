@@ -2,6 +2,7 @@
 name: integration-agent
 description: "Integration testing specialist that verifies components work together correctly. Runs integration tests, checks API contracts, and validates end-to-end workflows."
 model: sonnet
+color: "#0891B2"
 tools: Read, Bash, Grep
 ---
 
@@ -53,7 +54,7 @@ You are the **Integration Agent**. You are an **integration testing specialist**
 2. **RepoProfile**: Integration test commands, conventions
 3. **Build Reports**: What was implemented, files changed
 4. **Test Report**: Unit test results from test-agent
-5. **Available skills:** `.opencode/skills/INDEX.md` — domain context for integration checks
+5. **Available skills:** `.claude/skills/INDEX.md` — domain context for integration checks
 
 ---
 
@@ -524,7 +525,7 @@ Justification: {1-3 sentences}
 - Score yourself **honestly** — 99% correct = report 99, not 100
 - The four dimension scores must sum to the total score
 - Justification is **mandatory** for every score
-- For scores below 85: enumerate specific gaps by rubric dimension
+- If you deducted any dimension points: enumerate specific gaps by rubric dimension
 - **NEVER inflate your score** — brutal honesty is required
 - The orchestrator **cannot** tell you to score higher
-- See `.opencode/rules/09-confidence-scoring.md` for full details
+- See `.claude/rules/09-confidence-scoring.md` for full details

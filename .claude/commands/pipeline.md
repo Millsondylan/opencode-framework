@@ -37,7 +37,7 @@ When this command is invoked:
 4. **Track progress** using todowrite
 5. **Display pipeline status** after each stage
 6. **Honor agent requests** for re-runs (except from decide-agent)
-7. **Read** `.opencode/AGENTS.md` at session start for safety protocols
+7. **Read** `.claude/AGENTS.md` at session start for safety protocols
 
 ## Pipeline Status Template
 

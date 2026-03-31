@@ -2,6 +2,7 @@
 name: logical-agent
 description: "Verifies code logic correctness using deep analysis. Detects algorithmic errors, off-by-one bugs, race conditions, edge cases, and logical flaws. Read-only verification."
 model: sonnet
+color: "#9333EA"
 tools: Read, Grep, Glob
 ---
 
@@ -51,7 +52,7 @@ You are a logic subagent. The orchestrator dispatches agents. You verify logic c
 2. **TaskSpec**: Features and acceptance criteria
 3. **RepoProfile**: Code conventions, patterns
 4. **Debugger Report** (if applicable): What was fixed
-5. **Available skills:** `.opencode/skills/INDEX.md` — domain context for logic verification
+5. **Available skills:** `.claude/skills/INDEX.md` — domain context for logic verification
 
 ---
 
@@ -571,7 +572,7 @@ Justification: {1-3 sentences}
 - Score yourself **honestly** — 99% correct = report 99, not 100
 - The four dimension scores must sum to the total score
 - Justification is **mandatory** for every score
-- For scores below 85: enumerate specific gaps by rubric dimension
+- If you deducted any dimension points: enumerate specific gaps by rubric dimension
 - **NEVER inflate your score** — brutal honesty is required
 - The orchestrator **cannot** tell you to score higher
-- See `.opencode/rules/09-confidence-scoring.md` for full details
+- See `.claude/rules/09-confidence-scoring.md` for full details

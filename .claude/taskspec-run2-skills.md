@@ -1,8 +1,8 @@
-# TaskSpec — Run 2: 17 OpenCode Skills (Architecture, Infrastructure, Theme, Cross-cutting, Data Layer)
+# TaskSpec — Run 2: 17 Skills (Architecture, Infrastructure, Theme, Cross-cutting, Data Layer)
 
 ## Request Summary
 
-Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting concerns, and data layer. Each skill is a SKILL.md file that guides build agents when implementing these concerns in a Flutter/Dart mobile app. Output path: `.opencode/skills/{skill-name}/SKILL.md`. Format: YAML frontmatter (name, description), sections: Usage, Parameters, What It Does, Output, What It Must NOT Do. Shared constraints: anti-orchestration, tech stack (Riverpod, Hive, Supabase, Material 3, Clean Architecture).
+Create 17 skills for architecture, infrastructure, theme, cross-cutting concerns, and data layer. Each skill is a SKILL.md file that guides build agents when implementing these concerns in a Flutter/Dart mobile app. Output path: `.claude/skills/{skill-name}/SKILL.md`. Format: YAML frontmatter (name, description), sections: Usage, Parameters, What It Does, Output, What It Must NOT Do. Shared constraints: anti-orchestration, tech stack (Riverpod, Hive, Supabase, Material 3, Clean Architecture).
 
 ---
 
@@ -13,7 +13,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 #### F1: architecture-agent
 **Description:** Skill for implementing Clean Architecture structure, layer boundaries, and project organization.
 **Acceptance Criteria:**
-- [ ] SKILL.md exists at `.opencode/skills/architecture-agent/SKILL.md`
+- [ ] SKILL.md exists at `.claude/skills/architecture-agent/SKILL.md`
 - [ ] YAML frontmatter: `name: architecture-agent`, `description` (concise)
 - [ ] Sections: Usage, Parameters, What It Does, Output, What It Must NOT Do
 - [ ] What It Does: folder structure (domain/data/presentation), layer boundaries, dependency rules, Clean Architecture conventions
@@ -25,7 +25,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 #### F2: di-agent
 **Description:** Skill for implementing dependency injection (Riverpod providers, scopes, overrides).
 **Acceptance Criteria:**
-- [ ] SKILL.md exists at `.opencode/skills/di-agent/SKILL.md`
+- [ ] SKILL.md exists at `.claude/skills/di-agent/SKILL.md`
 - [ ] YAML frontmatter: `name: di-agent`, `description`
 - [ ] Sections: Usage, Parameters, What It Does, Output, What It Must NOT Do
 - [ ] What It Does: Riverpod provider setup, ProviderScope, overrides for testing, repository/provider registration
@@ -37,7 +37,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 #### F3: router-agent
 **Description:** Skill for implementing navigation and routing (GoRouter, declarative routes, deep links).
 **Acceptance Criteria:**
-- [ ] SKILL.md exists at `.opencode/skills/router-agent/SKILL.md`
+- [ ] SKILL.md exists at `.claude/skills/router-agent/SKILL.md`
 - [ ] YAML frontmatter: `name: router-agent`, `description`
 - [ ] Sections: Usage, Parameters, What It Does, Output, What It Must NOT Do
 - [ ] What It Does: GoRouter setup, route definitions, shell routes, redirects, deep link handling
@@ -49,7 +49,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 #### F4: convention-enforcement-agent
 **Description:** Skill for enforcing code conventions (lint rules, formatting, naming).
 **Acceptance Criteria:**
-- [ ] SKILL.md exists at `.opencode/skills/convention-enforcement-agent/SKILL.md`
+- [ ] SKILL.md exists at `.claude/skills/convention-enforcement-agent/SKILL.md`
 - [ ] YAML frontmatter: `name: convention-enforcement-agent`, `description`
 - [ ] Sections: Usage, Parameters, What It Does, Output, What It Must NOT Do
 - [ ] What It Does: analysis_options.yaml, custom lint rules, dart format, naming conventions
@@ -65,7 +65,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 #### F5: env-config-agent
 **Description:** Skill for environment configuration (dev/staging/prod, env vars, secrets).
 **Acceptance Criteria:**
-- [ ] SKILL.md exists at `.opencode/skills/env-config-agent/SKILL.md`
+- [ ] SKILL.md exists at `.claude/skills/env-config-agent/SKILL.md`
 - [ ] YAML frontmatter: `name: env-config-agent`, `description`
 - [ ] Sections: Usage, Parameters, What It Does, Output, What It Must NOT Do
 - [ ] What It Does: env config per flavor, --dart-define, .env handling (no secrets in code), Supabase URL/anon key injection
@@ -77,7 +77,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 #### F6: dependency-agent
 **Description:** Skill for managing dependencies (pubspec.yaml, version constraints, transitive deps).
 **Acceptance Criteria:**
-- [ ] SKILL.md exists at `.opencode/skills/dependency-agent/SKILL.md`
+- [ ] SKILL.md exists at `.claude/skills/dependency-agent/SKILL.md`
 - [ ] YAML frontmatter: `name: dependency-agent`, `description`
 - [ ] Sections: Usage, Parameters, What It Does, Output, What It Must NOT Do
 - [ ] What It Does: pubspec.yaml structure, dependency_overrides, version resolution, dep upgrade guidance
@@ -89,7 +89,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 #### F7: ci-cd-agent
 **Description:** Skill for CI/CD pipelines (build, test, deploy).
 **Acceptance Criteria:**
-- [ ] SKILL.md exists at `.opencode/skills/ci-cd-agent/SKILL.md`
+- [ ] SKILL.md exists at `.claude/skills/ci-cd-agent/SKILL.md`
 - [ ] YAML frontmatter: `name: ci-cd-agent`, `description`
 - [ ] Sections: Usage, Parameters, What It Does, Output, What It Must NOT Do
 - [ ] What It Does: GitHub Actions / Codemagic / similar, build matrix, test job, deploy to stores
@@ -101,7 +101,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 #### F8: signing-agent
 **Description:** Skill for app signing (Android keystore, iOS provisioning, release builds).
 **Acceptance Criteria:**
-- [ ] SKILL.md exists at `.opencode/skills/signing-agent/SKILL.md`
+- [ ] SKILL.md exists at `.claude/skills/signing-agent/SKILL.md`
 - [ ] YAML frontmatter: `name: signing-agent`, `description`
 - [ ] Sections: Usage, Parameters, What It Does, Output, What It Must NOT Do
 - [ ] What It Does: Android signing config, iOS provisioning, key.properties, release build setup
@@ -117,7 +117,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 #### F9: theme-agent
 **Description:** Skill for theming (Material 3, light/dark, color schemes, typography).
 **Acceptance Criteria:**
-- [ ] SKILL.md exists at `.opencode/skills/theme-agent/SKILL.md`
+- [ ] SKILL.md exists at `.claude/skills/theme-agent/SKILL.md`
 - [ ] YAML frontmatter: `name: theme-agent`, `description`
 - [ ] Sections: Usage, Parameters, What It Does, Output, What It Must NOT Do
 - [ ] What It Does: ThemeData, ColorScheme, Material 3, light/dark mode, typography, component themes
@@ -133,7 +133,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 #### F10: logging-agent
 **Description:** Skill for structured logging (levels, tags, crash reporting).
 **Acceptance Criteria:**
-- [ ] SKILL.md exists at `.opencode/skills/logging-agent/SKILL.md`
+- [ ] SKILL.md exists at `.claude/skills/logging-agent/SKILL.md`
 - [ ] YAML frontmatter: `name: logging-agent`, `description`
 - [ ] Sections: Usage, Parameters, What It Does, Output, What It Must NOT Do
 - [ ] What It Does: Logger setup, log levels, tags, PII scrubbing, crash reporting integration
@@ -145,7 +145,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 #### F11: localization-agent
 **Description:** Skill for i18n/l10n (arb files, l10n generation, locale switching).
 **Acceptance Criteria:**
-- [ ] SKILL.md exists at `.opencode/skills/localization-agent/SKILL.md`
+- [ ] SKILL.md exists at `.claude/skills/localization-agent/SKILL.md`
 - [ ] YAML frontmatter: `name: localization-agent`, `description`
 - [ ] Sections: Usage, Parameters, What It Does, Output, What It Must NOT Do
 - [ ] What It Does: flutter_localizations, arb files, l10n.yaml, AppLocalizations, locale provider
@@ -157,7 +157,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 #### F12: performance-agent
 **Description:** Skill for performance optimization (profiling, lazy loading, image optimization).
 **Acceptance Criteria:**
-- [ ] SKILL.md exists at `.opencode/skills/performance-agent/SKILL.md`
+- [ ] SKILL.md exists at `.claude/skills/performance-agent/SKILL.md`
 - [ ] YAML frontmatter: `name: performance-agent`, `description`
 - [ ] Sections: Usage, Parameters, What It Does, Output, What It Must NOT Do
 - [ ] What It Does: DevTools profiling, ListView.builder, image caching, const constructors, avoid rebuilds
@@ -169,7 +169,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 #### F13: accessibility-agent
 **Description:** Skill for accessibility (Semantics, screen readers, contrast).
 **Acceptance Criteria:**
-- [ ] SKILL.md exists at `.opencode/skills/accessibility-agent/SKILL.md`
+- [ ] SKILL.md exists at `.claude/skills/accessibility-agent/SKILL.md`
 - [ ] YAML frontmatter: `name: accessibility-agent`, `description`
 - [ ] Sections: Usage, Parameters, What It Does, Output, What It Must NOT Do
 - [ ] What It Does: Semantics, semanticsLabel, semanticsHint, focus order, contrast ratios, touch targets
@@ -185,7 +185,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 #### F14: api-client-agent
 **Description:** Skill for API client setup (HTTP, Supabase client, interceptors).
 **Acceptance Criteria:**
-- [ ] SKILL.md exists at `.opencode/skills/api-client-agent/SKILL.md`
+- [ ] SKILL.md exists at `.claude/skills/api-client-agent/SKILL.md`
 - [ ] YAML frontmatter: `name: api-client-agent`, `description`
 - [ ] Sections: Usage, Parameters, What It Does, Output, What It Must NOT Do
 - [ ] What It Does: Supabase client init, Dio/HTTP interceptors, auth header injection, error mapping
@@ -197,7 +197,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 #### F15: local-storage-agent
 **Description:** Skill for local persistence (Hive, SharedPreferences, secure storage).
 **Acceptance Criteria:**
-- [ ] SKILL.md exists at `.opencode/skills/local-storage-agent/SKILL.md`
+- [ ] SKILL.md exists at `.claude/skills/local-storage-agent/SKILL.md`
 - [ ] YAML frontmatter: `name: local-storage-agent`, `description`
 - [ ] Sections: Usage, Parameters, What It Does, Output, What It Must NOT Do
 - [ ] What It Does: Hive init, TypeAdapters, box management, flutter_secure_storage for secrets
@@ -209,7 +209,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 #### F16: sync-agent
 **Description:** Skill for offline-first sync (conflict resolution, Supabase realtime).
 **Acceptance Criteria:**
-- [ ] SKILL.md exists at `.opencode/skills/sync-agent/SKILL.md`
+- [ ] SKILL.md exists at `.claude/skills/sync-agent/SKILL.md`
 - [ ] YAML frontmatter: `name: sync-agent`, `description`
 - [ ] Sections: Usage, Parameters, What It Does, Output, What It Must NOT Do
 - [ ] What It Does: offline queue, conflict resolution (last-write-wins or custom), Supabase realtime subscriptions
@@ -221,7 +221,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 #### F17: cache-agent
 **Description:** Skill for caching (in-memory, disk, TTL, invalidation).
 **Acceptance Criteria:**
-- [ ] SKILL.md exists at `.opencode/skills/cache-agent/SKILL.md`
+- [ ] SKILL.md exists at `.claude/skills/cache-agent/SKILL.md`
 - [ ] YAML frontmatter: `name: cache-agent`, `description`
 - [ ] Sections: Usage, Parameters, What It Does, Output, What It Must NOT Do
 - [ ] What It Does: cache layer, TTL, invalidation strategies, Riverpod cache (keepAlive, autoDispose)
@@ -247,7 +247,7 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 - All skills follow anti-orchestration: agents must NOT call other agents or use Task tool; emit `REQUEST:` if delegation needed.
 - Skill format matches existing domain skills (analytics-flow, auth-provider): YAML frontmatter + Usage, Parameters, What It Does, Output, What It Must NOT Do.
 - Build agents create SKILL.md files only; no Dart/Flutter implementation in this run.
-- Output path: `.opencode/skills/{skill-name}/SKILL.md` where skill-name is the agent name (e.g., `architecture-agent`).
+- Output path: `.claude/skills/{skill-name}/SKILL.md` where skill-name is the agent name (e.g., `architecture-agent`).
 
 ---
 
@@ -259,4 +259,4 @@ Create 17 OpenCode skills for architecture, infrastructure, theme, cross-cutting
 
 ## Next Stage Recommendation
 
-Proceed to **code-discovery** to verify `.opencode/skills/` structure and existing skill format. Then **plan-agent** to create batched implementation plan (e.g., 9 batches of 1–2 skills per build-agent, aligned with feature groupings above).
+Proceed to **code-discovery** to verify `.claude/skills/` structure and existing skill format. Then **plan-agent** to create batched implementation plan (e.g., 9 batches of 1–2 skills per build-agent, aligned with feature groupings above).

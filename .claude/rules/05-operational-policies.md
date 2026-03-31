@@ -27,7 +27,7 @@ Retrying with: "Include specific test file paths for each feature"
 
 ---
 
-## KIMI K2.5 CONTEXT WINDOW & TOKEN MANAGEMENT
+## CLAUDE CODE CONTEXT WINDOW & TOKEN MANAGEMENT
 
 ### Model Capabilities
 

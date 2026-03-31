@@ -2,6 +2,7 @@
 name: plan-agent
 description: "Creates batched implementation plan with feature assignments. Use after code-discovery to plan implementation."
 model: opus
+color: "#E11D48"
 tools: Read, Grep, Glob, Bash
 ---
 
@@ -47,7 +48,7 @@ You are a subagent. The orchestrator dispatches agents. You output implementatio
 **Inputs:**
 1. **TaskSpec**: Features (F1, F2, ...), acceptance criteria, risks, assumptions
 2. **RepoProfile**: Tech stack, directory structure, conventions, test commands
-3. **Available skills:** `.opencode/skills/INDEX.md` — assign when batch maps to a domain
+3. **Available skills:** `.claude/skills/INDEX.md` — assign when batch maps to a domain
 
 ---
 
@@ -61,7 +62,7 @@ You are a subagent. The orchestrator dispatches agents. You output implementatio
 ### 2. Create Feature Batches
 - Group features into micro-batches of 1-2 files per build-agent
 - Assign each batch to a build-agent instance (build-agent-1, build-agent-2, etc.)
-- **MUST assign a skill to each batch** when the batch maps to a domain (e.g. auth-schema, auth-provider, analytics-flow). See `.opencode/skills/INDEX.md` for all 126+ skills. You MUST tell the orchestrator which skill each build-agent should activate.
+- **MUST assign a skill to each batch** when the batch maps to a domain (e.g. auth-schema, auth-provider, analytics-flow). See `.claude/skills/INDEX.md` for all 126+ skills. You MUST tell the orchestrator which skill each build-agent should activate.
 - Ensure batch order respects dependencies
 - Prefer smaller batches for better isolation and parallel debugging
 
@@ -92,7 +93,7 @@ You are a subagent. The orchestrator dispatches agents. You output implementatio
 
 ### Batch 1: [Feature IDs]
 **Assigned to:** build-agent-1
-**Skill:** [skill-name] (REQUIRED when batch maps to a domain — e.g. auth-schema, auth-provider. See `.opencode/skills/INDEX.md`. Omit only if no domain match.)
+**Skill:** [skill-name] (REQUIRED when batch maps to a domain — e.g. auth-schema, auth-provider. See `.claude/skills/INDEX.md`. Omit only if no domain match.)
 **Features:** F1, F2
 
 #### F1: [Feature Name]
@@ -334,7 +335,7 @@ Justification: {1-3 sentences}
 - Score yourself **honestly** — 99% correct = report 99, not 100
 - The four dimension scores must sum to the total score
 - Justification is **mandatory** for every score
-- For scores below 85: enumerate specific gaps by rubric dimension
+- If you deducted any dimension points: enumerate specific gaps by rubric dimension
 - **NEVER inflate your score** — brutal honesty is required
 - The orchestrator **cannot** tell you to score higher
-- See `.opencode/rules/09-confidence-scoring.md` for full details
+- See `.claude/rules/09-confidence-scoring.md` for full details

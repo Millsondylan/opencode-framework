@@ -47,7 +47,7 @@ The pipeline runs continuously until the task is complete. There are no artifici
 
 ## Orchestrator Integration
 
-The orchestrator uses the `task` tool to dispatch agents sequentially and evaluates each output before proceeding. Agent definitions are read from `.opencode/agents/`. Orchestration rules are defined in `AGENTS.md`.
+The orchestrator uses the `task` tool to dispatch agents sequentially and evaluates each output before proceeding. Agent definitions are read from `.claude/agents/`. Orchestration rules are defined in `AGENTS.md`.
 
 ### Orchestrator Decisions
 - **ACCEPT** - Output good, proceed to next stage

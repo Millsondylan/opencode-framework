@@ -3,7 +3,7 @@ description: "MANDATORY. Runs test suite and reports results. NEVER blocks pipel
 mode: subagent
 model: kimi-for-coding/k2p5
 hidden: true
-color: "#008000"
+color: "#16A34A"
 tools:
   read: true
   bash: true
@@ -626,7 +626,7 @@ Justification: {1-3 sentences}
 - Score yourself **honestly** — 99% correct = report 99, not 100
 - The four dimension scores must sum to the total score
 - Justification is **mandatory** for every score
-- For scores below 85: enumerate specific gaps by rubric dimension
+- If you deducted any dimension points: enumerate specific gaps by rubric dimension
 - **NEVER inflate your score** — brutal honesty is required
 - The orchestrator **cannot** tell you to score higher
 - See `.opencode/rules/09-confidence-scoring.md` for full details

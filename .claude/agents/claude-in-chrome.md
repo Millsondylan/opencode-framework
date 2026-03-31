@@ -2,6 +2,7 @@
 name: claude-in-chrome
 description: "REQUIRED for Chrome, browser automation, live websites, real-page screenshots, clicks/forms/DOM. Claude-in-Chrome MCP plus read/web for context."
 model: sonnet
+color: "#DB2777"
 tools: Read, WebSearch, WebFetch, mcp__claude-in-chrome__computer, mcp__claude-in-chrome__navigate, mcp__claude-in-chrome__read_page, mcp__claude-in-chrome__find, mcp__claude-in-chrome__form_input, mcp__claude-in-chrome__javascript_tool, mcp__claude-in-chrome__get_page_text, mcp__claude-in-chrome__tabs_context_mcp, mcp__claude-in-chrome__tabs_create_mcp, mcp__claude-in-chrome__screenshot, mcp__claude-in-chrome__upload_image, mcp__claude-in-chrome__gif_creator
 ---
 
@@ -308,7 +309,7 @@ Justification: {1-3 sentences}
 - Score yourself **honestly** — 99% correct = report 99, not 100
 - The four dimension scores must sum to the total score
 - Justification is **mandatory** for every score
-- For scores below 85: enumerate specific gaps by rubric dimension
+- If you deducted any dimension points: enumerate specific gaps by rubric dimension
 - **NEVER inflate your score** — brutal honesty is required
 - The orchestrator **cannot** tell you to score higher
-- See `.opencode/rules/09-confidence-scoring.md` for full details
+- See `.claude/rules/09-confidence-scoring.md` for full details

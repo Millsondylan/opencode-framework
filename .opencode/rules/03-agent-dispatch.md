@@ -299,7 +299,7 @@ tools:
 ---
 ```
 
-Note: OpenCode uses structured YAML `tools:` map (not comma-separated string) and full model IDs like `kimi-for-coding/k2p5` and `zai-coding-plan/glm-5` (not shorthand like `opus`, `sonnet`, `haiku`). plan-agent uses `kimi-for-coding/k2p5` per default model.
+Note: OpenCode uses structured YAML `tools:` map (not comma-separated string) and full provider model IDs (e.g. `kimi-for-coding/k2p5`, `zai-coding-plan/glm-5`, `anthropic/claude-opus-4-6`). All **build-agent** subagents (`build-agent` and `build-agent-1` … `build-agent-55`) use `anthropic/claude-opus-4-6`; **plan-agent** uses `anthropic/claude-opus-4-6`; **perfection-validator** uses `anthropic/claude-sonnet-4-6`; other agents use Kimi/GLM IDs as defined in each file’s frontmatter. Claude Code’s `.claude/agents/*.md` uses shorthand `opus`, `sonnet`, etc. Each agent has a distinct `color: "#hex"` in frontmatter for UI differentiation.
 
 ### Agent Capabilities by Type
 

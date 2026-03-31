@@ -11,7 +11,7 @@ Agent tool:
   prompt: "[context from previous stages + user's request]"
 ```
 
-**Available agents (defined in .opencode/agents/):**
+**Available agents (defined in .claude/agents/):**
 - `pipeline-scaler` - Stage 1 (scales pipeline resources based on task complexity)
 - `prompt-optimizer` - Stage 2 (ALWAYS FIRST - optimizes prompts before any agent dispatch)
 - `task-breakdown` - Stage 3 (after prompt-optimizer)
@@ -68,7 +68,7 @@ debugger → debugger-2 → ... → debugger-11
 
 ## Available Skills
 
-**Skills index:** `.opencode/skills/INDEX.md` — lists all 126+ domain skills (auth-schema, auth-provider, analytics-flow, etc.). Each skill has `.opencode/skills/{skill}/SKILL.md` with domain-specific guidance.
+**Skills index:** `.claude/skills/INDEX.md` — lists all 126+ domain skills (auth-schema, auth-provider, analytics-flow, etc.). Each skill has `.claude/skills/{skill}/SKILL.md` with domain-specific guidance.
 
 **Orchestrator MUST pass skill to build-agent:** When plan-agent assigns a skill to a batch (e.g., `**Skill:** auth-schema`), the orchestrator MUST include it in the build-agent prompt as `skill: {name}`. Example: `skill: auth-schema`. The build-agent will read the skill file and follow its guidance. Never omit the skill when the plan batch specifies one.
 
@@ -120,7 +120,7 @@ debugger → debugger-2 → ... → debugger-11
    - Note any deviations from specification
    - Flag any potential issues
 
-**Skill activation (when plan assigns a skill):** If the prompt includes `skill: {name}` (e.g. `skill: auth-schema`), read `.opencode/skills/{name}/SKILL.md` before step 4 and follow its guidance during implementation.
+**Skill activation (when plan assigns a skill):** If the prompt includes `skill: {name}` (e.g. `skill: auth-schema`), read `.claude/skills/{name}/SKILL.md` before step 4 and follow its guidance during implementation.
 
 ---
 
@@ -280,13 +280,13 @@ The pipeline prioritizes QUALITY over artificial limits:
 
 ### Agent Definition Location
 
-All agent definitions are stored in `.opencode/agents/{agent-name}.md` with YAML frontmatter:
+All agent definitions are stored in `.claude/agents/{agent-name}.md` with YAML frontmatter:
 
 ```yaml
 ---
 description: {when to use this agent}
 mode: subagent
-model: {provider/model-id}
+model: {opus|sonnet|…}
 hidden: true
 color: "#HEXCOLOR"
 tools:
@@ -299,7 +299,7 @@ tools:
 ---
 ```
 
-Note: OpenCode uses structured YAML `tools:` map (not comma-separated string) and full model IDs like `kimi-for-coding/k2p5` and `zai-coding-plan/glm-5` (not shorthand like `opus`, `sonnet`, `haiku`). plan-agent uses `kimi-for-coding/k2p5` per default model.
+Note: **Claude Code** loads each agent from `.claude/agents/{name}.md`. Frontmatter includes `model` (`opus`, `sonnet`, etc., per the project model policy in `CLAUDE.md`), a `tools:` list (comma-separated tool names for this agent), and optional `color: "#hex"` for visual distinction. **plan-agent** and all **build-agent** roles use **Opus**; most other pipeline agents use **Sonnet**, unless a file states otherwise.
 
 ### Agent Capabilities by Type
 
@@ -363,7 +363,7 @@ skill: auth-schema
 
 <requirements>
 - Follow RepoProfile conventions exactly
-- If skill assigned: read .opencode/skills/{skill}/SKILL.md before implementing
+- If skill assigned: read .claude/skills/{skill}/SKILL.md before implementing
 - Create real tests with actual assertions
 - Complete every feature fully
 </requirements>

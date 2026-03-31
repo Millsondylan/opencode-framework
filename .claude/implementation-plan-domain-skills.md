@@ -6,10 +6,10 @@
 - **Total Batches:** 48
 - **Estimated Build Agents:** 48 (chain 1→55→1)
 
-## Skill Format Reference (from `.opencode/skills/finish/` and `prompt/`)
+## Skill Format Reference (from `.claude/skills/finish/` and `prompt/`)
 - **YAML frontmatter:** `name`, `description`
 - **Markdown sections:** Usage, Parameters, What It Does, Output
-- **Output path:** `.opencode/skills/{domain}-{pattern}/SKILL.md`
+- **Output path:** `.claude/skills/{domain}-{pattern}/SKILL.md`
 
 ## Domain Chain Order (per domain)
 1. schema → 2. provider → 3. flow → 4. ui → 5. guard → 6. test
@@ -43,7 +43,7 @@
 ### auth-schema
 **Complexity:** Simple  
 **Files to Create:**
-- `.opencode/skills/auth-schema/SKILL.md` — Schema skill for auth domain
+- `.claude/skills/auth-schema/SKILL.md` — Schema skill for auth domain
 
 **Content Guidance (Mobile Agents Reference):**
 - User model (id, email, displayName, photoURL, etc.)
@@ -53,12 +53,12 @@
 **Implementation Notes:**
 - YAML: `name: auth-schema`, `description: Define auth data models and types`
 - Sections: Usage, Parameters, What It Does, Output
-- Reference existing `.opencode/skills/finish/SKILL.md` structure
+- Reference existing `.claude/skills/finish/SKILL.md` structure
 
 ### auth-provider
 **Complexity:** Simple  
 **Files to Create:**
-- `.opencode/skills/auth-provider/SKILL.md` — Provider skill for auth
+- `.claude/skills/auth-provider/SKILL.md` — Provider skill for auth
 
 **Content Guidance (Mobile Agents Reference):**
 - Supabase Auth integration (signUp, signIn, signOut, session)
@@ -78,14 +78,14 @@
 ### auth-flow
 **Complexity:** Medium-Low  
 **Files to Create:**
-- `.opencode/skills/auth-flow/SKILL.md` — Flow skill for auth
+- `.claude/skills/auth-flow/SKILL.md` — Flow skill for auth
 
 **Content Guidance:** Login/signup/logout flows, session restoration, error handling
 
 ### auth-ui
 **Complexity:** Medium-Low  
 **Files to Create:**
-- `.opencode/skills/auth-ui/SKILL.md` — UI skill for auth
+- `.claude/skills/auth-ui/SKILL.md` — UI skill for auth
 
 **Content Guidance:** Login screen, signup form, password reset, loading states
 
@@ -98,14 +98,14 @@
 ### auth-guard
 **Complexity:** Simple  
 **Files to Create:**
-- `.opencode/skills/auth-guard/SKILL.md` — Guard skill for auth
+- `.claude/skills/auth-guard/SKILL.md` — Guard skill for auth
 
 **Content Guidance:** Route protection, auth middleware, redirect logic
 
 ### auth-test
 **Complexity:** Simple  
 **Files to Create:**
-- `.opencode/skills/auth-test/SKILL.md` — Test skill for auth
+- `.claude/skills/auth-test/SKILL.md` — Test skill for auth
 
 **Content Guidance:** Unit tests for auth logic, integration tests for flows
 
@@ -116,11 +116,11 @@
 **Features:** F2 (profile domain)
 
 ### profile-schema
-**Files to Create:** `.opencode/skills/profile-schema/SKILL.md`  
+**Files to Create:** `.claude/skills/profile-schema/SKILL.md`  
 **Content Guidance:** User profile model, preferences, avatar, metadata
 
 ### profile-provider
-**Files to Create:** `.opencode/skills/profile-provider/SKILL.md`  
+**Files to Create:** `.claude/skills/profile-provider/SKILL.md`  
 **Content Guidance:** Profile CRUD, Supabase/API integration, avatar upload
 
 ---
@@ -130,11 +130,11 @@
 **Features:** F2
 
 ### profile-flow
-**Files to Create:** `.opencode/skills/profile-flow/SKILL.md`  
+**Files to Create:** `.claude/skills/profile-flow/SKILL.md`  
 **Content Guidance:** Edit profile flow, avatar change flow, validation
 
 ### profile-ui
-**Files to Create:** `.opencode/skills/profile-ui/SKILL.md`  
+**Files to Create:** `.claude/skills/profile-ui/SKILL.md`  
 **Content Guidance:** Profile screen, edit form, avatar picker
 
 ---
@@ -144,11 +144,11 @@
 **Features:** F2
 
 ### profile-guard
-**Files to Create:** `.opencode/skills/profile-guard/SKILL.md`  
+**Files to Create:** `.claude/skills/profile-guard/SKILL.md`  
 **Content Guidance:** Require auth for profile access, ownership checks
 
 ### profile-test
-**Files to Create:** `.opencode/skills/profile-test/SKILL.md`  
+**Files to Create:** `.claude/skills/profile-test/SKILL.md`  
 **Content Guidance:** Profile CRUD tests, validation tests
 
 ---
@@ -158,11 +158,11 @@
 **Features:** F3 (billing domain)
 
 ### billing-schema
-**Files to Create:** `.opencode/skills/billing-schema/SKILL.md`  
+**Files to Create:** `.claude/skills/billing-schema/SKILL.md`  
 **Content Guidance:** Plan model, invoice model, subscription status
 
 ### billing-provider
-**Files to Create:** `.opencode/skills/billing-provider/SKILL.md`  
+**Files to Create:** `.claude/skills/billing-provider/SKILL.md`  
 **Content Guidance:** Stripe/RevenueCat integration, subscription APIs
 
 ---
@@ -172,11 +172,11 @@
 **Features:** F3
 
 ### billing-flow
-**Files to Create:** `.opencode/skills/billing-flow/SKILL.md`  
+**Files to Create:** `.claude/skills/billing-flow/SKILL.md`  
 **Content Guidance:** Purchase flow, restore flow, upgrade/downgrade
 
 ### billing-ui
-**Files to Create:** `.opencode/skills/billing-ui/SKILL.md`  
+**Files to Create:** `.claude/skills/billing-ui/SKILL.md`  
 **Content Guidance:** Paywall, plan selector, subscription management UI
 
 ---
@@ -186,11 +186,11 @@
 **Features:** F3
 
 ### billing-guard
-**Files to Create:** `.opencode/skills/billing-guard/SKILL.md`  
+**Files to Create:** `.claude/skills/billing-guard/SKILL.md`  
 **Content Guidance:** Premium feature gating, subscription status checks
 
 ### billing-test
-**Files to Create:** `.opencode/skills/billing-test/SKILL.md`  
+**Files to Create:** `.claude/skills/billing-test/SKILL.md`  
 **Content Guidance:** Purchase flow tests, restore tests, mock providers
 
 ---
@@ -200,11 +200,11 @@
 **Features:** F4 (notification domain)
 
 ### notification-schema
-**Files to Create:** `.opencode/skills/notification-schema/SKILL.md`  
+**Files to Create:** `.claude/skills/notification-schema/SKILL.md`  
 **Content Guidance:** Notification model, push token, preferences
 
 ### notification-provider
-**Files to Create:** `.opencode/skills/notification-provider/SKILL.md`  
+**Files to Create:** `.claude/skills/notification-provider/SKILL.md`  
 **Content Guidance:** FCM/APNs, token registration, local notifications
 
 ---
@@ -214,11 +214,11 @@
 **Features:** F4
 
 ### notification-flow
-**Files to Create:** `.opencode/skills/notification-flow/SKILL.md`  
+**Files to Create:** `.claude/skills/notification-flow/SKILL.md`  
 **Content Guidance:** Permission request flow, deep link handling
 
 ### notification-ui
-**Files to Create:** `.opencode/skills/notification-ui/SKILL.md`  
+**Files to Create:** `.claude/skills/notification-ui/SKILL.md`  
 **Content Guidance:** In-app notification list, settings toggle
 
 ---
@@ -228,11 +228,11 @@
 **Features:** F4
 
 ### notification-guard
-**Files to Create:** `.opencode/skills/notification-guard/SKILL.md`  
+**Files to Create:** `.claude/skills/notification-guard/SKILL.md`  
 **Content Guidance:** Permission checks, feature gating by notification status
 
 ### notification-test
-**Files to Create:** `.opencode/skills/notification-test/SKILL.md`  
+**Files to Create:** `.claude/skills/notification-test/SKILL.md`  
 **Content Guidance:** Mock push tests, permission flow tests
 
 ---
@@ -242,11 +242,11 @@
 **Features:** F5 (chat domain)
 
 ### chat-schema
-**Files to Create:** `.opencode/skills/chat-schema/SKILL.md`  
+**Files to Create:** `.claude/skills/chat-schema/SKILL.md`  
 **Content Guidance:** Message model, conversation model, participant
 
 ### chat-provider
-**Files to Create:** `.opencode/skills/chat-provider/SKILL.md`  
+**Files to Create:** `.claude/skills/chat-provider/SKILL.md`  
 **Content Guidance:** Realtime subscriptions, message CRUD, presence
 
 ---
@@ -256,11 +256,11 @@
 **Features:** F5
 
 ### chat-flow
-**Files to Create:** `.opencode/skills/chat-flow/SKILL.md`  
+**Files to Create:** `.claude/skills/chat-flow/SKILL.md`  
 **Content Guidance:** Send message flow, load more, typing indicators
 
 ### chat-ui
-**Files to Create:** `.opencode/skills/chat-ui/SKILL.md`  
+**Files to Create:** `.claude/skills/chat-ui/SKILL.md`  
 **Content Guidance:** Chat list, message bubble, input bar
 
 ---
@@ -270,11 +270,11 @@
 **Features:** F5
 
 ### chat-guard
-**Files to Create:** `.opencode/skills/chat-guard/SKILL.md`  
+**Files to Create:** `.claude/skills/chat-guard/SKILL.md`  
 **Content Guidance:** Conversation access checks, participant validation
 
 ### chat-test
-**Files to Create:** `.opencode/skills/chat-test/SKILL.md`  
+**Files to Create:** `.claude/skills/chat-test/SKILL.md`  
 **Content Guidance:** Message send/receive tests, realtime mock tests
 
 ---
@@ -284,11 +284,11 @@
 **Features:** F6 (media domain)
 
 ### media-schema
-**Files to Create:** `.opencode/skills/media-schema/SKILL.md`  
+**Files to Create:** `.claude/skills/media-schema/SKILL.md`  
 **Content Guidance:** Media model, upload metadata, thumbnail
 
 ### media-provider
-**Files to Create:** `.opencode/skills/media-provider/SKILL.md`  
+**Files to Create:** `.claude/skills/media-provider/SKILL.md`  
 **Content Guidance:** Supabase Storage, upload/download, presigned URLs
 
 ---
@@ -298,11 +298,11 @@
 **Features:** F6
 
 ### media-flow
-**Files to Create:** `.opencode/skills/media-flow/SKILL.md`  
+**Files to Create:** `.claude/skills/media-flow/SKILL.md`  
 **Content Guidance:** Upload flow, picker flow, progress handling
 
 ### media-ui
-**Files to Create:** `.opencode/skills/media-ui/SKILL.md`  
+**Files to Create:** `.claude/skills/media-ui/SKILL.md`  
 **Content Guidance:** Image picker, gallery, upload progress
 
 ---
@@ -312,11 +312,11 @@
 **Features:** F6
 
 ### media-guard
-**Files to Create:** `.opencode/skills/media-guard/SKILL.md`  
+**Files to Create:** `.claude/skills/media-guard/SKILL.md`  
 **Content Guidance:** File size limits, type validation, quota checks
 
 ### media-test
-**Files to Create:** `.opencode/skills/media-test/SKILL.md`  
+**Files to Create:** `.claude/skills/media-test/SKILL.md`  
 **Content Guidance:** Upload/download tests, mock storage
 
 ---
@@ -326,11 +326,11 @@
 **Features:** F7 (location domain)
 
 ### location-schema
-**Files to Create:** `.opencode/skills/location-schema/SKILL.md`  
+**Files to Create:** `.claude/skills/location-schema/SKILL.md`  
 **Content Guidance:** Lat/lng model, geofence, address
 
 ### location-provider
-**Files to Create:** `.opencode/skills/location-provider/SKILL.md`  
+**Files to Create:** `.claude/skills/location-provider/SKILL.md`  
 **Content Guidance:** Geolocator, permission handling, background location
 
 ---
@@ -340,11 +340,11 @@
 **Features:** F7
 
 ### location-flow
-**Files to Create:** `.opencode/skills/location-flow/SKILL.md`  
+**Files to Create:** `.claude/skills/location-flow/SKILL.md`  
 **Content Guidance:** Permission flow, get current location, watch position
 
 ### location-ui
-**Files to Create:** `.opencode/skills/location-ui/SKILL.md`  
+**Files to Create:** `.claude/skills/location-ui/SKILL.md`  
 **Content Guidance:** Map widget, location picker, address display
 
 ---
@@ -354,11 +354,11 @@
 **Features:** F7
 
 ### location-guard
-**Files to Create:** `.opencode/skills/location-guard/SKILL.md`  
+**Files to Create:** `.claude/skills/location-guard/SKILL.md`  
 **Content Guidance:** Permission checks, service availability
 
 ### location-test
-**Files to Create:** `.opencode/skills/location-test/SKILL.md`  
+**Files to Create:** `.claude/skills/location-test/SKILL.md`  
 **Content Guidance:** Mock location tests, permission flow tests
 
 ---
@@ -368,11 +368,11 @@
 **Features:** F8 (subscription domain)
 
 ### subscription-schema
-**Files to Create:** `.opencode/skills/subscription-schema/SKILL.md`  
+**Files to Create:** `.claude/skills/subscription-schema/SKILL.md`  
 **Content Guidance:** Subscription model, entitlement, trial status
 
 ### subscription-provider
-**Files to Create:** `.opencode/skills/subscription-provider/SKILL.md`  
+**Files to Create:** `.claude/skills/subscription-provider/SKILL.md`  
 **Content Guidance:** RevenueCat/Stripe subscriptions, entitlement checks
 
 ---
@@ -382,11 +382,11 @@
 **Features:** F8
 
 ### subscription-flow
-**Files to Create:** `.opencode/skills/subscription-flow/SKILL.md`  
+**Files to Create:** `.claude/skills/subscription-flow/SKILL.md`  
 **Content Guidance:** Subscribe flow, cancel flow, trial handling
 
 ### subscription-ui
-**Files to Create:** `.opencode/skills/subscription-ui/SKILL.md`  
+**Files to Create:** `.claude/skills/subscription-ui/SKILL.md`  
 **Content Guidance:** Plan cards, manage subscription screen
 
 ---
@@ -396,11 +396,11 @@
 **Features:** F8
 
 ### subscription-guard
-**Files to Create:** `.opencode/skills/subscription-guard/SKILL.md`  
+**Files to Create:** `.claude/skills/subscription-guard/SKILL.md`  
 **Content Guidance:** Entitlement checks, feature gating
 
 ### subscription-test
-**Files to Create:** `.opencode/skills/subscription-test/SKILL.md`  
+**Files to Create:** `.claude/skills/subscription-test/SKILL.md`  
 **Content Guidance:** Mock subscription tests, entitlement tests
 
 ---
@@ -410,11 +410,11 @@
 **Features:** F9 (inventory domain)
 
 ### inventory-schema
-**Files to Create:** `.opencode/skills/inventory-schema/SKILL.md`  
+**Files to Create:** `.claude/skills/inventory-schema/SKILL.md`  
 **Content Guidance:** Item model, stock level, variant
 
 ### inventory-provider
-**Files to Create:** `.opencode/skills/inventory-provider/SKILL.md`  
+**Files to Create:** `.claude/skills/inventory-provider/SKILL.md`  
 **Content Guidance:** Inventory CRUD, stock updates, sync
 
 ---
@@ -424,11 +424,11 @@
 **Features:** F9
 
 ### inventory-flow
-**Files to Create:** `.opencode/skills/inventory-flow/SKILL.md`  
+**Files to Create:** `.claude/skills/inventory-flow/SKILL.md`  
 **Content Guidance:** Stock check flow, reserve flow, restock flow
 
 ### inventory-ui
-**Files to Create:** `.opencode/skills/inventory-ui/SKILL.md`  
+**Files to Create:** `.claude/skills/inventory-ui/SKILL.md`  
 **Content Guidance:** Stock display, low-stock warning, inventory list
 
 ---
@@ -438,11 +438,11 @@
 **Features:** F9
 
 ### inventory-guard
-**Files to Create:** `.opencode/skills/inventory-guard/SKILL.md`  
+**Files to Create:** `.claude/skills/inventory-guard/SKILL.md`  
 **Content Guidance:** Stock availability checks, concurrency guards
 
 ### inventory-test
-**Files to Create:** `.opencode/skills/inventory-test/SKILL.md`  
+**Files to Create:** `.claude/skills/inventory-test/SKILL.md`  
 **Content Guidance:** Stock update tests, race condition tests
 
 ---
@@ -452,11 +452,11 @@
 **Features:** F10 (order domain)
 
 ### order-schema
-**Files to Create:** `.opencode/skills/order-schema/SKILL.md`  
+**Files to Create:** `.claude/skills/order-schema/SKILL.md`  
 **Content Guidance:** Order model, order item, status enum
 
 ### order-provider
-**Files to Create:** `.opencode/skills/order-provider/SKILL.md`  
+**Files to Create:** `.claude/skills/order-provider/SKILL.md`  
 **Content Guidance:** Order CRUD, status updates, history
 
 ---
@@ -466,11 +466,11 @@
 **Features:** F10
 
 ### order-flow
-**Files to Create:** `.opencode/skills/order-flow/SKILL.md`  
+**Files to Create:** `.claude/skills/order-flow/SKILL.md`  
 **Content Guidance:** Checkout flow, order confirmation, cancel flow
 
 ### order-ui
-**Files to Create:** `.opencode/skills/order-ui/SKILL.md`  
+**Files to Create:** `.claude/skills/order-ui/SKILL.md`  
 **Content Guidance:** Order list, order detail, status badge
 
 ---
@@ -480,11 +480,11 @@
 **Features:** F10
 
 ### order-guard
-**Files to Create:** `.opencode/skills/order-guard/SKILL.md`  
+**Files to Create:** `.claude/skills/order-guard/SKILL.md`  
 **Content Guidance:** Ownership checks, status transition validation
 
 ### order-test
-**Files to Create:** `.opencode/skills/order-test/SKILL.md`  
+**Files to Create:** `.claude/skills/order-test/SKILL.md`  
 **Content Guidance:** Order lifecycle tests, checkout tests
 
 ---
@@ -494,11 +494,11 @@
 **Features:** F11 (search domain)
 
 ### search-schema
-**Files to Create:** `.opencode/skills/search-schema/SKILL.md`  
+**Files to Create:** `.claude/skills/search-schema/SKILL.md`  
 **Content Guidance:** Search result model, filter model, sort options
 
 ### search-provider
-**Files to Create:** `.opencode/skills/search-provider/SKILL.md`  
+**Files to Create:** `.claude/skills/search-provider/SKILL.md`  
 **Content Guidance:** Full-text search, filters, pagination
 
 ---
@@ -508,11 +508,11 @@
 **Features:** F11
 
 ### search-flow
-**Files to Create:** `.opencode/skills/search-flow/SKILL.md`  
+**Files to Create:** `.claude/skills/search-flow/SKILL.md`  
 **Content Guidance:** Search flow, debounce, filter application
 
 ### search-ui
-**Files to Create:** `.opencode/skills/search-ui/SKILL.md`  
+**Files to Create:** `.claude/skills/search-ui/SKILL.md`  
 **Content Guidance:** Search bar, results list, filter chips
 
 ---
@@ -522,11 +522,11 @@
 **Features:** F11
 
 ### search-guard
-**Files to Create:** `.opencode/skills/search-guard/SKILL.md`  
+**Files to Create:** `.claude/skills/search-guard/SKILL.md`  
 **Content Guidance:** Rate limiting, query validation, auth for results
 
 ### search-test
-**Files to Create:** `.opencode/skills/search-test/SKILL.md`  
+**Files to Create:** `.claude/skills/search-test/SKILL.md`  
 **Content Guidance:** Search result tests, filter tests
 
 ---
@@ -536,11 +536,11 @@
 **Features:** F12 (analytics domain)
 
 ### analytics-schema
-**Files to Create:** `.opencode/skills/analytics-schema/SKILL.md`  
+**Files to Create:** `.claude/skills/analytics-schema/SKILL.md`  
 **Content Guidance:** Event model, property model, user property
 
 ### analytics-provider
-**Files to Create:** `.opencode/skills/analytics-provider/SKILL.md`  
+**Files to Create:** `.claude/skills/analytics-provider/SKILL.md`  
 **Content Guidance:** Firebase Analytics, Mixpanel, event logging
 
 ---
@@ -550,11 +550,11 @@
 **Features:** F12
 
 ### analytics-flow
-**Files to Create:** `.opencode/skills/analytics-flow/SKILL.md`  
+**Files to Create:** `.claude/skills/analytics-flow/SKILL.md`  
 **Content Guidance:** Event tracking flow, screen tracking, user properties
 
 ### analytics-ui
-**Files to Create:** `.opencode/skills/analytics-ui/SKILL.md`  
+**Files to Create:** `.claude/skills/analytics-ui/SKILL.md`  
 **Content Guidance:** Dashboard placeholders, debug overlay (dev only)
 
 ---
@@ -564,11 +564,11 @@
 **Features:** F12
 
 ### analytics-guard
-**Files to Create:** `.opencode/skills/analytics-guard/SKILL.md`  
+**Files to Create:** `.claude/skills/analytics-guard/SKILL.md`  
 **Content Guidance:** PII scrubbing, consent checks, dev vs prod
 
 ### analytics-test
-**Files to Create:** `.opencode/skills/analytics-test/SKILL.md`  
+**Files to Create:** `.claude/skills/analytics-test/SKILL.md`  
 **Content Guidance:** Event capture tests, mock provider tests
 
 ---
@@ -578,11 +578,11 @@
 **Features:** F13 (settings domain)
 
 ### settings-schema
-**Files to Create:** `.opencode/skills/settings-schema/SKILL.md`  
+**Files to Create:** `.claude/skills/settings-schema/SKILL.md`  
 **Content Guidance:** Settings model, preference keys, defaults
 
 ### settings-provider
-**Files to Create:** `.opencode/skills/settings-provider/SKILL.md`  
+**Files to Create:** `.claude/skills/settings-provider/SKILL.md`  
 **Content Guidance:** SharedPreferences/UserDefaults, sync to backend
 
 ---
@@ -592,11 +592,11 @@
 **Features:** F13
 
 ### settings-flow
-**Files to Create:** `.opencode/skills/settings-flow/SKILL.md`  
+**Files to Create:** `.claude/skills/settings-flow/SKILL.md`  
 **Content Guidance:** Save flow, reset flow, migration flow
 
 ### settings-ui
-**Files to Create:** `.opencode/skills/settings-ui/SKILL.md`  
+**Files to Create:** `.claude/skills/settings-ui/SKILL.md`  
 **Content Guidance:** Settings list, toggle, picker, section headers
 
 ---
@@ -606,11 +606,11 @@
 **Features:** F13
 
 ### settings-guard
-**Files to Create:** `.opencode/skills/settings-guard/SKILL.md`  
+**Files to Create:** `.claude/skills/settings-guard/SKILL.md`  
 **Content Guidance:** Validation, feature-flag gating for settings
 
 ### settings-test
-**Files to Create:** `.opencode/skills/settings-test/SKILL.md`  
+**Files to Create:** `.claude/skills/settings-test/SKILL.md`  
 **Content Guidance:** Persistence tests, default value tests
 
 ---
@@ -620,11 +620,11 @@
 **Features:** F14 (onboarding domain)
 
 ### onboarding-schema
-**Files to Create:** `.opencode/skills/onboarding-schema/SKILL.md`  
+**Files to Create:** `.claude/skills/onboarding-schema/SKILL.md`  
 **Content Guidance:** Onboarding step model, completion state
 
 ### onboarding-provider
-**Files to Create:** `.opencode/skills/onboarding-provider/SKILL.md`  
+**Files to Create:** `.claude/skills/onboarding-provider/SKILL.md`  
 **Content Guidance:** Step completion tracking, persistence
 
 ---
@@ -634,11 +634,11 @@
 **Features:** F14
 
 ### onboarding-flow
-**Files to Create:** `.opencode/skills/onboarding-flow/SKILL.md`  
+**Files to Create:** `.claude/skills/onboarding-flow/SKILL.md`  
 **Content Guidance:** Step navigation, skip flow, completion flow
 
 ### onboarding-ui
-**Files to Create:** `.opencode/skills/onboarding-ui/SKILL.md`  
+**Files to Create:** `.claude/skills/onboarding-ui/SKILL.md`  
 **Content Guidance:** PageView, step indicators, CTA buttons
 
 ---
@@ -648,11 +648,11 @@
 **Features:** F14
 
 ### onboarding-guard
-**Files to Create:** `.opencode/skills/onboarding-guard/SKILL.md`  
+**Files to Create:** `.claude/skills/onboarding-guard/SKILL.md`  
 **Content Guidance:** First-launch check, skip-once logic
 
 ### onboarding-test
-**Files to Create:** `.opencode/skills/onboarding-test/SKILL.md`  
+**Files to Create:** `.claude/skills/onboarding-test/SKILL.md`  
 **Content Guidance:** Step navigation tests, completion tests
 
 ---
@@ -662,11 +662,11 @@
 **Features:** F15 (content domain)
 
 ### content-schema
-**Files to Create:** `.opencode/skills/content-schema/SKILL.md`  
+**Files to Create:** `.claude/skills/content-schema/SKILL.md`  
 **Content Guidance:** Content model, block type, metadata
 
 ### content-provider
-**Files to Create:** `.opencode/skills/content-provider/SKILL.md`  
+**Files to Create:** `.claude/skills/content-provider/SKILL.md`  
 **Content Guidance:** Content fetch, pagination, caching
 
 ---
@@ -676,11 +676,11 @@
 **Features:** F15
 
 ### content-flow
-**Files to Create:** `.opencode/skills/content-flow/SKILL.md`  
+**Files to Create:** `.claude/skills/content-flow/SKILL.md`  
 **Content Guidance:** Load flow, refresh flow, infinite scroll
 
 ### content-ui
-**Files to Create:** `.opencode/skills/content-ui/SKILL.md`  
+**Files to Create:** `.claude/skills/content-ui/SKILL.md`  
 **Content Guidance:** Content card, list, detail view, skeleton
 
 ---
@@ -690,11 +690,11 @@
 **Features:** F15
 
 ### content-guard
-**Files to Create:** `.opencode/skills/content-guard/SKILL.md`  
+**Files to Create:** `.claude/skills/content-guard/SKILL.md`  
 **Content Guidance:** Access control, age gate, content filter
 
 ### content-test
-**Files to Create:** `.opencode/skills/content-test/SKILL.md`  
+**Files to Create:** `.claude/skills/content-test/SKILL.md`  
 **Content Guidance:** Fetch tests, cache tests, pagination tests
 
 ---
@@ -704,11 +704,11 @@
 **Features:** F16 (sync domain)
 
 ### sync-schema
-**Files to Create:** `.opencode/skills/sync-schema/SKILL.md`  
+**Files to Create:** `.claude/skills/sync-schema/SKILL.md`  
 **Content Guidance:** Sync state model, conflict model, last-modified
 
 ### sync-provider
-**Files to Create:** `.opencode/skills/sync-provider/SKILL.md`  
+**Files to Create:** `.claude/skills/sync-provider/SKILL.md`  
 **Content Guidance:** Offline-first, conflict resolution, Supabase realtime
 
 ---
@@ -718,11 +718,11 @@
 **Features:** F16
 
 ### sync-flow
-**Files to Create:** `.opencode/skills/sync-flow/SKILL.md`  
+**Files to Create:** `.claude/skills/sync-flow/SKILL.md`  
 **Content Guidance:** Sync trigger flow, conflict resolution flow, retry
 
 ### sync-ui
-**Files to Create:** `.opencode/skills/sync-ui/SKILL.md`  
+**Files to Create:** `.claude/skills/sync-ui/SKILL.md`  
 **Content Guidance:** Sync indicator, offline banner, conflict dialog
 
 ---
@@ -732,11 +732,11 @@
 **Features:** F16
 
 ### sync-guard
-**Files to Create:** `.opencode/skills/sync-guard/SKILL.md`  
+**Files to Create:** `.claude/skills/sync-guard/SKILL.md`  
 **Content Guidance:** Connectivity checks, conflict prevention
 
 ### sync-test
-**Files to Create:** `.opencode/skills/sync-test/SKILL.md`  
+**Files to Create:** `.claude/skills/sync-test/SKILL.md`  
 **Content Guidance:** Sync cycle tests, conflict resolution tests, offline tests
 
 ---
@@ -745,10 +745,10 @@
 
 **Pre-implementation:**
 - [ ] Baseline: existing skills (finish, prompt) unchanged
-- [ ] `.opencode/skills/` directory exists
+- [ ] `.claude/skills/` directory exists
 
 **Post-implementation:**
-- [ ] All 96 SKILL.md files exist at `.opencode/skills/{domain}-{pattern}/SKILL.md`
+- [ ] All 96 SKILL.md files exist at `.claude/skills/{domain}-{pattern}/SKILL.md`
 - [ ] Each file has valid YAML frontmatter (name, description)
 - [ ] Each file has Usage, Parameters, What It Does, Output sections
 - [ ] Format matches finish/prompt conventions
@@ -764,4 +764,4 @@
 
 ## Dependencies
 - Mobile Agents — Complete Build Agent Reference (user-provided, from earlier conversation)
-- Existing skill format: `.opencode/skills/finish/SKILL.md`, `.opencode/skills/prompt/SKILL.md`
+- Existing skill format: `.claude/skills/finish/SKILL.md`, `.claude/skills/prompt/SKILL.md`

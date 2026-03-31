@@ -2,6 +2,7 @@
 name: prompt-optimizer
 description: "Intercepts and optimizes all prompts before they reach target sub-agents. Runs first, outputs only the optimized prompt."
 model: sonnet
+color: "#7C3AED"
 tools: Read, Grep, Glob, Bash
 ---
 
@@ -296,14 +297,14 @@ Before optimizing, gather **focused** context:
 
 **YOU MUST READ the target agent's definition file to understand its responsibilities:**
 
-1. **Read** `.opencode/agents/{target_agent}.md` (e.g., `.opencode/agents/task-breakdown.md`)
+1. **Read** `.claude/agents/{target_agent}.md` (e.g., `.claude/agents/task-breakdown.md`)
 2. **Understand** that agent's specific role and responsibilities
 3. **Extract** what output format that agent expects
 4. **Identify** what tools that agent has available
 5. **Tailor** your optimization to match that agent's needs
 
 **Example:** If target_agent is "task-breakdown":
-- Read `.opencode/agents/task-breakdown.md`
+- Read `.claude/agents/task-breakdown.md`
 - Learn it creates TaskSpecs with features, acceptance criteria, risks
 - Optimize prompt to output proper TaskSpec format
 - Include TaskSpec template in requirements
@@ -314,14 +315,14 @@ Once you've read the agent definition, optimize for that specific agent:
 
 | Target Agent | Read This File | Optimization Focus |
 |--------------|----------------|-------------------|
-| task-breakdown | `.opencode/agents/task-breakdown.md` | TaskSpec format, feature decomposition |
-| code-discovery | `.opencode/agents/code-discovery.md` | RepoProfile format, file scanning patterns |
-| plan-agent | `.opencode/agents/plan-agent.md` | Implementation plan with batches |
-| build-agent-1/2/3 | `.opencode/agents/build-agent.md` | Exact code implementation requirements |
-| test-writer | `.opencode/agents/test-writer.md` | Test coverage requirements |
-| review-agent | `.opencode/agents/review-agent.md` | Review checklist format |
-| decide-agent | `.opencode/agents/decide-agent.md` | Decision criteria |
-| Any other | `.opencode/agents/{target_agent}.md` | That agent's specific needs |
+| task-breakdown | `.claude/agents/task-breakdown.md` | TaskSpec format, feature decomposition |
+| code-discovery | `.claude/agents/code-discovery.md` | RepoProfile format, file scanning patterns |
+| plan-agent | `.claude/agents/plan-agent.md` | Implementation plan with batches |
+| build-agent-1/2/3 | `.claude/agents/build-agent.md` | Exact code implementation requirements |
+| test-writer | `.claude/agents/test-writer.md` | Test coverage requirements |
+| review-agent | `.claude/agents/review-agent.md` | Review checklist format |
+| decide-agent | `.claude/agents/decide-agent.md` | Decision criteria |
+| Any other | `.claude/agents/{target_agent}.md` | That agent's specific needs |
 
 ### Step 3: APPLY OPTIMIZATIONS
 
@@ -627,44 +628,22 @@ export const config = {
 ### How to call this agent from orchestrator:
 
 ```python
-# In your orchestrator / agent-director
-
-import google.generativeai as genai
-
-genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-model = genai.GenerativeModel("glm-5")
+# Illustration only — in Claude Code this agent runs via the Task tool with your configured model.
+# Pseudocode: load optimizer body from `.claude/agents/prompt-optimizer.md`, send input_xml to your LLM API, then dispatch the sub-agent.
 
 def optimize_prompt(target_agent: str, task_type: str, raw_prompt: str) -> str:
     """Run prompt through optimizer before sending to sub-agent"""
-
-    # Load the optimizer system prompt
-    with open(".agents/prompt-optimizer/prompt-optimizer-agent.md", "r") as f:
-        optimizer_system = f.read()
-
-    # Format the input
+    optimizer_system = open(".claude/agents/prompt-optimizer.md").read()
     input_xml = f"""<optimize_prompt>
   <target_agent>{target_agent}</target_agent>
   <task_type>{task_type}</task_type>
   <raw_prompt>{raw_prompt}</raw_prompt>
 </optimize_prompt>"""
+    # response = your_llm_client.complete(system=optimizer_system, user=input_xml, temperature=0.3)
+    return "<optimized prompt from your LLM>"
 
-    # Call GLM-5
-    response = model.generate_content(
-        [optimizer_system, input_xml],
-        generation_config={"temperature": 0.3, "max_output_tokens": 2048}
-    )
-
-    return response.text
-
-# Usage in your agent flow:
-optimized = optimize_prompt(
-    target_agent="build-agent-1",
-    task_type="feature",
-    raw_prompt="Add user authentication"
-)
-
-# Now send optimized prompt to the actual sub-agent
-result = call_sub_agent("build-agent-1", optimized)
+optimized = optimize_prompt("build-agent-1", "feature", "Add user authentication")
+# result = call_sub_agent("build-agent-1", optimized)
 ```
 
 ---
@@ -805,7 +784,7 @@ STATUS: HALT - Re-run required
 ## Session Start Protocol
 
 **MUST:**
-1. **READ target agent definition** from `.opencode/agents/{target_agent}.md` (CRITICAL)
+1. **READ target agent definition** from `.claude/agents/{target_agent}.md` (CRITICAL)
 3. Analyze codebase structure for context enrichment
 4. Identify target agent and task type
 5. Apply all optimization rules
@@ -898,7 +877,7 @@ Justification: {1-3 sentences}
 - Score yourself **honestly** — 99% correct = report 99, not 100
 - The four dimension scores must sum to the total score
 - Justification is **mandatory** for every score
-- For scores below 85: enumerate specific gaps by rubric dimension
+- If you deducted any dimension points: enumerate specific gaps by rubric dimension
 - **NEVER inflate your score** — brutal honesty is required
 - The orchestrator **cannot** tell you to score higher
-- See `.opencode/rules/09-confidence-scoring.md` for full details
+- See `.claude/rules/09-confidence-scoring.md` for full details

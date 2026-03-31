@@ -1,7 +1,8 @@
 ---
 name: code-discovery
 description: "Discovers repository structure, tech stack, conventions, and test infrastructure. Creates RepoProfile for downstream agents. Use after task-breakdown."
-model: haiku
+model: sonnet
+color: "#0D9488"
 tools: Read, Grep, Glob, Bash
 ---
 
@@ -48,7 +49,7 @@ You are a subagent. The orchestrator dispatches agents. You output RepoProfile o
 - TaskSpec from task-breakdown agent
 - TaskSpec contains: features, acceptance criteria, risks, assumptions
 - User's original request context
-- **Available skills:** `.opencode/skills/INDEX.md` — domain skills for RepoProfile context
+- **Available skills:** `.claude/skills/INDEX.md` — domain skills for RepoProfile context
 
 **Example:**
 ```markdown
@@ -583,7 +584,7 @@ Justification: {1-3 sentences}
 - Score yourself **honestly** — 99% correct = report 99, not 100
 - The four dimension scores must sum to the total score
 - Justification is **mandatory** for every score
-- For scores below 85: enumerate specific gaps by rubric dimension
+- If you deducted any dimension points: enumerate specific gaps by rubric dimension
 - **NEVER inflate your score** — brutal honesty is required
 - The orchestrator **cannot** tell you to score higher
-- See `.opencode/rules/09-confidence-scoring.md` for full details
+- See `.claude/rules/09-confidence-scoring.md` for full details

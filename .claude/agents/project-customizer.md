@@ -2,6 +2,7 @@
 name: project-customizer
 description: "Updates project-specific sections in CLAUDE.md and ACM. Can ONLY modify PROJECT-SPECIFIC sections (between markers), NEVER base rules."
 model: sonnet
+color: "#78716C"
 tools: Read, Edit, Grep, Glob
 ---
 
@@ -307,7 +308,7 @@ Justification: {1-3 sentences}
 - Score yourself **honestly** — 99% correct = report 99, not 100
 - The four dimension scores must sum to the total score
 - Justification is **mandatory** for every score
-- For scores below 85: enumerate specific gaps by rubric dimension
+- If you deducted any dimension points: enumerate specific gaps by rubric dimension
 - **NEVER inflate your score** — brutal honesty is required
 - The orchestrator **cannot** tell you to score higher
-- See `.opencode/rules/09-confidence-scoring.md` for full details
+- See `.claude/rules/09-confidence-scoring.md` for full details

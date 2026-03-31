@@ -197,7 +197,7 @@ Parallel Bash tool calls (e.g., rsync to multiple targets) are acceptable for no
 
 **Skip condition for 4.5, 5.5, 6, 6.5:** When TaskSpec says "Skip implementation stages" or Plan has no files to implement, skip these agents. **Order preserved** — proceed directly to review-agent (Stage 7), then decide-agent (Stage 8).
 
-**Score-check (inline, MANDATORY):** After EVERY agent dispatch returns, the orchestrator performs an inline confidence score-check before proceeding. This is NOT a dispatched agent — it is an orchestrator-internal step. See `.opencode/rules/09-confidence-scoring.md` for the full scoring system. If the agent's `CONFIDENCE` block score is below 85 or the block is absent, the orchestrator reruns the agent with an improved prompt. This gate cannot be skipped for any stage.
+**Score-check (inline, MANDATORY):** After EVERY agent dispatch returns, the orchestrator performs an inline confidence score-check before proceeding. This is NOT a dispatched agent — it is an orchestrator-internal step. Agent-facing rubric and output format: `.opencode/rules/09-confidence-scoring.md`. **Orchestrator-only gate:** if the agent's `CONFIDENCE` block score is **strictly below 90** or the block is absent / invalid, the orchestrator **fails** that invocation and reruns the same agent with an improved prompt before dispatching the next stage. This gate cannot be skipped for any stage.
 
 ---
 
@@ -288,12 +288,13 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
 
 12. **CONFIDENCE SCORE ENFORCEMENT**
     - Rule 12 takes priority over Rule 4's immediacy requirement — confidence gate runs first
-    - NEVER dispatch the next stage if the current agent's `CONFIDENCE` block score is below 85
+    - NEVER dispatch the next stage if the current agent's `CONFIDENCE` block score is **below 90** (fail — mandatory rerun of that agent)
     - NEVER tell an agent to output a higher score — rerun with an improved prompt only
-    - If an agent omits the `CONFIDENCE` block: score = 0, mandatory rerun
+    - If an agent omits the `CONFIDENCE` block or it is invalid: treat as **fail**, mandatory rerun
     - Agents must be brutally honest — no score inflation under any circumstances
-    - Orchestrator tracks cumulative average; flags pipeline if average drops below 95
-    - See `.opencode/rules/09-confidence-scoring.md` for the full scoring system
+    - Orchestrator tracks cumulative average; flags pipeline if rolling average drops below 95
+    - **Escalation:** If the **same** agent fails the gate (**score below 90** or missing block) on **5 consecutive** invocations, pause, log all five scores and justifications, and surface to the user — do not loop silently past that point
+    - Rubric and `CONFIDENCE` block format: `.opencode/rules/09-confidence-scoring.md` (agents do not receive numeric thresholds from that file)
 
 ---
 
@@ -333,11 +334,11 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
 3. EVALUATE output quality:
    - Complete? Quality acceptable? Any REQUESTs?
 3a. READ CONFIDENCE SCORE — extract the agent's `CONFIDENCE` block score:
-   - Score < 85: RERUN the same agent with improved prompt (do not dispatch next stage)
-   - Score 85–94: Log warning, proceed to step 4
+   - Score < 90: **FAIL** — RERUN the same agent with improved prompt (do not dispatch next stage)
+   - Score 90–94: Log warning, proceed to step 4
    - Score 95–100: Proceed to step 4
-   - No `CONFIDENCE` block present: treat as score 0, RERUN immediately
-   - NEVER tell the agent to output a higher score — only improve the task prompt
+   - No `CONFIDENCE` block present (or invalid): **FAIL** — RERUN immediately
+   - NEVER tell the agent the numeric gate, their “fail rate,” or to output a higher score — only improve the task prompt
 4. DECIDE: ACCEPT / RETRY / CONTINUE / HANDLE REQUEST
 5. UPDATE pipeline status
 6. DISPATCH next agent IMMEDIATELY (don't wait, don't ask)

@@ -30,7 +30,7 @@ Invoke the prompt-optimizer agent to transform a raw prompt into an optimized, c
 
 ## Tool Usage
 - Uses the `task` tool to dispatch to the prompt-optimizer agent
-- References `.opencode/` for agent definitions and skill configurations
+- References `.claude/` for agent definitions and skill configurations
 - Reads `AGENTS.md` for orchestration rules and agent conventions
 
 ## Output

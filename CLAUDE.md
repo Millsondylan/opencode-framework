@@ -2,11 +2,9 @@
 
 <!-- BASE RULES - DO NOT MODIFY - START -->
 
-## OpenCode + Claude Code (mirrored)
+## Claude Code (this project)
 
-**Canonical spec:** `.opencode/` (agents, rules, commands, skills) defines the pipeline and behavior.
-
-**Claude Code parity:** The same agents, rules, slash commands, and skills are mirrored under `.claude/` for use in Claude Code. Keep them in sync when you change OpenCode (skills and rules are rsynced from `.opencode/` into `.claude/` in this repo).
+**Source of truth:** `.claude/` holds agents, rules, commands, and skills for this multi-agent pipeline.
 
 **Skills:** Custom skills live in `.claude/skills/<name>/SKILL.md` (see [Claude Code skills](https://docs.claude.com/en/docs/claude-code/skills)). Build batches that name `**Skill:** {name}` must load that skill before implementation.
 
@@ -83,7 +81,7 @@ Agent tool:
 
 The agent's `model` and `tools` are defined in its frontmatter — do NOT override them in the Agent call.
 
-**Available agents (defined in `.opencode/agents/` and mirrored in `.claude/agents/`):**
+**Available agents (defined in `.claude/agents/`):**
 - `pipeline-scaler` - Stage 1
 - `prompt-optimizer` - Stage 2
 - `task-breakdown` - Stage 3
@@ -99,7 +97,7 @@ The agent's `model` and `tools` are defined in its frontmatter — do NOT overri
 - `integration-agent` - Stage 14
 - `review-agent` - Stage 15
 - `decide-agent` - Stage 16
-- `perfection-validator` - Optional brutal output validator (OpenCode / Claude mirror)
+- `perfection-validator` - Optional brutal output validator
 - `claude-in-chrome` - **Required** for Chrome / live browser / interactive website tasks (see above)
 
 ---
@@ -108,25 +106,26 @@ The agent's `model` and `tools` are defined in its frontmatter — do NOT overri
 
 | Role | Model |
 |------|--------|
-| **code-discovery** (Discover) | `haiku` |
+| **code-discovery** (Discover) | `sonnet` |
 | **plan-agent** | `opus` |
-| **decide-agent** | `haiku` |
-| **perfection-validator** | `haiku` |
-| **All other agents** (build, debugger, pipeline-scaler, task-breakdown, etc.) | `sonnet` |
+| **decide-agent** | `sonnet` |
+| **perfection-validator** | `sonnet` |
+| **build-agent-1** through **build-agent-55** (and `build-agent`) | `opus` |
+| **All other agents** (debugger, pipeline-scaler, task-breakdown, etc.) | `sonnet` |
 
-OpenCode may reference Kimi/GLM IDs; in `.claude/agents/` those roles map to **Sonnet** (and Discover/Decide to **Haiku**, Plan to **Opus**) as above.
+In `.claude/agents/`, `model` is set per **Sonnet** by default, **Opus** for plan-agent and all **build-agent** roles, as above.
 
 ---
 
-## Detailed Rules (auto-loaded from `.opencode/rules/`, mirrored under `.claude/rules/`)
+## Detailed Rules (auto-loaded from `.claude/rules/`)
 
-- `.opencode/rules/01-pipeline-orchestration.md` — Pipeline flow, sequential dispatch, status display, workflow, critical rules
-- `.opencode/rules/02-prompt-optimization.md` — Prompt-optimizer dispatch protocol, XML detection, examples
-- `.opencode/rules/03-agent-dispatch.md` — Agent list, build deep-dive, sub-pipeline, micro-batch, agent internals
-- `.opencode/rules/04-evaluation-and-context.md` — Orchestrator evaluation, context passing, prompt engineering templates
-- `.opencode/rules/05-operational-policies.md` — ACM, retry guidance, token management, anti-destruction, persistence
-- `.opencode/rules/06-multi-run-orchestration.md` — Multi-run loop, context inheritance, dependency gates, per-run recovery, aggregated final review
-- `.opencode/rules/09-confidence-scoring.md` — Confidence scoring system, per-agent rubrics, anti-cheating rules, orchestrator thresholds
+- `.claude/rules/01-pipeline-orchestration.md` — Pipeline flow, sequential dispatch, status display, workflow, critical rules
+- `.claude/rules/02-prompt-optimization.md` — Prompt-optimizer dispatch protocol, XML detection, examples
+- `.claude/rules/03-agent-dispatch.md` — Agent list, build deep-dive, sub-pipeline, micro-batch, agent internals
+- `.claude/rules/04-evaluation-and-context.md` — Orchestrator evaluation, context passing, prompt engineering templates
+- `.claude/rules/05-operational-policies.md` — ACM, retry guidance, token management, anti-destruction, persistence
+- `.claude/rules/06-multi-run-orchestration.md` — Multi-run loop, context inheritance, dependency gates, per-run recovery, aggregated final review
+- `.claude/rules/09-confidence-scoring.md` — Confidence rubric, anti-cheating rules, `CONFIDENCE` block format; numeric gates only in rule 01
 
 ---
 
@@ -149,7 +148,7 @@ executes a full sequential pipeline (Stages -1 through 8) for each run — one a
 - If a run's decide-agent outputs RESTART, retry that run only — completed runs are never restarted
 - After all N runs complete, one final cross-run review-agent and decide-agent pass closes the pipeline
 
-See `.opencode/rules/06-multi-run-orchestration.md` for the full execution loop, status display
+See `.claude/rules/06-multi-run-orchestration.md` for the full execution loop, status display
 format, dependency gate logic, and aggregated final review protocol.
 
 ---
@@ -234,7 +233,7 @@ Before using the edit tool on any file, you MUST have read that file earlier in 
 6. **Evaluate every output** — ACCEPT / RETRY / CONTINUE / HANDLE REQUEST
 7. **Persist until complete** — No artificial limits, no timeouts, no retry caps
 8. **Multi-run** — If ScalingPlan has N > 1 runs, execute full pipeline per run; see rule 06
-9. **Confidence scoring** — Every agent outputs a CONFIDENCE block (0–100). Orchestrator reruns if score < 85; flags pipeline if average < 95. See rule 09
+9. **Confidence scoring** — Every agent outputs a CONFIDENCE block (0–100). Orchestrator fails and reruns that agent if score is below 90 or the block is missing; flags pipeline if rolling average < 95. Numeric gates are in rule 01 only; rule 09 is rubric-only for agents. See rules 01 and 09
 10. **Pass skill to build-agent** — When plan assigns `**Skill:** {name}` to a batch, include `skill: {name}` in the build-agent prompt
 11. **Chrome / live website** — Task `claude-in-chrome` (MCP + Read/WebSearch/WebFetch); not WebFetch-only from the main session
 

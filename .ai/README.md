@@ -134,10 +134,9 @@ When conflicts arise:
 ## Agent-Specific Rules
 
 ### Model Specifications
-- All pipeline agents use **Kimi K2.5** (YAML alias: `opus`, model ID: `kimi-for-coding/k2p5`)
-- Context window: 256K tokens
-- Max output: 33K tokens
-- The `model: opus` value in agent YAML frontmatter is the correct alias — do NOT use full model IDs
+- Agents live in `.claude/agents/*.md` with `model: opus` or `model: sonnet` per **`CLAUDE.md`** (Opus for plan-agent and all build-agents; Sonnet for most other roles)
+- Context and output limits follow **Claude Code** runtime defaults for the chosen model
+- Do not override `model` from the Task tool — it comes from each agent file’s frontmatter
 - YAML frontmatter does NOT support `contextWindow` or `max_tokens` fields
 
 ### Pipeline-Scaler (Stage -2) - MANDATORY FIRST
@@ -148,16 +147,12 @@ When conflicts arise:
 - Default bias: favor 1 run unless genuinely warranted to split
 - NEVER implements, modifies code, optimizes prompts, or runs pipeline stages
 - Re-run eligible: YES (for ambiguous or conflicting scope)
-- Model: Kimi K2.5 (alias: opus)
-
 ### Prompt-Optimizer (Stage -1) - MANDATORY
 - **ALWAYS runs FIRST** before any other agent dispatch
 - Intercepts and optimizes prompts before target agents
 - Read-only analysis of codebase for context enrichment
 - Output ONLY the optimized prompt (no explanations)
 - Apply anti-laziness, persistence, and verification rules
-- Model: Kimi K2.5 (alias: opus)
-
 ### Task-Breakdown (Stage 0)
 - Create TaskSpec for EVERY request (even simple ones)
 - Document all assumptions
@@ -180,8 +175,6 @@ When conflicts arise:
 - Check plan consistency before build starts
 - Report blockers with fix instructions
 - Request plan-agent for conflict resolution
-- Model: Kimi K2.5 (alias: opus)
-
 ### Build-Agent (Stage 4) - 55 agents
 - Each agent handles 1-2 files max. Runs nested sub-pipeline
 - Track every change in ledger
@@ -196,8 +189,6 @@ When conflicts arise:
 - Follows repository test conventions (file naming, framework, fixtures)
 - NO mocks allowed - all tests use real objects and real assertions
 - Can request build-agent if implementation gaps found
-- Model: Kimi K2.5 (alias: opus)
-
 ### Logical-Agent (Stage 5.5)
 - Verify algorithmic correctness (loops, recursion, invariants)
 - Detect off-by-one errors, boundary issues
@@ -217,8 +208,6 @@ When conflicts arise:
 - Run integration tests, check API contracts
 - Validate end-to-end workflows
 - NEVER block pipeline - request debugger on failures
-- Model: Kimi K2.5 (alias: opus) (deep analysis)
-
 ### Review-Agent (Stage 7)
 - Check acceptance criteria thoroughly
 - Identify security issues

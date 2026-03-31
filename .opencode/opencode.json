@@ -9,7 +9,9 @@
     "rules/03-agent-dispatch.md",
     "rules/04-evaluation-and-context.md",
     "rules/05-operational-policies.md",
-    "rules/06-multi-run-orchestration.md"
+    "rules/06-multi-run-orchestration.md",
+    "rules/09-confidence-scoring.md",
+    "rules/08-opencode-subagent-no-delegation.md"
   ],
   "permission": {
     "task": "allow",
