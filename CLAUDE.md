@@ -7,6 +7,7 @@
 **Source of truth:** `.claude/` holds agents, rules, commands, and skills for this multi-agent pipeline.
 
 **Skills:** Custom skills live in `.claude/skills/<name>/SKILL.md` (see [Claude Code skills](https://docs.claude.com/en/docs/claude-code/skills)). Build batches that name `**Skill:** {name}` must load that skill before implementation.
+`graphify` is now available at `.claude/skills/graphify/SKILL.md` (mirror: `.opencode/skills/graphify/SKILL.md`) for knowledge-graph-first exploration of large code/doc corpora.
 
 **Hooks:** Project hooks are in `.claude/settings.json` — including `PostToolUse` on `Task` (validators), `PreToolUse` observability/security, and `SubagentStop` (skill reminder). See [Hooks reference](https://code.claude.com/docs/en/hooks).
 

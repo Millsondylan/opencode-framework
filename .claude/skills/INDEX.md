@@ -56,6 +56,7 @@ All available skills in `.claude/skills/`. Each skill has a `SKILL.md` with doma
 | gamification-schema | .claude/skills/gamification-schema/ |
 | gamification-test | .claude/skills/gamification-test/ |
 | gamification-ui | .claude/skills/gamification-ui/ |
+| graphify | .claude/skills/graphify/ |
 | layout-audit-agent | .claude/skills/layout-audit-agent/ |
 | local-storage-agent | .claude/skills/local-storage-agent/ |
 | localization-agent | .claude/skills/localization-agent/ |

@@ -56,6 +56,7 @@ All available skills in `.opencode/skills/`. Each skill has a `SKILL.md` with do
 | gamification-schema | .opencode/skills/gamification-schema/ |
 | gamification-test | .opencode/skills/gamification-test/ |
 | gamification-ui | .opencode/skills/gamification-ui/ |
+| graphify | .opencode/skills/graphify/ |
 | layout-audit-agent | .opencode/skills/layout-audit-agent/ |
 | local-storage-agent | .opencode/skills/local-storage-agent/ |
 | localization-agent | .opencode/skills/localization-agent/ |
