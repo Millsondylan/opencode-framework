@@ -1,0 +1,214 @@
+# Recall fixture for memory RAG.
+# Target: k=10 nDCG >= 0.85 on a cold in-memory LanceDB with the default
+# general embedder plus cross encoder reranker. The fixture covers the
+# three namespaces (session, project, global) and all four ttl_tiers
+# (logs, traces, diffs, lessons) so a downstream test harness can
+# exercise the full recall path.
+#
+# Entries use stable ids e001..e020 so expected_top1 and relevant_ids
+# stay referentially sound if the harness shuffles insertion order.
+# Queries are phrased in natural english, not keyword soup, so the
+# recall path has to rely on semantic similarity and rerank quality
+# instead of raw BM25 token overlap.
+
+entries:
+  - id: "e001"
+    text: "The user prefers dark mode for all interfaces and asks every new app to default to dark theme on first launch."
+    namespace: "session"
+    ttl_tier: "lessons"
+    metadata:
+      topic: "ui-preference"
+      category: "theming"
+
+  - id: "e002"
+    text: "Row Level Security must be enabled on every Supabase table that stores user data; policies should be written before the table is populated."
+    namespace: "project"
+    ttl_tier: "lessons"
+    metadata:
+      topic: "security"
+      category: "supabase"
+
+  - id: "e003"
+    text: "Build failed with error 'undefined reference to pthread_create' when linking the release binary on Linux; adding -lpthread to LDFLAGS fixed it."
+    namespace: "project"
+    ttl_tier: "diffs"
+    metadata:
+      topic: "build-error"
+      platform: "linux"
+
+  - id: "e004"
+    text: "Adopted a four tier ttl policy for memory entries: logs at seven days, traces at thirty days, diffs at sixty days, lessons at one hundred eighty days."
+    namespace: "global"
+    ttl_tier: "lessons"
+    metadata:
+      topic: "architecture"
+      category: "memory-policy"
+
+  - id: "e005"
+    text: "All scheduled jobs on macOS run via launchd with KeepAlive disabled and StartInterval of three thousand six hundred seconds for hourly cadence."
+    namespace: "project"
+    ttl_tier: "lessons"
+    metadata:
+      topic: "architecture"
+      platform: "macos"
+
+  - id: "e006"
+    text: "Pull requests must pass the PR gate: lint, unit tests, integration tests, and a manual reviewer approval before merge to main."
+    namespace: "project"
+    ttl_tier: "lessons"
+    metadata:
+      topic: "workflow"
+      category: "pr-gate"
+
+  - id: "e007"
+    text: "Decision record ADR-014 locks in Riverpod for state management across the mobile app; BLoC was considered and rejected due to boilerplate cost."
+    namespace: "project"
+    ttl_tier: "lessons"
+    metadata:
+      topic: "architecture"
+      framework: "riverpod"
+
+  - id: "e008"
+    text: "Drift is the chosen local database for structured offline storage because it offers type safe SQL and reactive streams backed by SQLCipher encryption."
+    namespace: "project"
+    ttl_tier: "lessons"
+    metadata:
+      topic: "architecture"
+      framework: "drift"
+
+  - id: "e009"
+    text: "GoRouter with StatefulShellRoute powers persistent bottom navigation and keeps each tab state isolated across deep links."
+    namespace: "project"
+    ttl_tier: "lessons"
+    metadata:
+      topic: "navigation"
+      framework: "gorouter"
+
+  - id: "e010"
+    text: "All transactional email must include a CAN-SPAM compliant unsubscribe header and a physical postal address in the footer."
+    namespace: "global"
+    ttl_tier: "lessons"
+    metadata:
+      topic: "compliance"
+      regulation: "can-spam"
+
+  - id: "e011"
+    text: "GDPR requires that the data export endpoint returns user data in a machine readable format within thirty days of the verified request."
+    namespace: "global"
+    ttl_tier: "lessons"
+    metadata:
+      topic: "compliance"
+      regulation: "gdpr"
+
+  - id: "e012"
+    text: "Every new test file must contain at least three real test functions with actual assertions; placeholder tests are a blocker at PR review."
+    namespace: "project"
+    ttl_tier: "lessons"
+    metadata:
+      topic: "testing"
+      category: "quality-gate"
+
+  - id: "e013"
+    text: "Cold start on the target iPhone device must stay under one thousand eight hundred milliseconds from app launch to first interactive frame."
+    namespace: "project"
+    ttl_tier: "lessons"
+    metadata:
+      topic: "performance"
+      platform: "ios"
+
+  - id: "e014"
+    text: "Supported locales at launch: english (en), spanish (es), brazilian portuguese (pt-BR), arabic (ar), japanese (ja); all strings live in ARB files."
+    namespace: "project"
+    ttl_tier: "lessons"
+    metadata:
+      topic: "localization"
+      category: "i18n"
+
+  - id: "e015"
+    text: "API secrets and OAuth refresh tokens must live in the iOS Keychain and Android Keystore; never SharedPreferences and never hardcoded in source."
+    namespace: "global"
+    ttl_tier: "lessons"
+    metadata:
+      topic: "security"
+      category: "secrets"
+
+  - id: "e016"
+    text: "Spacemail outbound relay requires DKIM, SPF, and DMARC records aligned on the sending domain before production mail can be sent."
+    namespace: "project"
+    ttl_tier: "lessons"
+    metadata:
+      topic: "security"
+      category: "spacemail"
+
+  - id: "e017"
+    text: "User reported the dashboard font size was too small on a Pixel 8 Pro; the fix is to honour the platform text scaler instead of a fixed sp value."
+    namespace: "session"
+    ttl_tier: "traces"
+    metadata:
+      topic: "ui-preference"
+      category: "accessibility"
+
+  - id: "e018"
+    text: "iOS build halted with 'No provisioning profile found matching bundle id'; regenerating the profile in App Store Connect and rerunning xcodebuild resolved it."
+    namespace: "project"
+    ttl_tier: "diffs"
+    metadata:
+      topic: "build-error"
+      platform: "ios"
+
+  - id: "e019"
+    text: "Decision record ADR-021 sets the offline first architecture: local Drift database is the source of truth, the network is a sync target."
+    namespace: "project"
+    ttl_tier: "lessons"
+    metadata:
+      topic: "architecture"
+      category: "offline-first"
+
+  - id: "e020"
+    text: "The code review checklist requires every async gap to be followed by a mounted check before any setState call in flutter widgets."
+    namespace: "project"
+    ttl_tier: "lessons"
+    metadata:
+      topic: "code-pattern"
+      framework: "flutter"
+
+queries:
+  - query: "What UI theme or mode does the user prefer by default?"
+    relevant_ids: ["e001", "e017"]
+    expected_top1: "e001"
+
+  - query: "Tell me about Supabase row level security requirements for user tables."
+    relevant_ids: ["e002"]
+    expected_top1: "e002"
+
+  - query: "How long do we keep logs, traces, and diffs in the memory system?"
+    relevant_ids: ["e004"]
+    expected_top1: "e004"
+
+  - query: "Which state management library did we pick for the mobile client and why?"
+    relevant_ids: ["e007"]
+    expected_top1: "e007"
+
+  - query: "What is the rule for storing API keys and OAuth tokens on mobile?"
+    relevant_ids: ["e015"]
+    expected_top1: "e015"
+
+  - query: "Which locales must the app support at launch?"
+    relevant_ids: ["e014"]
+    expected_top1: "e014"
+
+  - query: "What is the cold start performance budget on iOS?"
+    relevant_ids: ["e013"]
+    expected_top1: "e013"
+
+  - query: "How should we handle the CAN-SPAM unsubscribe requirement in transactional mail?"
+    relevant_ids: ["e010"]
+    expected_top1: "e010"
+
+  - query: "How are scheduled jobs configured on macOS for hourly execution?"
+    relevant_ids: ["e005"]
+    expected_top1: "e005"
+
+  - query: "What is the minimum requirement for test files in this repository?"
+    relevant_ids: ["e012"]
+    expected_top1: "e012"

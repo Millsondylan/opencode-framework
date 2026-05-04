@@ -1,6 +1,6 @@
 ---
 name: e-commerce-schema
-description: Define product, cart, order, and type IDs 150–159 for the e-commerce domain
+description: Define product, cart, order, and type IDs 150-159 for the e-commerce domain
 ---
 
 # e-commerce-schema - E-Commerce Domain Schema
@@ -24,12 +24,12 @@ Defines product, cart, order, and e-commerce state types for the e-commerce doma
 6. Defines order status (pending, paid, shipped, delivered, cancelled)
 
 ## Output
-- `product.dart` — Product model with `@HiveType(typeId: 150)`
-- `cart_item.dart` — CartItem model with `@HiveType(typeId: 151)`
-- `order.dart` — Order model with `@HiveType(typeId: 152)`
-- `product_dto.dart` — Product DTO for API/transport
-- `order_dto.dart` — Order DTO for API/transport
-- `product_validator.dart` — Product input validation
+- `product.dart` - Product model with `@HiveType(typeId: 150)`
+- `cart_item.dart` - CartItem model with `@HiveType(typeId: 151)`
+- `order.dart` - Order model with `@HiveType(typeId: 152)`
+- `product_dto.dart` - Product DTO for API/transport
+- `order_dto.dart` - Order DTO for API/transport
+- `product_validator.dart` - Product input validation
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

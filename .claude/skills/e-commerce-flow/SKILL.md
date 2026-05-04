@@ -1,8 +1,9 @@
 ---
 name: e-commerce-flow
 description: Implement cart state, checkout, and order tracking for the e-commerce domain
+version: 1.0.0
+tier: standard
 ---
-
 # e-commerce-flow - E-Commerce Domain Flow
 
 Implements cart state, checkout, and order tracking. Third in the e-commerce domain chain (3/6).
@@ -16,18 +17,18 @@ Implements cart state, checkout, and order tracking. Third in the e-commerce dom
 - None. This skill consumes e-commerce-schema and e-commerce-provider outputs and produces flow artifacts.
 
 ## What It Does
-1. Implements **EcommerceNotifier** — Riverpod StateNotifier for e-commerce state
-2. Defines **EcommerceState** — cart, cart total, orders, loading, error
+1. Implements **EcommerceNotifier** - Riverpod StateNotifier for e-commerce state
+2. Defines **EcommerceState** - cart, cart total, orders, loading, error
 3. Registers **ecommerceProvider**, **cartProvider**, **orderProvider**
-4. Orchestrates **cart state** — add, remove, update, sync
-5. Orchestrates **checkout** — validate cart, payment, order creation
-6. Orchestrates **order tracking** — fetch status, refresh
-7. Handles **cart persistence** — sync to server, merge conflicts
+4. Orchestrates **cart state** - add, remove, update, sync
+5. Orchestrates **checkout** - validate cart, payment, order creation
+6. Orchestrates **order tracking** - fetch status, refresh
+7. Handles **cart persistence** - sync to server, merge conflicts
 
 ## Output
-- `ecommerce_notifier.dart` — EcommerceNotifier (StateNotifier<EcommerceState>)
-- `ecommerce_state.dart` — EcommerceState sealed class / union type
-- `ecommerce_provider.dart` — ecommerceProvider (Riverpod Provider)
+- `ecommerce_notifier.dart` - EcommerceNotifier (StateNotifier<EcommerceState>)
+- `ecommerce_state.dart` - EcommerceState sealed class / union type
+- `ecommerce_provider.dart` - ecommerceProvider (Riverpod Provider)
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

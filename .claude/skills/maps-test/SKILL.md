@@ -1,8 +1,9 @@
 ---
 name: maps-test
 description: Write mock location and geofence tests for the maps domain
+version: 1.0.0
+tier: standard
 ---
-
 # maps-test - Maps Domain Test
 
 Writes mock location and geofence tests. Sixth in the maps domain chain (6/6).
@@ -17,17 +18,17 @@ Writes mock location and geofence tests. Sixth in the maps domain chain (6/6).
 
 ## What It Does
 1. Writes **unit tests** for maps logic (validators, guards, geofence)
-2. Provides **mock location** — fake GPS position for testing
-3. Writes **geofence tests** — enter, exit, boundary
-4. Writes **geocoding tests** — search, reverse geocode
+2. Provides **mock location** - fake GPS position for testing
+3. Writes **geofence tests** - enter, exit, boundary
+4. Writes **geocoding tests** - search, reverse geocode
 5. Achieves **>80% coverage** for maps domain code
 6. Uses `mocktail` or `mockito` for mocking; `flutter_test` for widget/integration tests
 
 ## Output
-- `maps_repository_test.dart` — Unit tests for MapsRepository
-- `maps_notifier_test.dart` — Unit tests for MapsNotifier
-- `geofence_test.dart` — Geofence tests
-- `mock_location_data_source.dart` — Mock location for tests
+- `maps_repository_test.dart` - Unit tests for MapsRepository
+- `maps_notifier_test.dart` - Unit tests for MapsNotifier
+- `geofence_test.dart` - Geofence tests
+- `mock_location_data_source.dart` - Mock location for tests
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

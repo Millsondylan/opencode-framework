@@ -1,5 +1,5 @@
 #!/bin/bash
-# Verification tests for confidence scoring rule files (Claude Code — `.claude/rules/` only).
+# Verification tests for confidence scoring rule files (Claude Code - `.claude/rules/` only).
 #
 # Run: bash .claude/hooks/tests/test_confidence_scoring_rules.sh
 # Or via: bash .claude/hooks/tests/run_all_tests.sh
@@ -74,19 +74,19 @@ check_contains "$CLAUDE_CS" \
     "Test 4: Contains '# Confidence Scoring System' heading"
 
 check_contains "$CLAUDE_CS" \
-    "0–59" \
+    "0-59" \
     "Test 5a: Scoring table band 0-59 present"
 
 check_contains "$CLAUDE_CS" \
-    "60–79" \
+    "60-79" \
     "Test 5b: Scoring table band 60-79 present"
 
 check_contains "$CLAUDE_CS" \
-    "80–94" \
+    "80-94" \
     "Test 5c: Scoring table band 80-94 present"
 
 check_contains "$CLAUDE_CS" \
-    "95–100" \
+    "95-100" \
     "Test 5d: Scoring table band 95-100 present"
 
 check_contains "$CLAUDE_CS" \
@@ -142,7 +142,7 @@ check_contains "$CLAUDE_PO" \
 
 check_contains "$CLAUDE_PO" \
     "CONFIDENCE SCORE ENFORCEMENT" \
-    "Test 17: Contains 'CONFIDENCE SCORE ENFORCEMENT' text (Insertion C — rule 12)"
+    "Test 17: Contains 'CONFIDENCE SCORE ENFORCEMENT' text (Insertion C - rule 12)"
 
 check_contains "$CLAUDE_PO" \
     "NEVER tell an agent to output a higher score" \

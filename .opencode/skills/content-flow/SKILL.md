@@ -16,18 +16,18 @@ Implements content list, detail loading, and bookmark. Third in the content doma
 - None. This skill consumes content-schema and content-provider outputs and produces flow artifacts.
 
 ## What It Does
-1. Implements **ContentNotifier** — Riverpod StateNotifier for content state
-2. Defines **ContentState** — list, detail, bookmarks, loading, error
+1. Implements **ContentNotifier** - Riverpod StateNotifier for content state
+2. Defines **ContentState** - list, detail, bookmarks, loading, error
 3. Registers **contentProvider**, **contentDetailProvider**, **bookmarkProvider**
-4. Orchestrates **content list** — load, paginate, filter by category
-5. Orchestrates **detail loading** — fetch by ID, cache
-6. Orchestrates **bookmark** — add, remove, list
-7. Handles **refresh** — pull-to-refresh, cache invalidation
+4. Orchestrates **content list** - load, paginate, filter by category
+5. Orchestrates **detail loading** - fetch by ID, cache
+6. Orchestrates **bookmark** - add, remove, list
+7. Handles **refresh** - pull-to-refresh, cache invalidation
 
 ## Output
-- `content_notifier.dart` — ContentNotifier (StateNotifier<ContentState>)
-- `content_state.dart` — ContentState sealed class / union type
-- `content_provider.dart` — contentProvider (Riverpod Provider)
+- `content_notifier.dart` - ContentNotifier (StateNotifier<ContentState>)
+- `content_state.dart` - ContentState sealed class / union type
+- `content_provider.dart` - contentProvider (Riverpod Provider)
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

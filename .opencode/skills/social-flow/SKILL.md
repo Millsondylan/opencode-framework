@@ -16,19 +16,19 @@ Implements profile state, feed pagination, and reactions. Third in the social do
 - None. This skill consumes social-schema and social-provider outputs and produces flow artifacts.
 
 ## What It Does
-1. Implements **SocialNotifier** — Riverpod StateNotifier for social state
-2. Defines **SocialState** — profile, feed, follow status, loading, error
+1. Implements **SocialNotifier** - Riverpod StateNotifier for social state
+2. Defines **SocialState** - profile, feed, follow status, loading, error
 3. Registers **socialProvider**, **feedProvider**, **profileProvider**
-4. Orchestrates **profile state** — load, update, cache
-5. Orchestrates **feed pagination** — load more, refresh, infinite scroll
-6. Orchestrates **reactions** — like, repost, comment
-7. Handles **follow state** — follow, unfollow, follower count
+4. Orchestrates **profile state** - load, update, cache
+5. Orchestrates **feed pagination** - load more, refresh, infinite scroll
+6. Orchestrates **reactions** - like, repost, comment
+7. Handles **follow state** - follow, unfollow, follower count
 
 ## Output
-- `social_notifier.dart` — SocialNotifier (StateNotifier<SocialState>)
-- `social_state.dart` — SocialState sealed class / union type
-- `social_provider.dart` — socialProvider (Riverpod Provider)
-- `feed_provider.dart` — feedProvider for feed pagination
+- `social_notifier.dart` - SocialNotifier (StateNotifier<SocialState>)
+- `social_state.dart` - SocialState sealed class / union type
+- `social_provider.dart` - socialProvider (Riverpod Provider)
+- `feed_provider.dart` - feedProvider for feed pagination
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

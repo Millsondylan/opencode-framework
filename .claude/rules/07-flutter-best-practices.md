@@ -10,9 +10,9 @@ This document contains all architectural patterns, performance rules, and exact 
 
 ### StatelessWidget is Your Default
 - Use `StatefulWidget` **only** for internal mutable state (animations, form input, toggles) or lifecycle methods
-- `StatelessWidget` is cheaper — no State object allocation, no lifecycle overhead
+- `StatelessWidget` is cheaper - no State object allocation, no lifecycle overhead
 - **Always use `const` constructors** on immutable widgets
-- Const widgets are canonical instances — identical const objects share single memory allocation
+- Const widgets are canonical instances - identical const objects share single memory allocation
 - Const can reduce widget rebuilds by **up to 70%**, cutting frame times from 16ms to under 8ms
 
 ```dart
@@ -53,7 +53,7 @@ Widget _buildHeader() => Row(children: [Icon(Icons.account_circle), Text('Accoun
 - Beyond this, layout passes become expensive (especially intrinsic sizing which traverses ALL children)
 - Break complex widgets into focused sub-widgets through composition
 
-### Keys — Use Sparingly and Correctly
+### Keys - Use Sparingly and Correctly
 
 | Key type | Use when | Example |
 |----------|----------|---------|
@@ -62,14 +62,14 @@ Widget _buildHeader() => Row(children: [Icon(Icons.account_circle), Text('Accoun
 | **UniqueKey** | Force widget to be treated as new | Animation reset, force rebuild |
 | **GlobalKey** | Access widget state externally | `GlobalKey<FormState>` for validation |
 
-**NEVER use index as key in dynamic lists** — reordering associates wrong state with wrong data.
-**NEVER construct UniqueKey inside build()** — creates new key every frame.
+**NEVER use index as key in dynamic lists** - reordering associates wrong state with wrong data.
+**NEVER construct UniqueKey inside build()** - creates new key every frame.
 
 ### State Management for Offline-First Apps
 
 **Recommended:** Riverpod or BLoC
 - **Riverpod**: Type-safe, context-free, excellent async support with `AsyncNotifier`, `autoDispose`
-- **BLoC**: Enterprise standard — `hydrated_bloc` provides built-in state persistence to disk
+- **BLoC**: Enterprise standard - `hydrated_bloc` provides built-in state persistence to disk
 
 **Legacy (avoid for new projects):** Provider
 
@@ -80,12 +80,12 @@ Widget _buildHeader() => Row(children: [Icon(Icons.account_circle), Text('Accoun
 ### Performance-Critical: Use Specific MediaQuery Accessors
 
 **ALWAYS** use these specific methods (rebuild only when that property changes):
-- `MediaQuery.sizeOf(context)` — only rebuilds on size change
+- `MediaQuery.sizeOf(context)` - only rebuilds on size change
 - `MediaQuery.paddingOf(context)`
 - `MediaQuery.viewInsetsOf(context)`
-- `MediaQuery.textScalerOf(context)` — Flutter 3.16+
+- `MediaQuery.textScalerOf(context)` - Flutter 3.16+
 
-**NEVER** use `MediaQuery.of(context).size` — triggers rebuilds for ANY MediaQueryData change.
+**NEVER** use `MediaQuery.of(context).size` - triggers rebuilds for ANY MediaQueryData change.
 
 ### Touch Targets
 - Android: **48×48dp minimum**
@@ -113,7 +113,7 @@ Use multiples of **4dp**: 4, 8, 12, 16, 20, 24, 32, 48, 64
 | Large | 1200-1599dp | Desktops | 12 |
 | Extra-Large | 1600dp+ | Large desktops | 12 |
 
-**NEVER check device type** — check actual window width (apps run in split-screen, PIP, resizable windows).
+**NEVER check device type** - check actual window width (apps run in split-screen, PIP, resizable windows).
 
 ### Layout Widget Decision Tree
 
@@ -130,10 +130,10 @@ Use multiples of **4dp**: 4, 8, 12, 16, 20, 24, 32, 48, 64
 - **Use** when content is body of Scaffold without AppBar
 - **Use** when content could be obscured by notches/status bars/home indicators
 - **Not needed** inside Scaffold with AppBar (handles top safe area)
-- SafeArea is nestable — child SafeAreas detect parent padding
+- SafeArea is nestable - child SafeAreas detect parent padding
 
 ### Text Scaling
-**NEVER override textScaler** — respect user accessibility settings.
+**NEVER override textScaler** - respect user accessibility settings.
 - ~25% of users increase font size
 - Use `MediaQuery.textScalerOf(context)` (Flutter 3.16+)
 - Test at 1.0x, 1.5x, 2.0x, and maximum scale
@@ -199,7 +199,7 @@ StatefulShellRoute.indexedStack(
 ### Predictive Back (Android)
 - Default since Flutter 3.38 (November 2025)
 - `PredictiveBackPageTransitionsBuilder` replaced `ZoomPageTransitionsBuilder`
-- WillPopScope **completely breaks predictive back** — migration to PopScope is mandatory
+- WillPopScope **completely breaks predictive back** - migration to PopScope is mandatory
 
 ### Edge-to-Edge (Android 16+ API 36+)
 - Edge-to-edge is **mandatory** and cannot be opted out
@@ -223,7 +223,7 @@ Use `Isolate.run()` for one-off heavy tasks:
 - Sorting 10,000+ objects
 - Cryptographic operations
 
-**NEVER use isolates for I/O-bound work** — use async/await instead.
+**NEVER use isolates for I/O-bound work** - use async/await instead.
 
 ### Frame Budgets
 - **60Hz**: ~16.67ms per frame
@@ -231,12 +231,12 @@ Use `Isolate.run()` for one-off heavy tasks:
 - Jank rate above **1% is noticeable**
 - Jank rate above **5% is unsatisfactory**
 
-**Always profile in profile mode on physical device** — debug mode uses JIT and expensive assertions.
+**Always profile in profile mode on physical device** - debug mode uses JIT and expensive assertions.
 
 ### RepaintBoundary
 Wrap frequently-animating widgets in RepaintBoundary to create separate compositing layer:
 - Use for: spinners, progress bars, tickers
-- Don't wrap every widget — adds GPU memory overhead
+- Don't wrap every widget - adds GPU memory overhead
 - Verify with DevTools "Highlight repaints"
 
 ### Impeller
@@ -373,10 +373,10 @@ void dispose() {
 
 ### Database Hierarchy
 
-1. **Drift** (Recommended default) — type-safe SQL, robust migrations, reactive streams, SQLCipher encryption
-2. **Isar** — **ABANDONED** by author — do not use
-3. **Hive** — **UNMAINTAINED** — use hive_ce (Community Edition) if needed
-4. **ObjectBox** — Best raw performance, built-in sync, but commercial
+1. **Drift** (Recommended default) - type-safe SQL, robust migrations, reactive streams, SQLCipher encryption
+2. **Isar** - **ABANDONED** by author - do not use
+3. **Hive** - **UNMAINTAINED** - use hive_ce (Community Edition) if needed
+4. **ObjectBox** - Best raw performance, built-in sync, but commercial
 
 ### SharedPreferences Limits
 - Keep under **~1MB total**, ideally few KB
@@ -404,8 +404,8 @@ Database db = await openDatabase(path, version: 3,
 
 ### Three-Layer Encryption for Finance Data
 
-1. **Layer 1 (secrets)**: `flutter_secure_storage` — RSA-OAEP + AES-GCM (Android), Keychain (iOS)
-2. **Layer 2 (database)**: SQLCipher via `sqflite_sqlcipher` — AES-256 full-database encryption
+1. **Layer 1 (secrets)**: `flutter_secure_storage` - RSA-OAEP + AES-GCM (Android), Keychain (iOS)
+2. **Layer 2 (database)**: SQLCipher via `sqflite_sqlcipher` - AES-256 full-database encryption
 3. **Layer 3**: Store encryption key in flutter_secure_storage (never SharedPreferences or hardcoded)
 
 ---
@@ -541,10 +541,10 @@ Always use `Theme.of(context)`.
 
 ## Summary: Rules That Matter Most
 
-1. **const constructors everywhere** — up to 70% fewer rebuilds
-2. **separate widget classes over helper methods** — independent rebuild scopes
-3. **Drift for structured offline data with SQLCipher** — type-safe, encrypted
-4. **three-layer error handling** — FlutterError.onError + PlatformDispatcher + runZonedGuarded
+1. **const constructors everywhere** - up to 70% fewer rebuilds
+2. **separate widget classes over helper methods** - independent rebuild scopes
+3. **Drift for structured offline data with SQLCipher** - type-safe, encrypted
+4. **three-layer error handling** - FlutterError.onError + PlatformDispatcher + runZonedGuarded
 5. **GoRouter with StatefulShellRoute** for navigation
 6. **Riverpod or BLoC with hydrated persistence** for state management
 7. **ListView.builder for lists over 20 items**

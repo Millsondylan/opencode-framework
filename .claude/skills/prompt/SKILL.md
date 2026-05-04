@@ -1,8 +1,9 @@
 ---
 name: prompt
 description: Run the prompt-optimizer agent to enhance a prompt before sending to target agent
+version: 1.0.0
+tier: standard
 ---
-
 # /prompt - Optimize a Prompt
 
 Invoke the prompt-optimizer agent to transform a raw prompt into an optimized, context-rich prompt.

@@ -16,18 +16,18 @@ Implements rate limiting, quiet hours enforcement, and permission management for
 - None. This skill consumes notif-schema and notif-provider outputs and produces guard artifacts.
 
 ## What It Does
-1. Implements **NotificationGuard** — central guard that gates notification delivery based on rules
-2. Implements **rate limiting** — caps notification frequency per channel (e.g., max N per hour)
-3. Implements **quiet hours** — blocks or defers notifications during configured time windows
-4. Implements **permission checks** — verifies push/local notification permissions before delivery
+1. Implements **NotificationGuard** - central guard that gates notification delivery based on rules
+2. Implements **rate limiting** - caps notification frequency per channel (e.g., max N per hour)
+3. Implements **quiet hours** - blocks or defers notifications during configured time windows
+4. Implements **permission checks** - verifies push/local notification permissions before delivery
 5. Integrates with Riverpod notification state for guard decisions
 6. Handles deferral and batching when guards block immediate delivery
 
 ## Output
-- `notification_guard.dart` — NotificationGuard for delivery gating
-- `notification_rate_limiter.dart` — Rate limiting logic
-- `notification_quiet_hours.dart` — Quiet hours enforcement
-- `notification_permission_checker.dart` — Permission verification before delivery
+- `notification_guard.dart` - NotificationGuard for delivery gating
+- `notification_rate_limiter.dart` - Rate limiting logic
+- `notification_quiet_hours.dart` - Quiet hours enforcement
+- `notification_permission_checker.dart` - Permission verification before delivery
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

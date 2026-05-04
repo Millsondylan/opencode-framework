@@ -1,6 +1,6 @@
 ---
 name: messaging-schema
-description: Define conversation, message, typing, and type IDs 100–109 for the messaging domain
+description: Define conversation, message, typing, and type IDs 100-109 for the messaging domain
 ---
 
 # messaging-schema - Messaging Domain Schema
@@ -24,12 +24,12 @@ Defines conversation, message, typing indicator, and messaging state types for t
 6. Defines message types (text, image, system, delivery status)
 
 ## Output
-- `conversation.dart` — Conversation model with `@HiveType(typeId: 100)`
-- `message.dart` — Message model with `@HiveType(typeId: 101)`
-- `typing_indicator.dart` — TypingIndicator model with `@HiveType(typeId: 102)`
-- `conversation_dto.dart` — Conversation DTO for API/transport
-- `message_dto.dart` — Message DTO for API/transport
-- `message_validator.dart` — Message input validation
+- `conversation.dart` - Conversation model with `@HiveType(typeId: 100)`
+- `message.dart` - Message model with `@HiveType(typeId: 101)`
+- `typing_indicator.dart` - TypingIndicator model with `@HiveType(typeId: 102)`
+- `conversation_dto.dart` - Conversation DTO for API/transport
+- `message_dto.dart` - Message DTO for API/transport
+- `message_validator.dart` - Message input validation
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

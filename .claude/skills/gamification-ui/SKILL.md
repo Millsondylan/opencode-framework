@@ -1,8 +1,9 @@
 ---
 name: gamification-ui
 description: Implement PointsDisplay, BadgeCollectionScreen, and leaderboard for the gamification domain
+version: 1.0.0
+tier: standard
 ---
-
 # gamification-ui - Gamification Domain UI
 
 Implements PointsDisplay, BadgeCollectionScreen, and leaderboard. Fourth in the gamification domain chain (4/6).
@@ -16,19 +17,19 @@ Implements PointsDisplay, BadgeCollectionScreen, and leaderboard. Fourth in the 
 - None. This skill consumes gamification-flow outputs and produces UI artifacts.
 
 ## What It Does
-1. Implements **PointsDisplay** — points balance, animation on change
-2. Implements **BadgeCollectionScreen** — badge grid, locked/unlocked, progress
-3. Implements **LeaderboardScreen** — rankings, user highlight, period filter
-4. Implements **StreakDisplay** — streak count, flame icon, reset message
-5. Implements **BadgeUnlockOverlay** — celebration on new badge
-6. Uses **Material 3** — components, theming, typography
+1. Implements **PointsDisplay** - points balance, animation on change
+2. Implements **BadgeCollectionScreen** - badge grid, locked/unlocked, progress
+3. Implements **LeaderboardScreen** - rankings, user highlight, period filter
+4. Implements **StreakDisplay** - streak count, flame icon, reset message
+5. Implements **BadgeUnlockOverlay** - celebration on new badge
+6. Uses **Material 3** - components, theming, typography
 
 ## Output
-- `points_display.dart` — PointsDisplay widget
-- `badge_collection_screen.dart` — BadgeCollectionScreen widget
-- `leaderboard_screen.dart` — LeaderboardScreen widget
-- `streak_display.dart` — StreakDisplay widget
-- `badge_unlock_overlay.dart` — BadgeUnlockOverlay widget
+- `points_display.dart` - PointsDisplay widget
+- `badge_collection_screen.dart` - BadgeCollectionScreen widget
+- `leaderboard_screen.dart` - LeaderboardScreen widget
+- `streak_display.dart` - StreakDisplay widget
+- `badge_unlock_overlay.dart` - BadgeUnlockOverlay widget
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

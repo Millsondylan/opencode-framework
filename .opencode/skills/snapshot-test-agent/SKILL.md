@@ -13,8 +13,8 @@ Creates and maintains golden file (snapshot) tests for UI regression. Captures w
 ```
 
 ## Parameters
-- **Target widgets/screens** — UI components to snapshot
-- **Golden baseline** — Optional existing golden directory
+- **Target widgets/screens** - UI components to snapshot
+- **Golden baseline** - Optional existing golden directory
 
 ## What It Does
 1. Identifies widgets and screens to snapshot
@@ -24,7 +24,7 @@ Creates and maintains golden file (snapshot) tests for UI regression. Captures w
 5. Updates goldens when UI intentionally changes
 
 ## Output
-- `test/goldens/` — Golden image/snapshot files
+- `test/goldens/` - Golden image/snapshot files
 - Snapshot test files (e.g., `*_golden_test.dart`)
 
 ## What It Must NOT Do

@@ -1,8 +1,9 @@
 ---
 name: auth-test
 description: Write unit tests for auth logic, widget tests for auth screens, mock Supabase client, and integration tests for the auth domain
+version: 1.0.0
+tier: standard
 ---
-
 # auth-test - Auth Domain Test
 
 Writes unit tests for auth logic, widget tests for auth screens, mocks Supabase client, and integration tests. Sixth in the auth domain chain (6/6).
@@ -24,13 +25,13 @@ Writes unit tests for auth logic, widget tests for auth screens, mocks Supabase 
 6. Uses `mocktail` or `mockito` for mocking; `flutter_test` for widget/integration tests
 
 ## Output
-- `auth_validator_test.dart` — Unit tests for UserValidator
-- `auth_guard_test.dart` — Unit tests for AuthGuard
-- `auth_repository_test.dart` — Unit tests for AuthRepository (mocked data source)
-- `login_screen_test.dart` — Widget tests for login screen
-- `signup_screen_test.dart` — Widget tests for signup screen
-- `mock_supabase_client.dart` — Mock Supabase Auth client for tests
-- `auth_integration_test.dart` — Integration tests for auth flows
+- `auth_validator_test.dart` - Unit tests for UserValidator
+- `auth_guard_test.dart` - Unit tests for AuthGuard
+- `auth_repository_test.dart` - Unit tests for AuthRepository (mocked data source)
+- `login_screen_test.dart` - Widget tests for login screen
+- `signup_screen_test.dart` - Widget tests for signup screen
+- `mock_supabase_client.dart` - Mock Supabase Auth client for tests
+- `auth_integration_test.dart` - Integration tests for auth flows
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

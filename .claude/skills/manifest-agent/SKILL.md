@@ -1,8 +1,9 @@
 ---
 name: manifest-agent
-description: Final app manifest — every screen, route, service, model, provider, test
+description: Final app manifest - every screen, route, service, model, provider, test
+version: 1.0.0
+tier: standard
 ---
-
 # manifest-agent - App Manifest Generator
 
 Produces final app manifest: every screen, route, service, model, provider, and test. Single source of truth for app structure.
@@ -13,8 +14,8 @@ Produces final app manifest: every screen, route, service, model, provider, and 
 ```
 
 ## Parameters
-- **Scope** — App root or config (default: full app)
-- **Include** — Optional filters (screens only, routes only, etc.)
+- **Scope** - App root or config (default: full app)
+- **Include** - Optional filters (screens only, routes only, etc.)
 
 ## What It Does
 1. Discovers all screens and their routes
@@ -25,7 +26,7 @@ Produces final app manifest: every screen, route, service, model, provider, and 
 6. Produces structured JSON manifest
 
 ## Output
-- `app-manifest.json` — Screens, routes, services, models, providers, tests
+- `app-manifest.json` - Screens, routes, services, models, providers, tests
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

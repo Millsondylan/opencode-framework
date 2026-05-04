@@ -13,8 +13,8 @@ Writes end-to-end tests using patrol or integration_test. Exercises full app flo
 ```
 
 ## Parameters
-- **Critical flows** — User journeys to cover (login, checkout, etc.)
-- **Framework** — patrol or integration_test (Flutter), or equivalent for other stacks
+- **Critical flows** - User journeys to cover (login, checkout, etc.)
+- **Framework** - patrol or integration_test (Flutter), or equivalent for other stacks
 
 ## What It Does
 1. Identifies critical user flows from TaskSpec or app manifest
@@ -24,7 +24,7 @@ Writes end-to-end tests using patrol or integration_test. Exercises full app flo
 5. Outputs runnable integration test suite
 
 ## Output
-- `integration_test/` — E2E test files
+- `integration_test/` - E2E test files
 - Test configuration (e.g., `integration_test_driver.dart`)
 
 ## What It Must NOT Do

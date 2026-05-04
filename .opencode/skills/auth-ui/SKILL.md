@@ -16,21 +16,21 @@ Implements auth screens with Material 3: login, registration, forgot password, M
 - None. This skill consumes auth-flow outputs and produces UI artifacts.
 
 ## What It Does
-1. Implements **LoginScreen** — email/password form, submit, loading state
-2. Implements **RegisterScreen** — sign-up form, validation, submit
-3. Implements **ForgotPasswordScreen** — email input, reset request
-4. Implements **MfaScreen** — OTP/code input, verify, retry
-5. Implements **ProfileScreen** — user info display, sign-out action
-6. Adds **form validation UI** — inline errors, field-level feedback
-7. Handles **error states** — snackbars, banners, inline error messages
-8. Uses **Material 3** — components, theming, typography
+1. Implements **LoginScreen** - email/password form, submit, loading state
+2. Implements **RegisterScreen** - sign-up form, validation, submit
+3. Implements **ForgotPasswordScreen** - email input, reset request
+4. Implements **MfaScreen** - OTP/code input, verify, retry
+5. Implements **ProfileScreen** - user info display, sign-out action
+6. Adds **form validation UI** - inline errors, field-level feedback
+7. Handles **error states** - snackbars, banners, inline error messages
+8. Uses **Material 3** - components, theming, typography
 
 ## Output
-- `login_screen.dart` — LoginScreen widget
-- `register_screen.dart` — RegisterScreen widget
-- `forgot_password_screen.dart` — ForgotPasswordScreen widget
-- `mfa_screen.dart` — MfaScreen widget
-- `profile_screen.dart` — ProfileScreen widget
+- `login_screen.dart` - LoginScreen widget
+- `register_screen.dart` - RegisterScreen widget
+- `forgot_password_screen.dart` - ForgotPasswordScreen widget
+- `mfa_screen.dart` - MfaScreen widget
+- `profile_screen.dart` - ProfileScreen widget
 - Form validation UI components (e.g., validated text fields)
 - Error state widgets (snackbar, banner, inline)
 

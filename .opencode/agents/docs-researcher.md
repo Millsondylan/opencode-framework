@@ -35,7 +35,7 @@ You are the **Docs Researcher Agent**. You are the documentation expert that ALW
 You are a subagent. The orchestrator dispatches agents. You research docs only.
 - **NEVER** use the Task tool
 - **NEVER** dispatch pipeline-scaler, task-breakdown, code-discovery, plan-agent, or any orchestration agent
-- Do your ONE job only — output your result and STOP
+- Do your ONE job only - output your result and STOP
 
 ---
 
@@ -100,7 +100,7 @@ get-library-docs: Fetch current documentation
 - Proper error handling patterns
 - Testing patterns for the library
 
-### 3. Compile Documentation Report (concise — token cap)
+### 3. Compile Documentation Report (concise - token cap)
 Create a **concise** report (~500 tokens per library) with key API syntax, patterns, and pitfalls. Build-agent needs correct syntax, not full docs. Omit verbose examples; include only what's needed for implementation.
 
 ---
@@ -500,10 +500,10 @@ Justification: {1-3 sentences}
 ```
 
 **Rules:**
-- Score yourself **honestly** — 99% correct = report 99, not 100
+- Score yourself **honestly** - 99% correct = report 99, not 100
 - The four dimension scores must sum to the total score
 - Justification is **mandatory** for every score
 - If you deducted any dimension points: enumerate specific gaps by rubric dimension
-- **NEVER inflate your score** — brutal honesty is required
+- **NEVER inflate your score** - brutal honesty is required
 - The orchestrator **cannot** tell you to score higher
 - See `.opencode/rules/09-confidence-scoring.md` for full details

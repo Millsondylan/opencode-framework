@@ -16,7 +16,7 @@ A **production-grade multi-agent system** for software development in **Claude C
 
 ---
 
-## The pipeline (stages 1–16)
+## The pipeline (stages 1-16)
 
 Every engineering request flows through the stages in `CLAUDE.md` / `AGENTS.md`:
 
@@ -29,7 +29,7 @@ Stage 5:  code-discovery       → RepoProfile
 Stage 6:  plan-agent           → Implementation plan
 Stage 7:  docs-researcher      → Library docs
 Stage 8:  pre-flight-checker   → Preconditions
-Stage 9:  build-agent-N        → Implement (1–2 files per agent, chain 1→55→1)
+Stage 9:  build-agent-N        → Implement (1-2 files per agent, chain 1→55→1)
 Stage 10: test-writer          → Tests
 Stage 11: debugger             → Fix errors (debugger → … → debugger-11)
 Stage 12: logical-agent        → Logic review
@@ -68,13 +68,13 @@ Each step tries fixes and passes remaining work on failure.
 
 ## Build-agent chain (55 agents)
 
-`build-agent-1` through `build-agent-55` (and `build-agent`) implement small batches (typically 1–2 files), cycling until the plan is done.
+`build-agent-1` through `build-agent-55` (and `build-agent`) implement small batches (typically 1-2 files), cycling until the plan is done.
 
 ---
 
 ## What the orchestrator must not do
 
-- **No direct code edits** — dispatch `build-agent-N` (and other agents) instead.
+- **No direct code edits** - dispatch `build-agent-N` (and other agents) instead.
 - **No skipping** `pipeline-scaler` for repo work.
 - **No parallel** agent dispatches.
 - **No stopping** between stages except user confirmation after task-breakdown.
@@ -89,7 +89,7 @@ Each step tries fixes and passes remaining work on failure.
 ├── .ai/README.md          # ACM / safety for agents
 ├── .claude/
 │   ├── agents/            # Subagent definitions (YAML frontmatter + body)
-│   ├── rules/             # Pipeline rules (01–09, …)
+│   ├── rules/             # Pipeline rules (01-09, …)
 │   ├── skills/            # Domain SKILL.md files
 │   └── settings.json      # Hooks (optional)
 └── scripts/               # Helper scripts (e.g. confidence section)
@@ -107,7 +107,7 @@ The pipeline runs from `pipeline-scaler` through `decide-agent` as in the table 
 
 ## Philosophy
 
-This treats AI-assisted work as a **structured engineering process**: specialization, explicit stages, tests, and reviews—not a single chat that tries to do everything at once.
+This treats AI-assisted work as a **structured engineering process**: specialization, explicit stages, tests, and reviews-not a single chat that tries to do everything at once.
 
 ---
 

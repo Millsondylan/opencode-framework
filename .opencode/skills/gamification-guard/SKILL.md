@@ -16,15 +16,15 @@ Implements anti-cheat and integrity checks. Fifth in the gamification domain cha
 - None. This skill consumes gamification-schema and gamification-provider outputs and produces guard artifacts.
 
 ## What It Does
-1. Implements **AntiCheatGuard** — detect impossible point gains, rate limits
-2. Implements **IntegrityGuard** — validate points/badge consistency server-side
+1. Implements **AntiCheatGuard** - detect impossible point gains, rate limits
+2. Implements **IntegrityGuard** - validate points/badge consistency server-side
 3. Integrates with Riverpod gamification state for guard decisions
-4. Handles **suspicious activity** — flag, throttle, block
-5. Handles **server validation** — all point/badge changes verified server-side
+4. Handles **suspicious activity** - flag, throttle, block
+5. Handles **server validation** - all point/badge changes verified server-side
 
 ## Output
-- `anti_cheat_guard.dart` — AntiCheatGuard
-- `integrity_guard.dart` — IntegrityGuard
+- `anti_cheat_guard.dart` - AntiCheatGuard
+- `integrity_guard.dart` - IntegrityGuard
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

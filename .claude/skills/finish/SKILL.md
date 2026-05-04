@@ -1,8 +1,9 @@
 ---
 name: finish
 description: Run the full multi-agent pipeline to complete a task from start to finish
+version: 1.0.0
+tier: standard
 ---
-
 # /finish - Complete a Task
 
 Invoke the full multi-agent pipeline to complete a task end-to-end, from analysis through implementation, testing, and verification.
@@ -56,7 +57,7 @@ The orchestrator uses the `task` tool to dispatch agents sequentially and evalua
 - **HANDLE REQUEST** - Agent requested another agent
 
 ## Tool Usage
-- `task` - dispatches to each pipeline agent sequentially. **REQUIRED:** Always include `description` (3–5 words) in every task call — e.g. `description: "Scale task complexity"`, `description: "Decompose into TaskSpec"`. Omitting it causes "expected string, received undefined".
+- `task` - dispatches to each pipeline agent sequentially. **REQUIRED:** Always include `description` (3-5 words) in every task call - e.g. `description: "Scale task complexity"`, `description: "Decompose into TaskSpec"`. Omitting it causes "expected string, received undefined".
 - `todowrite` - tracks pipeline state and stage progress
 - `question` - single confirmation point after task-breakdown (only user interaction)
 

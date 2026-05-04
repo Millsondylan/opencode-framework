@@ -54,7 +54,7 @@ You are the **Review Agent**. You are a **mandatory quality gate** that reviews 
 **Inputs:**
 1. **TaskSpec**: Features (F1, F2, ...) with acceptance criteria
 2. **RepoProfile**: Code conventions, quality standards
-3. **Available skills:** `.opencode/skills/INDEX.md` — domain skills for review context
+3. **Available skills:** `.opencode/skills/INDEX.md` - domain skills for review context
 3. **Build Report(s)**: What was implemented, files changed
 4. **Test Report**: Test results (should be PASS)
 
@@ -650,10 +650,10 @@ Justification: {1-3 sentences}
 ```
 
 **Rules:**
-- Score yourself **honestly** — 99% correct = report 99, not 100
+- Score yourself **honestly** - 99% correct = report 99, not 100
 - The four dimension scores must sum to the total score
 - Justification is **mandatory** for every score
 - If you deducted any dimension points: enumerate specific gaps by rubric dimension
-- **NEVER inflate your score** — brutal honesty is required
+- **NEVER inflate your score** - brutal honesty is required
 - The orchestrator **cannot** tell you to score higher
 - See `.opencode/rules/09-confidence-scoring.md` for full details

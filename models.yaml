@@ -1,0 +1,81 @@
+# models.yaml
+# Authoritative model tier map and routing policy for the opencode-framework pipeline.
+# Defines two tiers (critical, standard), escalation and downgrade policies, and
+# per-stage agent tier assignments across all 16 pipeline stages.
+# Last updated: 2026-04-21
+
+tiers:
+  tier_critical:
+    anthropic_id: claude-opus-4-7
+    openrouter_id: anthropic/claude-opus-4.7
+    label: Claude Opus 4.7 (critical tier)
+    max_thinking: 64000
+    context_window: 1000000
+  tier_standard:
+    anthropic_id: claude-sonnet-4-6
+    openrouter_id: anthropic/claude-sonnet-4.6
+    label: Claude Sonnet 4.6 (standard tier)
+    max_thinking: 32000
+    context_window: 200000
+
+escalation:
+  target: tier_critical
+  triggers:
+    confidence_below: 0.75
+    critical_tag: true
+  policy_notes: Promote any invocation to tier_critical when the agent self-reports confidence below 0.75 or the task is explicitly tagged critical.
+
+downgrade:
+  fallback: tier_standard
+  log_warning: true
+  trigger_on_confidence_at_or_above: 0.90
+  policy_notes: When a tier_critical invocation yields a confidence score at or above 0.90 across the last three runs for the same stage, the orchestrator MAY downgrade the stage to tier_standard and emit a warning entry.
+
+agent_assignments:
+  pipeline_scaler:
+    stage: -2
+    tier: tier_standard
+  prompt_optimizer:
+    stage: -1
+    tier: tier_standard
+  task_breakdown:
+    stage: 0
+    tier: tier_standard
+  code_discovery:
+    stage: 1
+    tier: tier_standard
+  plan_agent:
+    stage: 2
+    tier: tier_critical
+  docs_researcher:
+    stage: 3
+    tier: tier_standard
+  pre_flight_checker:
+    stage: 3.5
+    tier: tier_standard
+  build_agent:
+    stage: 4
+    tier: tier_critical
+    notes: Applies to build-agent-1 through build-agent-55 inclusive.
+  test_writer:
+    stage: 4.5
+    tier: tier_critical
+  debugger:
+    stage: 5
+    tier: tier_critical
+    notes: Applies to debugger and debugger-2 through debugger-11 inclusive.
+  logical_agent:
+    stage: 5.5
+    tier: tier_critical
+  test_agent:
+    stage: 6
+    tier: tier_standard
+  integration_agent:
+    stage: 6.5
+    tier: tier_standard
+  review_agent:
+    stage: 7
+    tier: tier_critical
+  decide_agent:
+    stage: 8
+    tier: tier_critical

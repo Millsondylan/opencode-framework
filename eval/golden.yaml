@@ -1,0 +1,748 @@
+suite_name: opencode-golden
+version: 1.0.0
+description: >
+  Golden evaluation suite for the opencode framework pipeline. Fifty tasks
+  cover flutter features, flutter bugfixes, nextjs features, python scripts,
+  supabase migrations, publishing releases, marketing campaigns, memory
+  consolidation, and config updates. Runner: eval/runner.py. Scoreboard:
+  eval/scoreboard.py. Zero banned dashes. ASCII hyphen only.
+
+tasks:
+
+  # flutter_feature (10)
+  - id: g001
+    category: flutter_feature
+    prompt: "Add a dark mode toggle to the settings screen that persists across app launches."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - lib/features/settings/settings_screen.dart
+      - lib/core/theme/theme_provider.dart
+    expected_stages_invoked:
+      - pipeline-scaler
+      - task-breakdown
+      - plan-agent
+      - build-agent-1
+      - test-writer
+      - review-agent
+      - decide-agent
+    max_tokens: 60000
+    max_latency_seconds: 240
+    tags: [ui, theme, persistence]
+
+  - id: g002
+    category: flutter_feature
+    prompt: "Implement a transaction list screen with ListView.builder, pull to refresh, and empty state."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - lib/features/transactions/transaction_list_screen.dart
+    expected_stages_invoked:
+      - plan-agent
+      - build-agent-1
+      - test-writer
+      - decide-agent
+    max_tokens: 70000
+    max_latency_seconds: 300
+    tags: [ui, list, performance]
+
+  - id: g003
+    category: flutter_feature
+    prompt: "Add biometric unlock using local_auth with fallback to PIN."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - lib/features/auth/biometric_gate.dart
+      - lib/features/auth/pin_fallback.dart
+    expected_stages_invoked:
+      - docs-researcher
+      - plan-agent
+      - build-agent-1
+      - build-agent-2
+      - decide-agent
+    max_tokens: 80000
+    max_latency_seconds: 320
+    tags: [auth, biometric, security]
+
+  - id: g004
+    category: flutter_feature
+    prompt: "Add a bottom navigation bar with four tabs using GoRouter StatefulShellRoute."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - lib/core/router/app_router.dart
+      - lib/core/router/shell_scaffold.dart
+    expected_stages_invoked:
+      - plan-agent
+      - build-agent-1
+      - decide-agent
+    max_tokens: 55000
+    max_latency_seconds: 240
+    tags: [navigation, go_router]
+
+  - id: g005
+    category: flutter_feature
+    prompt: "Add a currency formatter that respects device locale and handles negative balances in red."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - lib/core/utils/currency.dart
+    expected_stages_invoked:
+      - plan-agent
+      - build-agent-1
+      - test-writer
+      - decide-agent
+    max_tokens: 40000
+    max_latency_seconds: 180
+    tags: [utils, i18n]
+
+  - id: g006
+    category: flutter_feature
+    prompt: "Add offline first caching with Drift and SQLCipher for the accounts table."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - lib/data/local/accounts_dao.dart
+      - lib/data/local/database.dart
+    expected_stages_invoked:
+      - docs-researcher
+      - plan-agent
+      - build-agent-1
+      - build-agent-2
+      - decide-agent
+    max_tokens: 90000
+    max_latency_seconds: 360
+    tags: [drift, sqlcipher, offline]
+
+  - id: g007
+    category: flutter_feature
+    prompt: "Add a search bar with debounced queries over the local transactions table."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - lib/features/search/search_screen.dart
+      - lib/features/search/search_controller.dart
+    expected_stages_invoked:
+      - plan-agent
+      - build-agent-1
+      - test-writer
+      - decide-agent
+    max_tokens: 60000
+    max_latency_seconds: 240
+    tags: [search, debounce]
+
+  - id: g008
+    category: flutter_feature
+    prompt: "Add a chart screen that renders monthly spend with fl_chart and respects text scale."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - lib/features/insights/spend_chart.dart
+    expected_stages_invoked:
+      - docs-researcher
+      - plan-agent
+      - build-agent-1
+      - decide-agent
+    max_tokens: 65000
+    max_latency_seconds: 260
+    tags: [chart, accessibility]
+
+  - id: g009
+    category: flutter_feature
+    prompt: "Add CSV export for transactions using path_provider and share_plus."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - lib/features/export/csv_export.dart
+    expected_stages_invoked:
+      - docs-researcher
+      - plan-agent
+      - build-agent-1
+      - decide-agent
+    max_tokens: 55000
+    max_latency_seconds: 240
+    tags: [export, share]
+
+  - id: g010
+    category: flutter_feature
+    prompt: "Add a paywall screen with RevenueCat and a restore purchases button."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - lib/features/paywall/paywall_screen.dart
+      - lib/features/paywall/purchase_controller.dart
+    expected_stages_invoked:
+      - docs-researcher
+      - plan-agent
+      - build-agent-1
+      - build-agent-2
+      - decide-agent
+    max_tokens: 85000
+    max_latency_seconds: 360
+    tags: [paywall, revenuecat, iap]
+
+  # flutter_bugfix (8)
+  - id: g011
+    category: flutter_bugfix
+    prompt: "Fix setState called after dispose warning in the home controller."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - lib/features/home/home_controller.dart
+    expected_stages_invoked:
+      - debugger
+      - test-writer
+      - decide-agent
+    max_tokens: 30000
+    max_latency_seconds: 150
+    tags: [bug, lifecycle]
+
+  - id: g012
+    category: flutter_bugfix
+    prompt: "Fix null check operator on null value in the profile repository when the session is missing."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - lib/data/profile_repository.dart
+    expected_stages_invoked:
+      - debugger
+      - logical-agent
+      - decide-agent
+    max_tokens: 30000
+    max_latency_seconds: 150
+    tags: [bug, null_safety]
+
+  - id: g013
+    category: flutter_bugfix
+    prompt: "Fix overflow in the transaction row when the merchant name is long."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - lib/features/transactions/transaction_row.dart
+    expected_stages_invoked:
+      - build-agent-1
+      - decide-agent
+    max_tokens: 25000
+    max_latency_seconds: 120
+    tags: [bug, layout]
+
+  - id: g014
+    category: flutter_bugfix
+    prompt: "Fix memory leak in animation controller that is not disposed on navigation."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - lib/features/splash/splash_screen.dart
+    expected_stages_invoked:
+      - debugger
+      - logical-agent
+      - decide-agent
+    max_tokens: 28000
+    max_latency_seconds: 150
+    tags: [bug, memory]
+
+  - id: g015
+    category: flutter_bugfix
+    prompt: "Fix race condition in the login flow where two api calls fire concurrently."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - lib/features/auth/login_controller.dart
+    expected_stages_invoked:
+      - debugger
+      - test-writer
+      - decide-agent
+    max_tokens: 35000
+    max_latency_seconds: 180
+    tags: [bug, concurrency]
+
+  - id: g016
+    category: flutter_bugfix
+    prompt: "Fix WillPopScope deprecation by migrating to PopScope with onPopInvokedWithResult."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - lib/features/form/edit_profile_screen.dart
+    expected_stages_invoked:
+      - docs-researcher
+      - build-agent-1
+      - decide-agent
+    max_tokens: 30000
+    max_latency_seconds: 150
+    tags: [migration, deprecation]
+
+  - id: g017
+    category: flutter_bugfix
+    prompt: "Fix FutureBuilder rebuild loop caused by an uncached future in build method."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - lib/features/dashboard/dashboard_screen.dart
+    expected_stages_invoked:
+      - debugger
+      - build-agent-1
+      - decide-agent
+    max_tokens: 30000
+    max_latency_seconds: 150
+    tags: [bug, performance]
+
+  - id: g018
+    category: flutter_bugfix
+    prompt: "Fix flaky widget test by replacing pump with pumpAndSettle and adding a key."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - test/features/login/login_test.dart
+    expected_stages_invoked:
+      - test-writer
+      - test-agent
+      - decide-agent
+    max_tokens: 25000
+    max_latency_seconds: 120
+    tags: [test, flaky]
+
+  # nextjs_feature (5)
+  - id: g019
+    category: nextjs_feature
+    prompt: "Add a sign in page with email and password using Supabase auth in the Next.js app router."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - app/(auth)/sign-in/page.tsx
+      - app/(auth)/sign-in/actions.ts
+    expected_stages_invoked:
+      - docs-researcher
+      - plan-agent
+      - build-agent-1
+      - build-agent-2
+      - decide-agent
+    max_tokens: 80000
+    max_latency_seconds: 300
+    tags: [nextjs, supabase, auth]
+
+  - id: g020
+    category: nextjs_feature
+    prompt: "Add a public landing page with hero, features grid, and a pricing section."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - app/page.tsx
+      - components/landing/pricing.tsx
+    expected_stages_invoked:
+      - plan-agent
+      - build-agent-1
+      - decide-agent
+    max_tokens: 60000
+    max_latency_seconds: 240
+    tags: [nextjs, marketing]
+
+  - id: g021
+    category: nextjs_feature
+    prompt: "Add a server action that saves a newsletter subscription to Supabase with RLS enforced."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - app/api/newsletter/route.ts
+      - supabase/migrations/newsletter.sql
+    expected_stages_invoked:
+      - docs-researcher
+      - plan-agent
+      - build-agent-1
+      - build-agent-2
+      - decide-agent
+    max_tokens: 75000
+    max_latency_seconds: 300
+    tags: [nextjs, supabase, rls]
+
+  - id: g022
+    category: nextjs_feature
+    prompt: "Add a blog index and dynamic blog post route reading MDX from the content directory."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - app/blog/page.tsx
+      - app/blog/[slug]/page.tsx
+    expected_stages_invoked:
+      - plan-agent
+      - build-agent-1
+      - build-agent-2
+      - decide-agent
+    max_tokens: 70000
+    max_latency_seconds: 300
+    tags: [nextjs, mdx]
+
+  - id: g023
+    category: nextjs_feature
+    prompt: "Add middleware that redirects unauthenticated users away from app/dashboard routes."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - middleware.ts
+    expected_stages_invoked:
+      - docs-researcher
+      - build-agent-1
+      - decide-agent
+    max_tokens: 45000
+    max_latency_seconds: 180
+    tags: [nextjs, middleware, auth]
+
+  # python_script (5)
+  - id: g024
+    category: python_script
+    prompt: "Write a script that scans the repo for banned dash characters and exits nonzero on match."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - scripts/dash_scan.py
+    expected_stages_invoked:
+      - build-agent-1
+      - test-writer
+      - decide-agent
+    max_tokens: 35000
+    max_latency_seconds: 180
+    tags: [scripts, lint]
+
+  - id: g025
+    category: python_script
+    prompt: "Write a script that archives old screenshots older than 30 days into a zip under publishing/archive."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - scripts/archive_screenshots.py
+    expected_stages_invoked:
+      - build-agent-1
+      - test-writer
+      - decide-agent
+    max_tokens: 35000
+    max_latency_seconds: 180
+    tags: [scripts, housekeeping]
+
+  - id: g026
+    category: python_script
+    prompt: "Write a script that reads models.yaml and validates that every agent has a model assignment."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - scripts/validate_models.py
+    expected_stages_invoked:
+      - build-agent-1
+      - test-writer
+      - decide-agent
+    max_tokens: 30000
+    max_latency_seconds: 150
+    tags: [scripts, validation]
+
+  - id: g027
+    category: python_script
+    prompt: "Write a script that rotates .claude/hooks/logs files daily and compresses them with gzip."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - scripts/rotate_logs.py
+    expected_stages_invoked:
+      - build-agent-1
+      - test-writer
+      - decide-agent
+    max_tokens: 35000
+    max_latency_seconds: 180
+    tags: [scripts, logs]
+
+  - id: g028
+    category: python_script
+    prompt: "Write a script that pings the Spacemail Insight MCP health endpoint and reports status."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - scripts/spacemail_health.py
+    expected_stages_invoked:
+      - build-agent-1
+      - decide-agent
+    max_tokens: 25000
+    max_latency_seconds: 120
+    tags: [scripts, monitoring]
+
+  # supabase_migration (5)
+  - id: g029
+    category: supabase_migration
+    prompt: "Create a transactions table with RLS enabled and owner based select, insert, update, delete policies."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - supabase/migrations/001_transactions.sql
+    expected_stages_invoked:
+      - pre-flight-checker
+      - build-agent-1
+      - review-agent
+      - decide-agent
+    max_tokens: 45000
+    max_latency_seconds: 180
+    tags: [supabase, rls, migration]
+
+  - id: g030
+    category: supabase_migration
+    prompt: "Create an organisations and memberships table with tenant scoped RLS policies."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - supabase/migrations/002_orgs.sql
+    expected_stages_invoked:
+      - pre-flight-checker
+      - build-agent-1
+      - decide-agent
+    max_tokens: 55000
+    max_latency_seconds: 240
+    tags: [supabase, multitenant, rls]
+
+  - id: g031
+    category: supabase_migration
+    prompt: "Create a view over accounts with security_invoker on that filters by auth.uid."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - supabase/migrations/003_accounts_view.sql
+    expected_stages_invoked:
+      - pre-flight-checker
+      - build-agent-1
+      - review-agent
+      - decide-agent
+    max_tokens: 35000
+    max_latency_seconds: 150
+    tags: [supabase, view, security_invoker]
+
+  - id: g032
+    category: supabase_migration
+    prompt: "Add an index on transactions(user_id, created_at desc) and a concurrent migration pattern."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - supabase/migrations/004_transactions_index.sql
+    expected_stages_invoked:
+      - build-agent-1
+      - decide-agent
+    max_tokens: 30000
+    max_latency_seconds: 120
+    tags: [supabase, index]
+
+  - id: g033
+    category: supabase_migration
+    prompt: "Add a trigger that updates updated_at on every row update across user data tables."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - supabase/migrations/005_updated_at_trigger.sql
+    expected_stages_invoked:
+      - build-agent-1
+      - decide-agent
+    max_tokens: 35000
+    max_latency_seconds: 150
+    tags: [supabase, trigger]
+
+  # publishing_release (5)
+  - id: g034
+    category: publishing_release
+    prompt: "Generate the App Store metadata bundle for version 1.2.0 including release notes and screenshots manifest."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - publishing/appstore/1.2.0/metadata.yaml
+    expected_stages_invoked:
+      - plan-agent
+      - build-agent-1
+      - decide-agent
+    max_tokens: 40000
+    max_latency_seconds: 180
+    tags: [publishing, appstore]
+
+  - id: g035
+    category: publishing_release
+    prompt: "Generate the Play Store listing for version 1.2.0 with short and full descriptions."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - publishing/playstore/1.2.0/listing.yaml
+    expected_stages_invoked:
+      - plan-agent
+      - build-agent-1
+      - decide-agent
+    max_tokens: 40000
+    max_latency_seconds: 180
+    tags: [publishing, playstore]
+
+  - id: g036
+    category: publishing_release
+    prompt: "Bump the app version to 1.2.0 in pubspec.yaml and regenerate the changelog."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - pubspec.yaml
+      - CHANGELOG.md
+    expected_stages_invoked:
+      - build-agent-1
+      - decide-agent
+    max_tokens: 25000
+    max_latency_seconds: 120
+    tags: [publishing, versioning]
+
+  - id: g037
+    category: publishing_release
+    prompt: "Generate a TestFlight invite email template routed through Spacemail Insight MCP only."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - publishing/emails/testflight_invite.md
+    expected_stages_invoked:
+      - plan-agent
+      - build-agent-1
+      - review-agent
+      - decide-agent
+    max_tokens: 30000
+    max_latency_seconds: 150
+    tags: [publishing, email, spacemail]
+
+  - id: g038
+    category: publishing_release
+    prompt: "Create launchd plist that runs the nightly telemetry rollup at 2am with KeepAlive true."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - publishing/launchd/com.example.rollup.plist
+    expected_stages_invoked:
+      - build-agent-1
+      - decide-agent
+    max_tokens: 30000
+    max_latency_seconds: 150
+    tags: [publishing, launchd]
+
+  # marketing_campaign (4)
+  - id: g039
+    category: marketing_campaign
+    prompt: "Draft a three email drip campaign for new signups routed through Spacemail Insight MCP."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - marketing/drip/new_signups.yaml
+    expected_stages_invoked:
+      - plan-agent
+      - build-agent-1
+      - review-agent
+      - decide-agent
+    max_tokens: 45000
+    max_latency_seconds: 180
+    tags: [marketing, email, spacemail]
+
+  - id: g040
+    category: marketing_campaign
+    prompt: "Generate social launch copy for Twitter, LinkedIn, and Bluesky for the 1.2.0 release."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - marketing/social/1.2.0_launch.yaml
+    expected_stages_invoked:
+      - plan-agent
+      - build-agent-1
+      - decide-agent
+    max_tokens: 30000
+    max_latency_seconds: 150
+    tags: [marketing, social]
+
+  - id: g041
+    category: marketing_campaign
+    prompt: "Generate feature graphic specifications for app store screenshots at 6.7 inch and 6.1 inch."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - marketing/graphics/screenshots_spec.yaml
+    expected_stages_invoked:
+      - plan-agent
+      - build-agent-1
+      - decide-agent
+    max_tokens: 35000
+    max_latency_seconds: 150
+    tags: [marketing, graphics]
+
+  - id: g042
+    category: marketing_campaign
+    prompt: "Draft a press kit with one pager, hero image notes, and contact routed via Spacemail."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - marketing/press/presskit.md
+    expected_stages_invoked:
+      - plan-agent
+      - build-agent-1
+      - review-agent
+      - decide-agent
+    max_tokens: 40000
+    max_latency_seconds: 180
+    tags: [marketing, press]
+
+  # memory_consolidation (4)
+  - id: g043
+    category: memory_consolidation
+    prompt: "Consolidate session memory into a daily summary under memory/daily/YYYY-MM-DD.md."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - memory/daily/today.md
+    expected_stages_invoked:
+      - plan-agent
+      - build-agent-1
+      - decide-agent
+    max_tokens: 35000
+    max_latency_seconds: 150
+    tags: [memory, consolidation]
+
+  - id: g044
+    category: memory_consolidation
+    prompt: "Roll weekly memory into memory/weekly.md and archive last week's entries."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - memory/weekly.md
+    expected_stages_invoked:
+      - plan-agent
+      - build-agent-1
+      - decide-agent
+    max_tokens: 35000
+    max_latency_seconds: 150
+    tags: [memory, weekly]
+
+  - id: g045
+    category: memory_consolidation
+    prompt: "Extract open items from today's memory and append to docs/open-items.md with unique IDs."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - docs/open-items.md
+    expected_stages_invoked:
+      - build-agent-1
+      - decide-agent
+    max_tokens: 25000
+    max_latency_seconds: 120
+    tags: [memory, open_items]
+
+  - id: g046
+    category: memory_consolidation
+    prompt: "Create a decision record for the current pipeline model tier downgrade."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - docs/decisions/today-tier-downgrade.md
+    expected_stages_invoked:
+      - build-agent-1
+      - decide-agent
+    max_tokens: 25000
+    max_latency_seconds: 120
+    tags: [memory, decision_record]
+
+  # config_update (4)
+  - id: g047
+    category: config_update
+    prompt: "Update models.yaml to pin tier_critical to claude-opus-4-7 and tier_standard to claude-sonnet-4-6."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - models.yaml
+    expected_stages_invoked:
+      - build-agent-1
+      - review-agent
+      - decide-agent
+    max_tokens: 20000
+    max_latency_seconds: 120
+    tags: [config, models]
+
+  - id: g048
+    category: config_update
+    prompt: "Update projects.yaml to add a new project entry with path, skill list, and keychain service prefix."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - projects.yaml
+    expected_stages_invoked:
+      - build-agent-1
+      - decide-agent
+    max_tokens: 20000
+    max_latency_seconds: 120
+    tags: [config, projects]
+
+  - id: g049
+    category: config_update
+    prompt: "Update .claude/settings.json to add a PostToolUse hook for the Write tool that runs the dash scan."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - .claude/settings.json
+    expected_stages_invoked:
+      - build-agent-1
+      - review-agent
+      - decide-agent
+    max_tokens: 25000
+    max_latency_seconds: 120
+    tags: [config, hooks]
+
+  - id: g050
+    category: config_update
+    prompt: "Add a new skill entry to .claude/skills/INDEX.md for spacemail-campaign and create its SKILL.md."
+    expected_outcome: SUCCESS
+    expected_files_modified:
+      - .claude/skills/INDEX.md
+      - .claude/skills/spacemail-campaign/SKILL.md
+    expected_stages_invoked:
+      - plan-agent
+      - build-agent-1
+      - build-agent-2
+      - decide-agent
+    max_tokens: 45000
+    max_latency_seconds: 180
+    tags: [config, skill]

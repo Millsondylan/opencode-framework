@@ -16,17 +16,17 @@ Implements search state management with Riverpod, debounce logic, pagination, an
 - None. This skill consumes search-schema and search-provider outputs and produces flow artifacts.
 
 ## What It Does
-1. Implements **SearchNotifier** — Riverpod StateNotifier for search state
-2. Defines **SearchState** — idle, loading, results, empty, error, paginating
-3. Registers **searchProvider** — Riverpod provider exposing SearchNotifier
-4. Implements **debounce** — query input debouncing (e.g., 300–500ms) before search execution
-5. Implements **pagination logic** — load more, cursor-based or offset-based, hasNext page handling
-6. Applies **filter application** — filter state → query params → provider trigger
+1. Implements **SearchNotifier** - Riverpod StateNotifier for search state
+2. Defines **SearchState** - idle, loading, results, empty, error, paginating
+3. Registers **searchProvider** - Riverpod provider exposing SearchNotifier
+4. Implements **debounce** - query input debouncing (e.g., 300-500ms) before search execution
+5. Implements **pagination logic** - load more, cursor-based or offset-based, hasNext page handling
+6. Applies **filter application** - filter state → query params → provider trigger
 
 ## Output
-- `search_notifier.dart` — SearchNotifier (StateNotifier<SearchState>)
-- `search_state.dart` — SearchState sealed class / union type
-- `search_provider.dart` — searchProvider (Riverpod Provider)
+- `search_notifier.dart` - SearchNotifier (StateNotifier<SearchState>)
+- `search_state.dart` - SearchState sealed class / union type
+- `search_provider.dart` - searchProvider (Riverpod Provider)
 - Pagination logic (load more, next page, hasNext)
 
 ## What It Must NOT Do

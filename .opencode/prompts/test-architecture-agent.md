@@ -1,7 +1,7 @@
 ---
 skill: architecture-agent
 category: architecture
-description: "Test prompt for architecture-agent skill — produces minimal architecture artifacts"
+description: "Test prompt for architecture-agent skill - produces minimal architecture artifacts"
 ---
 
 # Test: architecture-agent (Architecture Skill)

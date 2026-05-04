@@ -1,8 +1,9 @@
 ---
 name: settings-ui
 description: Implement SettingsScreen, toggles, and account section for the settings domain
+version: 1.0.0
+tier: standard
 ---
-
 # settings-ui - Settings Domain UI
 
 Implements SettingsScreen, toggles, and account section. Fourth in the settings domain chain (4/6).
@@ -16,18 +17,18 @@ Implements SettingsScreen, toggles, and account section. Fourth in the settings 
 - None. This skill consumes settings-flow outputs and produces UI artifacts.
 
 ## What It Does
-1. Implements **SettingsScreen** — grouped settings, sections
-2. Implements **PreferenceToggle** — SwitchListTile, preference binding
-3. Implements **AccountSection** — profile, logout, delete account
-4. Implements **ThemeSelector** — light/dark/system preference
+1. Implements **SettingsScreen** - grouped settings, sections
+2. Implements **PreferenceToggle** - SwitchListTile, preference binding
+3. Implements **AccountSection** - profile, logout, delete account
+4. Implements **ThemeSelector** - light/dark/system preference
 5. Handles **loading and error states**
-6. Uses **Material 3** — components, theming, typography
+6. Uses **Material 3** - components, theming, typography
 
 ## Output
-- `settings_screen.dart` — SettingsScreen widget
-- `preference_toggle.dart` — PreferenceToggle widget
-- `account_section.dart` — AccountSection widget
-- `theme_selector.dart` — ThemeSelector widget
+- `settings_screen.dart` - SettingsScreen widget
+- `preference_toggle.dart` - PreferenceToggle widget
+- `account_section.dart` - AccountSection widget
+- `theme_selector.dart` - ThemeSelector widget
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

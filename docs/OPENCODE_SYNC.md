@@ -12,7 +12,7 @@ This repository uses the **OpenCode** setup (`.opencode/`) exclusively. It does
 not use Claude Code (`.claude/agents/`) or Codex.
 
 - **OpenCode** (`.opencode/`) - Uses AGENTS.md + `.opencode/agents/` + `.opencode/rules/`
-- Agent definitions live in `.opencode/agents/` (source of truth — edit here)
+- Agent definitions live in `.opencode/agents/` (source of truth - edit here)
 - Orchestration rules live in `.opencode/rules/` and are referenced by `opencode.json`
 
 ---
@@ -78,10 +78,10 @@ These files belong to this repository only and should not be copied to target pr
 
 | Path | Reason |
 |------|--------|
-| `.claude/agents/` | Deprecated — not used (opencode-only) |
-| `.claude/commands/` | Claude Code specific — not used |
-| `.claude/skills/` | Claude Code specific — not used |
-| `.claude/settings.json` | Claude Code specific — not used |
+| `.claude/agents/` | Deprecated - not used (opencode-only) |
+| `.claude/commands/` | Claude Code specific - not used |
+| `.claude/skills/` | Claude Code specific - not used |
+| `.claude/settings.json` | Claude Code specific - not used |
 | `model-switch/` | Go router proxy for model switching - this repo only |
 | `docs/` | This repo's documentation - does not need to be replicated |
 
@@ -202,10 +202,10 @@ This sets `OPENCODE_CONFIG` and `OPENCODE_CONFIG_DIR` so OpenCode ignores global
 
 This repo uses `.opencode/` as the single source of truth:
 
-- **Edit agents** in `.opencode/agents/` — they are not generated from elsewhere
-- **Edit rules** in `.opencode/rules/` — referenced by `opencode.json`
+- **Edit agents** in `.opencode/agents/` - they are not generated from elsewhere
+- **Edit rules** in `.opencode/rules/` - referenced by `opencode.json`
 - `AGENTS.md` and `CLAUDE.md` contain the same pipeline instructions (for Cursor/Claude Code compatibility)
-- `.claude/agents/` and `generate-agents.sh` are deprecated — do not use
+- `.claude/agents/` and `generate-agents.sh` are deprecated - do not use
 
 ---
 

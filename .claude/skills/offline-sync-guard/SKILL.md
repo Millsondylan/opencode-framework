@@ -1,8 +1,9 @@
 ---
 name: offline-sync-guard
 description: Implement data integrity checks and conflict policies for the offline-sync domain
+version: 1.0.0
+tier: standard
 ---
-
 # offline-sync-guard - Offline Sync Domain Guard
 
 Implements data integrity checks and conflict policies. Fifth in the offline-sync domain chain (5/6).
@@ -16,16 +17,16 @@ Implements data integrity checks and conflict policies. Fifth in the offline-syn
 - None. This skill consumes offline-sync-schema and offline-sync-provider outputs and produces guard artifacts.
 
 ## What It Does
-1. Implements **SyncIntegrityGuard** — validates queue items before sync
-2. Implements **ConflictPolicy** — last-write-wins, server-wins, merge strategies
-3. Implements **SyncValidationGuard** — checks data consistency before enqueue
+1. Implements **SyncIntegrityGuard** - validates queue items before sync
+2. Implements **ConflictPolicy** - last-write-wins, server-wins, merge strategies
+3. Implements **SyncValidationGuard** - checks data consistency before enqueue
 4. Integrates with Riverpod sync state for guard decisions
-5. Handles **orphan detection** — references to deleted entities
+5. Handles **orphan detection** - references to deleted entities
 
 ## Output
-- `sync_integrity_guard.dart` — SyncIntegrityGuard for validation
-- `conflict_policy.dart` — ConflictPolicy implementation
-- `sync_validation_guard.dart` — SyncValidationGuard for pre-sync checks
+- `sync_integrity_guard.dart` - SyncIntegrityGuard for validation
+- `conflict_policy.dart` - ConflictPolicy implementation
+- `sync_validation_guard.dart` - SyncValidationGuard for pre-sync checks
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

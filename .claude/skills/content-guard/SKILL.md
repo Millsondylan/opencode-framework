@@ -1,8 +1,9 @@
 ---
 name: content-guard
 description: Implement access control and content reporting for the content domain
+version: 1.0.0
+tier: standard
 ---
-
 # content-guard - Content Domain Guard
 
 Implements access control and content reporting. Fifth in the content domain chain (5/6).
@@ -16,15 +17,15 @@ Implements access control and content reporting. Fifth in the content domain cha
 - None. This skill consumes content-schema and content-provider outputs and produces guard artifacts.
 
 ## What It Does
-1. Implements **AccessControlGuard** — content visibility by role, subscription, region
-2. Implements **ContentReportGuard** — report inappropriate content, abuse flow
+1. Implements **AccessControlGuard** - content visibility by role, subscription, region
+2. Implements **ContentReportGuard** - report inappropriate content, abuse flow
 3. Integrates with Riverpod content state for guard decisions
-4. Handles **gated content** — paywall, premium, age-restricted
-5. Handles **report flow** — submit, feedback, moderation
+4. Handles **gated content** - paywall, premium, age-restricted
+5. Handles **report flow** - submit, feedback, moderation
 
 ## Output
-- `access_control_guard.dart` — AccessControlGuard
-- `content_report_guard.dart` — ContentReportGuard
+- `access_control_guard.dart` - AccessControlGuard
+- `content_report_guard.dart` - ContentReportGuard
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

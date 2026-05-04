@@ -1,7 +1,7 @@
 #!/bin/bash
 # generate-agents.sh
 # DEPRECATED: This repo uses OpenCode (.opencode/agents/) as the source of truth.
-# Edit agents directly in .opencode/agents/ — do NOT use .claude/agents/.
+# Edit agents directly in .opencode/agents/ - do NOT use .claude/agents/.
 #
 # Legacy: This script converted .claude/agents/ -> .opencode/agents/.
 # It is kept for reference only. Running it would overwrite .opencode/agents/
@@ -75,7 +75,7 @@ build_agent_model() {
 # ---------------------------------------------------------------------------
 # Map a Claude Code model alias to the OpenCode provider/model-id string.
 # $1 = model alias from frontmatter (opus, sonnet, haiku, inherit, or full ID)
-# $2 = agent basename (e.g. build-agent-1.md) — used for provider routing
+# $2 = agent basename (e.g. build-agent-1.md) - used for provider routing
 # Returns empty string for "inherit" (field should be omitted).
 # ---------------------------------------------------------------------------
 map_model() {

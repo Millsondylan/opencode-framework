@@ -1,8 +1,9 @@
 ---
 name: completeness-critic
 description: Every screen has loading/empty/error/populated; every async has error handling
+version: 1.0.0
+tier: standard
 ---
-
 # completeness-critic - Completeness Validator
 
 Validates completeness: every screen has loading/empty/error/populated states; every async operation has error handling.
@@ -13,8 +14,8 @@ Validates completeness: every screen has loading/empty/error/populated states; e
 ```
 
 ## Parameters
-- **Screens** — List or glob of screens to check
-- **Async patterns** — Optional (Future, Stream, async/await)
+- **Screens** - List or glob of screens to check
+- **Async patterns** - Optional (Future, Stream, async/await)
 
 ## What It Does
 1. Identifies all screens and their state handling
@@ -26,7 +27,7 @@ Validates completeness: every screen has loading/empty/error/populated states; e
 7. Produces structured report
 
 ## Output
-- `completeness-report.json` — Missing states per screen, async without error handling, recommendations
+- `completeness-report.json` - Missing states per screen, async without error handling, recommendations
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

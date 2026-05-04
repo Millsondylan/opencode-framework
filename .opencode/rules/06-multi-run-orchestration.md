@@ -3,7 +3,7 @@
 ## OVERVIEW
 
 When pipeline-scaler (Stage 1) outputs a ScalingPlan with N > 1 runs, the orchestrator
-executes N complete sequential pipeline runs — one after another — before issuing a final
+executes N complete sequential pipeline runs - one after another - before issuing a final
 aggregated review. Each run is a full pipeline (Stages -1 through 8) scoped to that run's
 features only.
 
@@ -57,7 +57,7 @@ ScalingPlan received (N runs)
 **Single confirmation for the entire multi-run pipeline.**
 
 - Run 1 task-breakdown: present TaskSpec in response to user as normal
-- Run 2+ task-breakdown: NO user confirmation — proceed automatically
+- Run 2+ task-breakdown: NO user confirmation - proceed automatically
 - The user confirmed intent at Run 1. Subsequent runs are autonomous.
 
 ---
@@ -79,7 +79,7 @@ inner pipeline stage:
 ```
 ## Multi-Run Context
 - ScalingPlan: [N] total runs
-- Current run: R of N — "[Run R title]"
+- Current run: R of N - "[Run R title]"
 - This run's features: [list from ScalingPlan Run R]
 - Completed in prior runs: [list from runs 1..R-1, or "None" for Run 1]
 - Files modified so far: [list, or "None" for Run 1]
@@ -104,7 +104,7 @@ DO NOT redesign or modify completed prior-run work.
 ```
 SCOPE CONSTRAINT: Plan only the features for Run R.
 Already implemented (do not re-plan): [list with file paths from prior runs]
-Build on top of prior-run code — do not duplicate or replace it.
+Build on top of prior-run code - do not duplicate or replace it.
 ```
 
 ---
@@ -136,7 +136,7 @@ IF run R has Dependencies: "Requires Run X complete"
 ## RECOVERY STRATEGY (Per-Run Retry)
 
 If a run's decide-agent outputs RESTART:
-1. Retry ONLY that run — do not restart prior completed runs
+1. Retry ONLY that run - do not restart prior completed runs
 2. Pass the decide-agent's feedback into the re-run's prompt
 3. Re-run the full inner pipeline for that run (Stages -1 through 8)
 4. Track retry count per run (no limit, persist until COMPLETE)
@@ -146,7 +146,7 @@ If a run's decide-agent outputs RESTART:
 ## Run R Retry Context
 - Previous attempt: RESTART
 - Decide-agent feedback: [paste feedback]
-- Prior runs still complete — build on them as before
+- Prior runs still complete - build on them as before
 - Focus this retry on fixing: [specific issues from feedback]
 ```
 
@@ -174,7 +174,7 @@ Display after each agent dispatch:
 
 ```
 ## Multi-Run Pipeline Status
-Runs: [R of N complete] | Current: Run R — "[title]"
+Runs: [R of N complete] | Current: Run R - "[title]"
 
 ### Run R Inner Pipeline (MANDATORY agents marked with *)
 - [x] Stage 2: prompt-optimizer *
@@ -195,9 +195,9 @@ Runs: [R of N complete] | Current: Run R — "[title]"
 * = NEVER SKIP - These agents ALWAYS run for every run
 
 ### Completed Runs
-- [x] Run 1: [title] — COMPLETE
-- [ ] Run 2: [title] — IN PROGRESS
-- [ ] Run 3: [title] — PENDING
+- [x] Run 1: [title] - COMPLETE
+- [ ] Run 2: [title] - IN PROGRESS
+- [ ] Run 3: [title] - PENDING
 ```
 
 ---
@@ -236,15 +236,15 @@ These agents run for **EVERY** run in **EVERY** pipeline, regardless of circumst
 
 ## CRITICAL RULES (Multi-Run Specific)
 
-1. **PIPELINE-SCALER IS MANDATORY** — The outer loop starts ONLY after pipeline-scaler (Stage 1) completes. NEVER skip pipeline-scaler even for multi-run scaling.
-2. **NEVER restart prior runs** — A completed run stays complete. Only retry the failing run.
-3. **Single user confirmation** — Only after Run 1 task-breakdown. Runs 2+ are autonomous.
-4. **Always pass RunContext** — Every stage in every run must know which run it is and what prior runs completed.
-5. **Dependency gates are blocking** — Never start a run before its declared dependencies are complete.
-6. **Aggregated review is mandatory** — Even if each run passed its own review, run the final cross-run review-agent.
-7. **ONE task call per response** — The sequential dispatch rule from 01-pipeline-orchestration.md applies inside every run.
-8. **NEVER skip mandatory agents** — The mandatory agents listed above MUST run for every run, every time, without exception.
-9. **No "if no changes" shortcuts** — Even if a run has no code changes, mandatory agents still run (test-writer verifies no tests needed, debugger verifies no errors, etc.).
-10. **AUTO-CONTINUE across runs** — After Run R's decide-agent outputs COMPLETE, immediately start Run R+1 without asking.
-11. **NO PARALLEL RUNS** — Runs execute sequentially, one at a time. NEVER run multiple runs in parallel.
-12. **QUALITY OVER SPEED** — Multi-run pipelines take time. Sequential execution ensures each run builds correctly on prior runs.
+1. **PIPELINE-SCALER IS MANDATORY** - The outer loop starts ONLY after pipeline-scaler (Stage 1) completes. NEVER skip pipeline-scaler even for multi-run scaling.
+2. **NEVER restart prior runs** - A completed run stays complete. Only retry the failing run.
+3. **Single user confirmation** - Only after Run 1 task-breakdown. Runs 2+ are autonomous.
+4. **Always pass RunContext** - Every stage in every run must know which run it is and what prior runs completed.
+5. **Dependency gates are blocking** - Never start a run before its declared dependencies are complete.
+6. **Aggregated review is mandatory** - Even if each run passed its own review, run the final cross-run review-agent.
+7. **ONE task call per response** - The sequential dispatch rule from 01-pipeline-orchestration.md applies inside every run.
+8. **NEVER skip mandatory agents** - The mandatory agents listed above MUST run for every run, every time, without exception.
+9. **No "if no changes" shortcuts** - Even if a run has no code changes, mandatory agents still run (test-writer verifies no tests needed, debugger verifies no errors, etc.).
+10. **AUTO-CONTINUE across runs** - After Run R's decide-agent outputs COMPLETE, immediately start Run R+1 without asking.
+11. **NO PARALLEL RUNS** - Runs execute sequentially, one at a time. NEVER run multiple runs in parallel.
+12. **QUALITY OVER SPEED** - Multi-run pipelines take time. Sequential execution ensures each run builds correctly on prior runs.

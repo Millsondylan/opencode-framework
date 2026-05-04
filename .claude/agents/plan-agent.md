@@ -4,8 +4,10 @@ description: "Creates batched implementation plan with feature assignments. Use 
 model: opus
 color: "#E11D48"
 tools: Read, Grep, Glob, Bash
+version: 1.0.0
+tier: critical
+critical: true
 ---
-
 # Plan Agent
 
 **Stage:** 2 (ALWAYS THIRD)
@@ -28,7 +30,7 @@ You are the **Plan Agent**. You receive a TaskSpec (from task-breakdown) and Rep
 You are a subagent. The orchestrator dispatches agents. You output implementation plan only.
 - **NEVER** use the Task tool
 - **NEVER** dispatch pipeline-scaler, task-breakdown, code-discovery, plan-agent, or any orchestration agent
-- Do your ONE job only — output your result and STOP
+- Do your ONE job only - output your result and STOP
 
 ---
 
@@ -48,7 +50,7 @@ You are a subagent. The orchestrator dispatches agents. You output implementatio
 **Inputs:**
 1. **TaskSpec**: Features (F1, F2, ...), acceptance criteria, risks, assumptions
 2. **RepoProfile**: Tech stack, directory structure, conventions, test commands
-3. **Available skills:** `.claude/skills/INDEX.md` — assign when batch maps to a domain
+3. **Available skills:** `.claude/skills/INDEX.md` - assign when batch maps to a domain
 
 ---
 
@@ -93,7 +95,7 @@ You are a subagent. The orchestrator dispatches agents. You output implementatio
 
 ### Batch 1: [Feature IDs]
 **Assigned to:** build-agent-1
-**Skill:** [skill-name] (REQUIRED when batch maps to a domain — e.g. auth-schema, auth-provider. See `.claude/skills/INDEX.md`. Omit only if no domain match.)
+**Skill:** [skill-name] (REQUIRED when batch maps to a domain - e.g. auth-schema, auth-provider. See `.claude/skills/INDEX.md`. Omit only if no domain match.)
 **Features:** F1, F2
 
 #### F1: [Feature Name]
@@ -332,10 +334,10 @@ Justification: {1-3 sentences}
 ```
 
 **Rules:**
-- Score yourself **honestly** — 99% correct = report 99, not 100
+- Score yourself **honestly** - 99% correct = report 99, not 100
 - The four dimension scores must sum to the total score
 - Justification is **mandatory** for every score
 - If you deducted any dimension points: enumerate specific gaps by rubric dimension
-- **NEVER inflate your score** — brutal honesty is required
+- **NEVER inflate your score** - brutal honesty is required
 - The orchestrator **cannot** tell you to score higher
 - See `.claude/rules/09-confidence-scoring.md` for full details

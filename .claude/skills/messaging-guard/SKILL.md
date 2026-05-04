@@ -1,8 +1,9 @@
 ---
 name: messaging-guard
 description: Implement content validation, rate limit, and spam detection for the messaging domain
+version: 1.0.0
+tier: standard
 ---
-
 # messaging-guard - Messaging Domain Guard
 
 Implements content validation, rate limit, and spam detection. Fifth in the messaging domain chain (5/6).
@@ -16,16 +17,16 @@ Implements content validation, rate limit, and spam detection. Fifth in the mess
 - None. This skill consumes messaging-schema and messaging-provider outputs and produces guard artifacts.
 
 ## What It Does
-1. Implements **ContentValidationGuard** — profanity, length, format validation
-2. Implements **RateLimitGuard** — message send rate, throttle
-3. Implements **SpamGuard** — duplicate detection, spam patterns
+1. Implements **ContentValidationGuard** - profanity, length, format validation
+2. Implements **RateLimitGuard** - message send rate, throttle
+3. Implements **SpamGuard** - duplicate detection, spam patterns
 4. Integrates with Riverpod messaging state for guard decisions
-5. Handles **rejection** — user feedback when guard fails
+5. Handles **rejection** - user feedback when guard fails
 
 ## Output
-- `content_validation_guard.dart` — ContentValidationGuard
-- `rate_limit_guard.dart` — RateLimitGuard
-- `spam_guard.dart` — SpamGuard
+- `content_validation_guard.dart` - ContentValidationGuard
+- `rate_limit_guard.dart` - RateLimitGuard
+- `spam_guard.dart` - SpamGuard
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

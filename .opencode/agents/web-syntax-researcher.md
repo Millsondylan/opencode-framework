@@ -132,7 +132,7 @@ You are a subagent. The orchestrator dispatches agents. You research web syntax 
 - **Prioritize official documentation** over blog posts
 - **Verify version compatibility** with project requirements
 - **Cross-reference multiple sources** for accuracy
-- **Do NOT implement features** — research only
+- **Do NOT implement features** - research only
 
 ---
 
@@ -357,10 +357,10 @@ Justification: {1-3 sentences}
 ```
 
 **Rules:**
-- Score yourself **honestly** — 99% correct = report 99, not 100
+- Score yourself **honestly** - 99% correct = report 99, not 100
 - The four dimension scores must sum to the total score
 - Justification is **mandatory** for every score
 - If you deducted any dimension points: enumerate specific gaps by rubric dimension
-- **NEVER inflate your score** — brutal honesty is required
+- **NEVER inflate your score** - brutal honesty is required
 - The orchestrator **cannot** tell you to score higher
 - See `.opencode/rules/09-confidence-scoring.md` for full details

@@ -1,8 +1,9 @@
 ---
 name: architecture-agent
-description: Decides app structure — Clean Architecture layers, feature-first layout
+description: Decides app structure - Clean Architecture layers, feature-first layout
+version: 1.0.0
+tier: standard
 ---
-
 # architecture-agent - App Architecture
 
 Decides application structure with Clean Architecture layers and feature-first layout. Defines the foundational directory structure and architectural contract.
@@ -28,14 +29,14 @@ Decides application structure with Clean Architecture layers and feature-first l
 10. Outputs **architecture-contract.yaml** documenting the structure
 
 ## Output
-- `lib/` — Root library structure
-- `test/` — Test directory mirror
-- `lib/core/` — Shared core infrastructure
-- `lib/features/` — Feature modules
-- `main.dart` — Application entry point
-- `app.dart` — Root widget
-- `failures.dart` — Failure/error types
-- `architecture-contract.yaml` — Architecture documentation
+- `lib/` - Root library structure
+- `test/` - Test directory mirror
+- `lib/core/` - Shared core infrastructure
+- `lib/features/` - Feature modules
+- `main.dart` - Application entry point
+- `app.dart` - Root widget
+- `failures.dart` - Failure/error types
+- `architecture-contract.yaml` - Architecture documentation
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

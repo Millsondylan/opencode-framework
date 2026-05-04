@@ -121,7 +121,7 @@ rm -f "$TARGETS_FILE"
 
 echo "---"
 if [[ "$DRY_RUN" -eq 1 ]]; then
-  echo "Dry-run only — no files were written."
+  echo "Dry-run only - no files were written."
 else
   echo "Done. Framework paths only; no --delete; application code untouched."
 fi

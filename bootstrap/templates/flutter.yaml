@@ -1,0 +1,172 @@
+# Flutter stack template for opencode bootstrap.
+# Consumed by bootstrap/bootstrap at project creation time.
+# Banned characters (U+2014, U+2013, U+2012, U+2015) must not appear anywhere.
+
+stack: flutter
+version: "3.41.x"
+dart_version: "3.11.x"
+description: "Offline-first Flutter app with Riverpod, Drift, GoRouter, Shorebird code push."
+
+# Pub dependencies. Versions pinned to stable majors as of 2026 Q1.
+dependencies:
+  flutter_riverpod: "^3.0.0"
+  riverpod_annotation: "^3.0.0"
+  drift: "^2.20.0"
+  drift_flutter: "^0.2.0"
+  sqlcipher_flutter_libs: "^0.7.0"
+  go_router: "^14.0.0"
+  freezed_annotation: "^2.4.4"
+  json_annotation: "^4.9.0"
+  flutter_secure_storage: "^9.2.2"
+  shared_preferences: "^2.3.0"
+  shorebird_code_push: "^2.0.0"
+  purchases_flutter: "^8.0.0"
+  sentry_flutter: "^8.0.0"
+  google_fonts: "^6.2.1"
+  cached_network_image: "^3.4.0"
+  flutter_svg: "^2.0.10"
+  intl: "^0.19.0"
+  path_provider: "^2.1.4"
+  http: "^1.2.2"
+  supabase_flutter: "^2.5.11"
+  package_info_plus: "^8.0.0"
+
+dev_dependencies:
+  flutter_test: { sdk: "flutter" }
+  flutter_lints: "^5.0.0"
+  build_runner: "^2.4.12"
+  riverpod_generator: "^2.6.0"
+  drift_dev: "^2.20.0"
+  freezed: "^2.5.7"
+  json_serializable: "^6.8.0"
+  mockito: "^5.4.4"
+
+# Files to copy from the bootstrap template bundle into the new project.
+# The paths under src/ are resolved inside bootstrap/templates/flutter/ when
+# that directory is populated. The bootstrap script falls back to minimal
+# inline scaffolding when a src file is missing.
+files_to_copy:
+  - src: "pubspec.yaml.template"
+    dst: "pubspec.yaml"
+  - src: "main.dart.template"
+    dst: "lib/main.dart"
+  - src: "app.dart.template"
+    dst: "lib/app.dart"
+  - src: "router.dart.template"
+    dst: "lib/router/router.dart"
+  - src: "database.dart.template"
+    dst: "lib/data/database.dart"
+  - src: "analysis_options.yaml.template"
+    dst: "analysis_options.yaml"
+  - src: "build.gradle.template"
+    dst: "android/app/build.gradle.kts"
+  - src: "AndroidManifest.xml.template"
+    dst: "android/app/src/main/AndroidManifest.xml"
+  - src: "Info.plist.template"
+    dst: "ios/Runner/Info.plist"
+  - src: "github_workflow.yaml.template"
+    dst: ".github/workflows/ci.yaml"
+
+# Commands executed after scaffold lands. Each command runs in the project root.
+# A non-zero exit is logged as a blocker but does not abort the bootstrap.
+post_init_commands:
+  - "flutter pub get"
+  - "dart run build_runner build --delete-conflicting-outputs"
+  - "dart format ."
+  - "flutter analyze"
+
+# Secrets registered as Keychain placeholders under com.opencode.<project>.<key>.
+# Real values are filled in by the user after bootstrap.
+required_secrets:
+  - SUPABASE_URL
+  - SUPABASE_ANON_KEY
+  - SUPABASE_SERVICE_ROLE_KEY
+  - SHOREBIRD_TOKEN
+  - REVENUECAT_PUBLIC_KEY_IOS
+  - REVENUECAT_PUBLIC_KEY_ANDROID
+  - SENTRY_DSN
+  - GOOGLE_PLAY_SERVICE_ACCOUNT_JSON
+  - APP_STORE_CONNECT_API_KEY
+
+# Non-secret environment variables. Written to .env.example as-is.
+env_vars:
+  FLUTTER_VERSION: "3.41.0"
+  DART_VERSION: "3.11.0"
+  SHOREBIRD_VERSION: "1.4.0"
+
+# Android build configuration. Target Android 15 with the 16 KB page size
+# requirement enforced by Google Play for all apps submitted after Nov 2025.
+android:
+  min_sdk: 26
+  target_sdk: 35
+  compile_sdk: 35
+  ndk_version: "27.0.12077973"
+  memory_pages_kb: 16
+  play_billing_version: "8.3.0"
+  application_id_prefix: "com.opencode"
+  kotlin_version: "2.0.21"
+  agp_version: "8.7.0"
+  gradle_version: "8.10.2"
+  java_version: "17"
+  enable_r8: true
+  enable_shrink_resources: true
+
+# iOS build configuration.
+ios:
+  deployment_target: "14.0"
+  swift_version: "5.10"
+  xcode_version: "16.2"
+  enable_bitcode: false
+  bundle_id_prefix: "com.opencode"
+
+# Testing configuration.
+testing:
+  coverage_target: 80
+  test_types:
+    - "unit"
+    - "widget"
+    - "integration"
+  golden_tests: true
+  enable_leak_tracking: true
+
+# Release and distribution.
+release:
+  build_command: "flutter build appbundle --release --obfuscate --split-debug-info=./debug-info/"
+  shorebird_enabled: true
+  shorebird_channel_stable: "stable"
+  shorebird_channel_beta: "beta"
+  sign_with_keystore: true
+
+# Directory layout created in the new project.
+directories:
+  - "lib/app"
+  - "lib/data"
+  - "lib/data/models"
+  - "lib/data/repositories"
+  - "lib/data/database"
+  - "lib/features"
+  - "lib/router"
+  - "lib/shared/theme"
+  - "lib/shared/widgets"
+  - "test/unit"
+  - "test/widget"
+  - "integration_test"
+  - "assets/images"
+  - "assets/fonts"
+  - "debug-info"
+
+# Linting.
+lints:
+  style: "flutter_lints"
+  custom_rules:
+    - "always_use_package_imports"
+    - "avoid_print"
+    - "prefer_const_constructors"
+    - "prefer_const_literals_to_create_immutables"
+    - "require_trailing_commas"
+
+# Deployment targets.
+deployment:
+  android_target: "google_play_console"
+  ios_target: "app_store_connect"
+  over_the_air: "shorebird"

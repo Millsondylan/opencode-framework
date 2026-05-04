@@ -13,7 +13,7 @@ Performs security audits: hardcoded secrets, certificate pinning, input sanitiza
 ```
 
 ## Parameters
-- **Scope** — Directory or file glob to audit (default: full app)
+- **Scope** - Directory or file glob to audit (default: full app)
 
 ## What It Does
 1. Scans for hardcoded secrets (API keys, tokens, passwords)
@@ -23,7 +23,7 @@ Performs security audits: hardcoded secrets, certificate pinning, input sanitiza
 5. Produces structured JSON report
 
 ## Output
-- `security-audit-report.json` — Findings with severity, location, recommendation
+- `security-audit-report.json` - Findings with severity, location, recommendation
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

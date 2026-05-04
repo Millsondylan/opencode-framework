@@ -136,7 +136,7 @@ When an agent outputs a REQUEST:
 
 **Always include in agent prompts:**
 1. **User's original request** (what they asked for)
-2. **ACM rules note** — "Follow: read before edit, EDIT not write for existing files, no secrets, real tests for new files"
+2. **ACM rules note** - "Follow: read before edit, EDIT not write for existing files, no secrets, real tests for new files"
 3. **Previous stage outputs** (TaskSpec, RepoProfile, Plan, etc.)
 4. **Specific instructions** (what THIS agent should focus on)
 5. **Quality expectations** (be specific, follow conventions, etc.)

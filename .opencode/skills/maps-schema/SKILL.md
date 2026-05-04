@@ -1,6 +1,6 @@
 ---
 name: maps-schema
-description: Define location, geofence, place, and type IDs 130–139 for the maps domain
+description: Define location, geofence, place, and type IDs 130-139 for the maps domain
 ---
 
 # maps-schema - Maps Domain Schema
@@ -24,12 +24,12 @@ Defines location, geofence, place, and maps state types for the maps domain. Fir
 6. Defines location types (point, region, route)
 
 ## Output
-- `location.dart` — Location model with `@HiveType(typeId: 130)`
-- `geofence.dart` — Geofence model with `@HiveType(typeId: 131)`
-- `place.dart` — Place model with `@HiveType(typeId: 132)`
-- `location_dto.dart` — Location DTO for API/transport
-- `place_dto.dart` — Place DTO for API/transport
-- `location_validator.dart` — Location input validation
+- `location.dart` - Location model with `@HiveType(typeId: 130)`
+- `geofence.dart` - Geofence model with `@HiveType(typeId: 131)`
+- `place.dart` - Place model with `@HiveType(typeId: 132)`
+- `location_dto.dart` - Location DTO for API/transport
+- `place_dto.dart` - Place DTO for API/transport
+- `location_validator.dart` - Location input validation
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

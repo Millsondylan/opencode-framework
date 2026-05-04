@@ -16,17 +16,17 @@ Implements preference persistence and remote config. Second in the settings doma
 - None. This skill consumes settings-schema outputs and produces provider artifacts.
 
 ## What It Does
-1. Implements **SettingsRepository** — domain-facing repository interface
-2. Implements **PreferenceLocalDataSource** — Hive persistence for preferences
-3. Implements **RemoteConfigDataSource** — Firebase Remote Config or Supabase
-4. Handles **preference persistence** — get, set, sync
-5. Handles **remote config** — fetch, cache, defaults
-6. Supports **feature flags** — boolean flags, rollout percentages
+1. Implements **SettingsRepository** - domain-facing repository interface
+2. Implements **PreferenceLocalDataSource** - Hive persistence for preferences
+3. Implements **RemoteConfigDataSource** - Firebase Remote Config or Supabase
+4. Handles **preference persistence** - get, set, sync
+5. Handles **remote config** - fetch, cache, defaults
+6. Supports **feature flags** - boolean flags, rollout percentages
 
 ## Output
-- `settings_repository.dart` — SettingsRepository implementation
-- `preference_local_data_source.dart` — Hive persistence for preferences
-- `remote_config_data_source.dart` — Remote config client
+- `settings_repository.dart` - SettingsRepository implementation
+- `preference_local_data_source.dart` - Hive persistence for preferences
+- `remote_config_data_source.dart` - Remote config client
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

@@ -1,6 +1,6 @@
 ---
 name: content-schema
-description: Define content item, rich text, categories, and type IDs 120–129 for the content domain
+description: Define content item, rich text, categories, and type IDs 120-129 for the content domain
 ---
 
 # content-schema - Content Domain Schema
@@ -24,12 +24,12 @@ Defines content item, rich text, categories, and content state types for the con
 6. Defines content types (article, video, podcast, link)
 
 ## Output
-- `content_item.dart` — ContentItem model with `@HiveType(typeId: 120)`
-- `rich_text.dart` — RichText model with `@HiveType(typeId: 121)`
-- `category.dart` — Category model with `@HiveType(typeId: 122)`
-- `content_item_dto.dart` — ContentItem DTO for API/transport
-- `category_dto.dart` — Category DTO for API/transport
-- `content_item_validator.dart` — ContentItem input validation
+- `content_item.dart` - ContentItem model with `@HiveType(typeId: 120)`
+- `rich_text.dart` - RichText model with `@HiveType(typeId: 121)`
+- `category.dart` - Category model with `@HiveType(typeId: 122)`
+- `content_item_dto.dart` - ContentItem DTO for API/transport
+- `category_dto.dart` - Category DTO for API/transport
+- `content_item_validator.dart` - ContentItem input validation
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

@@ -1,4 +1,4 @@
-# TaskSpec — Run 2: 17 Skills (Architecture, Infrastructure, Theme, Cross-cutting, Data Layer)
+# TaskSpec - Run 2: 17 Skills (Architecture, Infrastructure, Theme, Cross-cutting, Data Layer)
 
 ## Request Summary
 
@@ -234,7 +234,7 @@ Create 17 skills for architecture, infrastructure, theme, cross-cutting concerns
 
 ## Risks
 
-- **Reference dependency:** Mobile Agents — Complete Build Agent Reference is user-provided; if build-agents lack access, content may be generic. Mitigation: Include sufficient inline guidance in TaskSpec.
+- **Reference dependency:** Mobile Agents - Complete Build Agent Reference is user-provided; if build-agents lack access, content may be generic. Mitigation: Include sufficient inline guidance in TaskSpec.
 - **Overlap with domain skills:** sync-agent may overlap with domain sync skills (e.g., offline-sync-*). Mitigation: sync-agent focuses on generic sync infrastructure; domain sync skills handle domain-specific models and flows.
 - **Tech stack drift:** If project uses different stack (e.g., GetIt instead of Riverpod), skills may need adjustment. Mitigation: Document assumptions in each skill; plan-agent can flag if codebase differs.
 
@@ -259,4 +259,4 @@ Create 17 skills for architecture, infrastructure, theme, cross-cutting concerns
 
 ## Next Stage Recommendation
 
-Proceed to **code-discovery** to verify `.claude/skills/` structure and existing skill format. Then **plan-agent** to create batched implementation plan (e.g., 9 batches of 1–2 skills per build-agent, aligned with feature groupings above).
+Proceed to **code-discovery** to verify `.claude/skills/` structure and existing skill format. Then **plan-agent** to create batched implementation plan (e.g., 9 batches of 1-2 skills per build-agent, aligned with feature groupings above).

@@ -13,8 +13,8 @@ Validates code style: dart analyze (or equivalent), naming conventions, import o
 ```
 
 ## Parameters
-- **Scope** — Directory or file glob (default: lib/, src/)
-- **Lint rules** — Optional custom rule set
+- **Scope** - Directory or file glob (default: lib/, src/)
+- **Lint rules** - Optional custom rule set
 
 ## What It Does
 1. Runs `dart analyze` (or language equivalent: eslint, ruff, etc.)
@@ -24,7 +24,7 @@ Validates code style: dart analyze (or equivalent), naming conventions, import o
 5. Produces structured PASS/FAIL report
 
 ## Output
-- `code-style-critic-report.json` — PASS/FAIL, issues, file:line, rule
+- `code-style-critic-report.json` - PASS/FAIL, issues, file:line, rule
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

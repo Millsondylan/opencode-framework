@@ -17,16 +17,16 @@ Implements Algolia, Meilisearch, or local search integration, repository layer, 
 
 ## What It Does
 1. Integrates **Algolia** and/or **Meilisearch** and/or **local search** (query, facets, filters, sort)
-2. Implements **SearchRepository** — domain-facing repository interface
-3. Implements **SearchRemoteDataSource** — Algolia/Meilisearch client wrapper
-4. Implements **SearchLocalDataSource** — Hive or local cache for offline search index
+2. Implements **SearchRepository** - domain-facing repository interface
+3. Implements **SearchRemoteDataSource** - Algolia/Meilisearch client wrapper
+4. Implements **SearchLocalDataSource** - Hive or local cache for offline search index
 5. Handles search queries, facet aggregation, and result pagination
 6. Supports index sync and incremental updates for local search
 
 ## Output
-- `search_repository.dart` — SearchRepository implementation
-- `search_remote_data_source.dart` — SearchRemoteDataSource (Algolia/Meilisearch)
-- `search_local_data_source.dart` — SearchLocalDataSource (Hive/local cache)
+- `search_repository.dart` - SearchRepository implementation
+- `search_remote_data_source.dart` - SearchRemoteDataSource (Algolia/Meilisearch)
+- `search_local_data_source.dart` - SearchLocalDataSource (Hive/local cache)
 - Search integration adapters for chosen provider(s)
 
 ## What It Must NOT Do

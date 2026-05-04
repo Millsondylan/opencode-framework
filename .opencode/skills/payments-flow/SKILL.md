@@ -16,19 +16,19 @@ Implements purchase flow orchestration, restore purchases, receipt validation st
 - None. This skill consumes payments-schema and payments-provider outputs and produces flow artifacts.
 
 ## What It Does
-1. Implements **PaymentsNotifier** — Riverpod StateNotifier for payments state
-2. Defines **PaymentsState** — active, expired, pending, loading, error, restoring
-3. Registers **paymentsProvider** — Riverpod provider exposing PaymentsNotifier
-4. Orchestrates **purchase flow** — product selection → purchase → receipt validation → entitlement update
-5. Orchestrates **restore purchases** — restore request → provider sync → state refresh
-6. Manages **receipt validation state** — validating, valid, invalid, retry
-7. Handles **subscription status** — active, expired, grace period, billing retry
-8. Coordinates with **purchase flow providers** — product list, purchase, restore, entitlements
+1. Implements **PaymentsNotifier** - Riverpod StateNotifier for payments state
+2. Defines **PaymentsState** - active, expired, pending, loading, error, restoring
+3. Registers **paymentsProvider** - Riverpod provider exposing PaymentsNotifier
+4. Orchestrates **purchase flow** - product selection → purchase → receipt validation → entitlement update
+5. Orchestrates **restore purchases** - restore request → provider sync → state refresh
+6. Manages **receipt validation state** - validating, valid, invalid, retry
+7. Handles **subscription status** - active, expired, grace period, billing retry
+8. Coordinates with **purchase flow providers** - product list, purchase, restore, entitlements
 
 ## Output
-- `payments_notifier.dart` — PaymentsNotifier (StateNotifier<PaymentsState>)
-- `payments_state.dart` — PaymentsState sealed class / union type
-- `payments_provider.dart` — paymentsProvider (Riverpod Provider)
+- `payments_notifier.dart` - PaymentsNotifier (StateNotifier<PaymentsState>)
+- `payments_state.dart` - PaymentsState sealed class / union type
+- `payments_provider.dart` - paymentsProvider (Riverpod Provider)
 - Purchase flow providers (product list, purchase, restore, entitlement check)
 
 ## What It Must NOT Do

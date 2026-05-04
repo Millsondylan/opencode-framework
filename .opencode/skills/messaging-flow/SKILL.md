@@ -16,18 +16,18 @@ Implements conversation list, message flow, and typing debounce. Third in the me
 - None. This skill consumes messaging-schema and messaging-provider outputs and produces flow artifacts.
 
 ## What It Does
-1. Implements **MessagingNotifier** — Riverpod StateNotifier for messaging state
-2. Defines **MessagingState** — conversations, messages, typing, loading, error
+1. Implements **MessagingNotifier** - Riverpod StateNotifier for messaging state
+2. Defines **MessagingState** - conversations, messages, typing, loading, error
 3. Registers **messagingProvider**, **conversationProvider**, **messageProvider**
-4. Orchestrates **conversation list** — load, sort, unread count
-5. Orchestrates **message flow** — send, receive, realtime updates
-6. Implements **typing debounce** — throttle typing events, timeout
-7. Handles **message delivery** — sent, delivered, read status
+4. Orchestrates **conversation list** - load, sort, unread count
+5. Orchestrates **message flow** - send, receive, realtime updates
+6. Implements **typing debounce** - throttle typing events, timeout
+7. Handles **message delivery** - sent, delivered, read status
 
 ## Output
-- `messaging_notifier.dart` — MessagingNotifier (StateNotifier<MessagingState>)
-- `messaging_state.dart` — MessagingState sealed class / union type
-- `messaging_provider.dart` — messagingProvider (Riverpod Provider)
+- `messaging_notifier.dart` - MessagingNotifier (StateNotifier<MessagingState>)
+- `messaging_state.dart` - MessagingState sealed class / union type
+- `messaging_provider.dart` - messagingProvider (Riverpod Provider)
 - Typing debounce utilities
 
 ## What It Must NOT Do

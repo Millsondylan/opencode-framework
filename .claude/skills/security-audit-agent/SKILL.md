@@ -1,8 +1,9 @@
 ---
 name: security-audit-agent
 description: Hardcoded secrets, cert pinning, input sanitization audit
+version: 1.0.0
+tier: standard
 ---
-
 # security-audit-agent - Security Audit
 
 Performs security audits: hardcoded secrets, certificate pinning, input sanitization. Read-only analysis with structured report output.
@@ -13,7 +14,7 @@ Performs security audits: hardcoded secrets, certificate pinning, input sanitiza
 ```
 
 ## Parameters
-- **Scope** — Directory or file glob to audit (default: full app)
+- **Scope** - Directory or file glob to audit (default: full app)
 
 ## What It Does
 1. Scans for hardcoded secrets (API keys, tokens, passwords)
@@ -23,7 +24,7 @@ Performs security audits: hardcoded secrets, certificate pinning, input sanitiza
 5. Produces structured JSON report
 
 ## Output
-- `security-audit-report.json` — Findings with severity, location, recommendation
+- `security-audit-report.json` - Findings with severity, location, recommendation
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

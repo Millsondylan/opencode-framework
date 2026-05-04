@@ -1,7 +1,7 @@
 # Implementation Plan: 96 Domain Chain Skills
 
 ## Batch Summary
-- **Total Features:** 16 (F1–F16, one domain each)
+- **Total Features:** 16 (F1-F16, one domain each)
 - **Total Skills:** 96 (6 per domain: schema, provider, flow, ui, guard, test)
 - **Total Batches:** 48
 - **Estimated Build Agents:** 48 (chain 1→55→1)
@@ -14,7 +14,7 @@
 ## Domain Chain Order (per domain)
 1. schema → 2. provider → 3. flow → 4. ui → 5. guard → 6. test
 
-## 16 Domains (F1–F16)
+## 16 Domains (F1-F16)
 | F# | Domain |
 |----|--------|
 | F1 | auth |
@@ -38,12 +38,12 @@
 
 ## Batch 1: auth-schema, auth-provider
 **Assigned to:** build-agent-1  
-**Features:** F1 (auth domain, skills 1–2)
+**Features:** F1 (auth domain, skills 1-2)
 
 ### auth-schema
 **Complexity:** Simple  
 **Files to Create:**
-- `.claude/skills/auth-schema/SKILL.md` — Schema skill for auth domain
+- `.claude/skills/auth-schema/SKILL.md` - Schema skill for auth domain
 
 **Content Guidance (Mobile Agents Reference):**
 - User model (id, email, displayName, photoURL, etc.)
@@ -58,7 +58,7 @@
 ### auth-provider
 **Complexity:** Simple  
 **Files to Create:**
-- `.claude/skills/auth-provider/SKILL.md` — Provider skill for auth
+- `.claude/skills/auth-provider/SKILL.md` - Provider skill for auth
 
 **Content Guidance (Mobile Agents Reference):**
 - Supabase Auth integration (signUp, signIn, signOut, session)
@@ -73,19 +73,19 @@
 
 ## Batch 2: auth-flow, auth-ui
 **Assigned to:** build-agent-2  
-**Features:** F1 (auth domain, skills 3–4)
+**Features:** F1 (auth domain, skills 3-4)
 
 ### auth-flow
 **Complexity:** Medium-Low  
 **Files to Create:**
-- `.claude/skills/auth-flow/SKILL.md` — Flow skill for auth
+- `.claude/skills/auth-flow/SKILL.md` - Flow skill for auth
 
 **Content Guidance:** Login/signup/logout flows, session restoration, error handling
 
 ### auth-ui
 **Complexity:** Medium-Low  
 **Files to Create:**
-- `.claude/skills/auth-ui/SKILL.md` — UI skill for auth
+- `.claude/skills/auth-ui/SKILL.md` - UI skill for auth
 
 **Content Guidance:** Login screen, signup form, password reset, loading states
 
@@ -93,19 +93,19 @@
 
 ## Batch 3: auth-guard, auth-test
 **Assigned to:** build-agent-3  
-**Features:** F1 (auth domain, skills 5–6)
+**Features:** F1 (auth domain, skills 5-6)
 
 ### auth-guard
 **Complexity:** Simple  
 **Files to Create:**
-- `.claude/skills/auth-guard/SKILL.md` — Guard skill for auth
+- `.claude/skills/auth-guard/SKILL.md` - Guard skill for auth
 
 **Content Guidance:** Route protection, auth middleware, redirect logic
 
 ### auth-test
 **Complexity:** Simple  
 **Files to Create:**
-- `.claude/skills/auth-test/SKILL.md` — Test skill for auth
+- `.claude/skills/auth-test/SKILL.md` - Test skill for auth
 
 **Content Guidance:** Unit tests for auth logic, integration tests for flows
 
@@ -759,9 +759,9 @@
 - [ ] Content aligns with Mobile Agents reference for domain
 
 ## Risks
-- **Domain list may differ:** If TaskSpec specified different 16 domains, batches 4–48 need domain name substitution.
-- **Reference dependency:** Build-agents need access to Mobile Agents — Complete Build Agent Reference for domain-specific content; if unavailable, use generic patterns.
+- **Domain list may differ:** If TaskSpec specified different 16 domains, batches 4-48 need domain name substitution.
+- **Reference dependency:** Build-agents need access to Mobile Agents - Complete Build Agent Reference for domain-specific content; if unavailable, use generic patterns.
 
 ## Dependencies
-- Mobile Agents — Complete Build Agent Reference (user-provided, from earlier conversation)
+- Mobile Agents - Complete Build Agent Reference (user-provided, from earlier conversation)
 - Existing skill format: `.claude/skills/finish/SKILL.md`, `.claude/skills/prompt/SKILL.md`

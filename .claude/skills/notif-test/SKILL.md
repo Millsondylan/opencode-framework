@@ -1,8 +1,9 @@
 ---
 name: notif-test
 description: Write mock push tests, local notification tests, and test suite for the notifications domain
+version: 1.0.0
+tier: standard
 ---
-
 # notif-test - Notifications Domain Test
 
 Writes mock push tests, local notification tests, and the full test suite for the notifications domain. Sixth in the notifications domain chain (6/6).
@@ -16,8 +17,8 @@ Writes mock push tests, local notification tests, and the full test suite for th
 - None. This skill consumes all prior notifications domain outputs and produces test artifacts.
 
 ## What It Does
-1. Writes **mock push tests** — simulates FCM/APNs payloads, tests handler logic in isolation
-2. Writes **local notification tests** — tests scheduling, display, and cancellation of local notifications
+1. Writes **mock push tests** - simulates FCM/APNs payloads, tests handler logic in isolation
+2. Writes **local notification tests** - tests scheduling, display, and cancellation of local notifications
 3. Writes **unit tests** for notification logic (validators, guards, rate limiter, quiet hours)
 4. Writes **widget tests** for notification UI (preference screens, permission prompts)
 5. Provides **mock FCM/APNs clients** for isolated testing
@@ -25,14 +26,14 @@ Writes mock push tests, local notification tests, and the full test suite for th
 7. Uses `mocktail` or `mockito` for mocking; `flutter_test` for widget/integration tests
 
 ## Output
-- `notification_validator_test.dart` — Unit tests for NotificationValidator
-- `notification_guard_test.dart` — Unit tests for NotificationGuard
-- `notification_rate_limiter_test.dart` — Unit tests for rate limiting
-- `notification_quiet_hours_test.dart` — Unit tests for quiet hours
-- `mock_fcm_client.dart` — Mock FCM client for push tests
-- `local_notification_test.dart` — Tests for local notification scheduling/display
-- `notification_repository_test.dart` — Unit tests for NotificationRepository (mocked data source)
-- `notification_integration_test.dart` — Integration tests for notification flows
+- `notification_validator_test.dart` - Unit tests for NotificationValidator
+- `notification_guard_test.dart` - Unit tests for NotificationGuard
+- `notification_rate_limiter_test.dart` - Unit tests for rate limiting
+- `notification_quiet_hours_test.dart` - Unit tests for quiet hours
+- `mock_fcm_client.dart` - Mock FCM client for push tests
+- `local_notification_test.dart` - Tests for local notification scheduling/display
+- `notification_repository_test.dart` - Unit tests for NotificationRepository (mocked data source)
+- `notification_integration_test.dart` - Integration tests for notification flows
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

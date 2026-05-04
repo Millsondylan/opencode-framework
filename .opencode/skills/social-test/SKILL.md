@@ -17,18 +17,18 @@ Writes feed pagination and follow state tests. Sixth in the social domain chain 
 
 ## What It Does
 1. Writes **unit tests** for social logic (profile, follow, feed, guards)
-2. Writes **feed pagination tests** — load more, refresh, cursor
-3. Writes **follow state tests** — follow, unfollow, follower count
+2. Writes **feed pagination tests** - load more, refresh, cursor
+3. Writes **follow state tests** - follow, unfollow, follower count
 4. Provides **mock social repository** for isolated testing
 5. Achieves **>80% coverage** for social domain code
 6. Uses `mocktail` or `mockito` for mocking; `flutter_test` for widget/integration tests
 
 ## Output
-- `profile_repository_test.dart` — Unit tests for ProfileRepository
-- `feed_repository_test.dart` — Unit tests for FeedRepository
-- `social_notifier_test.dart` — Unit tests for SocialNotifier
-- `feed_pagination_test.dart` — Feed pagination tests
-- `mock_social_repository.dart` — Mock social repository for tests
+- `profile_repository_test.dart` - Unit tests for ProfileRepository
+- `feed_repository_test.dart` - Unit tests for FeedRepository
+- `social_notifier_test.dart` - Unit tests for SocialNotifier
+- `feed_pagination_test.dart` - Feed pagination tests
+- `mock_social_repository.dart` - Mock social repository for tests
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

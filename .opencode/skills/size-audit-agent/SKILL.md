@@ -13,8 +13,8 @@ Analyzes APK/IPA size, tree-shaking effectiveness, and unused assets. Produces a
 ```
 
 ## Parameters
-- **Build artifact** — APK, IPA, or bundle path
-- **Baseline** — Optional previous report for diff
+- **Build artifact** - APK, IPA, or bundle path
+- **Baseline** - Optional previous report for diff
 
 ## What It Does
 1. Analyzes APK/IPA/bundle size breakdown
@@ -24,7 +24,7 @@ Analyzes APK/IPA size, tree-shaking effectiveness, and unused assets. Produces a
 5. Suggests optimizations (lazy loading, compression)
 
 ## Output
-- `size-analysis-report.json` — Size breakdown, top offenders, recommendations
+- `size-analysis-report.json` - Size breakdown, top offenders, recommendations
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

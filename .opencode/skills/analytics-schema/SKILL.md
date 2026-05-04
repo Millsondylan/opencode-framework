@@ -1,6 +1,6 @@
 ---
 name: analytics-schema
-description: Define event models, funnel, and type IDs 70–79 for the analytics domain
+description: Define event models, funnel, and type IDs 70-79 for the analytics domain
 ---
 
 # analytics-schema - Analytics Domain Schema
@@ -24,12 +24,12 @@ Defines event models, funnel types, and analytics state for the analytics domain
 6. Defines event types (screen_view, user_action, conversion, custom)
 
 ## Output
-- `analytics_event.dart` — AnalyticsEvent model with `@HiveType(typeId: 70)`
-- `funnel_step.dart` — FunnelStep model with `@HiveType(typeId: 71)`
-- `session.dart` — Session model with `@HiveType(typeId: 72)`
-- `analytics_event_dto.dart` — AnalyticsEvent DTO for API/transport
-- `funnel_step_dto.dart` — FunnelStep DTO for API/transport
-- `analytics_event_validator.dart` — AnalyticsEvent input validation
+- `analytics_event.dart` - AnalyticsEvent model with `@HiveType(typeId: 70)`
+- `funnel_step.dart` - FunnelStep model with `@HiveType(typeId: 71)`
+- `session.dart` - Session model with `@HiveType(typeId: 72)`
+- `analytics_event_dto.dart` - AnalyticsEvent DTO for API/transport
+- `funnel_step_dto.dart` - FunnelStep DTO for API/transport
+- `analytics_event_validator.dart` - AnalyticsEvent input validation
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

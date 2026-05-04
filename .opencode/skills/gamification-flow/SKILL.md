@@ -16,18 +16,18 @@ Implements points balance, badge unlocks, and streak. Third in the gamification 
 - None. This skill consumes gamification-schema and gamification-provider outputs and produces flow artifacts.
 
 ## What It Does
-1. Implements **GamificationNotifier** — Riverpod StateNotifier for gamification state
-2. Defines **GamificationState** — points, badges, leaderboard, streak, loading, error
+1. Implements **GamificationNotifier** - Riverpod StateNotifier for gamification state
+2. Defines **GamificationState** - points, badges, leaderboard, streak, loading, error
 3. Registers **gamificationProvider**, **pointsProvider**, **badgeProvider**
-4. Orchestrates **points balance** — add, deduct, refresh
-5. Orchestrates **badge unlocks** — check criteria, award, notify
-6. Orchestrates **streak** — daily check-in, streak count, reset
-7. Handles **leaderboard** — fetch, rank, refresh
+4. Orchestrates **points balance** - add, deduct, refresh
+5. Orchestrates **badge unlocks** - check criteria, award, notify
+6. Orchestrates **streak** - daily check-in, streak count, reset
+7. Handles **leaderboard** - fetch, rank, refresh
 
 ## Output
-- `gamification_notifier.dart` — GamificationNotifier (StateNotifier<GamificationState>)
-- `gamification_state.dart` — GamificationState sealed class / union type
-- `gamification_provider.dart` — gamificationProvider (Riverpod Provider)
+- `gamification_notifier.dart` - GamificationNotifier (StateNotifier<GamificationState>)
+- `gamification_state.dart` - GamificationState sealed class / union type
+- `gamification_provider.dart` - gamificationProvider (Riverpod Provider)
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

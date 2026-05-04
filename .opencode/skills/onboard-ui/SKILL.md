@@ -16,19 +16,19 @@ Implements welcome screens, tutorials, and permission request UI with Material 3
 - None. This skill consumes onboard-flow outputs and produces UI artifacts.
 
 ## What It Does
-1. Implements **WelcomeScreen** — first-run welcome, app value proposition, get-started CTA
-2. Implements **tutorial screens** — step-by-step feature walkthrough, swipeable pages, progress indicator
-3. Implements **permission request UI** — rationale copy, request CTA, link to app settings when denied
-4. Adds **step navigation UI** — next, back, skip buttons; step indicator dots or progress bar
-5. Handles **loading and transition states** — between steps, during permission requests
-6. Handles **error states** — snackbars, banners for permission failures or flow errors
-7. Uses **Material 3** — components, theming, typography
+1. Implements **WelcomeScreen** - first-run welcome, app value proposition, get-started CTA
+2. Implements **tutorial screens** - step-by-step feature walkthrough, swipeable pages, progress indicator
+3. Implements **permission request UI** - rationale copy, request CTA, link to app settings when denied
+4. Adds **step navigation UI** - next, back, skip buttons; step indicator dots or progress bar
+5. Handles **loading and transition states** - between steps, during permission requests
+6. Handles **error states** - snackbars, banners for permission failures or flow errors
+7. Uses **Material 3** - components, theming, typography
 
 ## Output
-- `welcome_screen.dart` — WelcomeScreen widget
-- `tutorial_screen.dart` — Tutorial/walkthrough screen with swipeable pages
-- `onboarding_step_widget.dart` — Reusable step container with navigation
-- `permission_request_screen.dart` — Permission rationale and request UI
+- `welcome_screen.dart` - WelcomeScreen widget
+- `tutorial_screen.dart` - Tutorial/walkthrough screen with swipeable pages
+- `onboarding_step_widget.dart` - Reusable step container with navigation
+- `permission_request_screen.dart` - Permission rationale and request UI
 - Step indicator / progress bar components
 - Skip / next / back button components
 

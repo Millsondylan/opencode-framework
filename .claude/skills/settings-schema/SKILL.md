@@ -1,8 +1,9 @@
 ---
 name: settings-schema
-description: Define preference, app config, and type IDs 110–119 for the settings domain
+description: Define preference, app config, and type IDs 110-119 for the settings domain
+version: 1.0.0
+tier: standard
 ---
-
 # settings-schema - Settings Domain Schema
 
 Defines preference, app config, and settings state types for the settings domain. First in the settings domain chain (1/6).
@@ -24,12 +25,12 @@ Defines preference, app config, and settings state types for the settings domain
 6. Defines preference types (boolean, string, number, enum)
 
 ## Output
-- `preference.dart` — Preference model with `@HiveType(typeId: 110)`
-- `app_config.dart` — AppConfig model with `@HiveType(typeId: 111)`
-- `feature_flag.dart` — FeatureFlag model with `@HiveType(typeId: 112)`
-- `preference_dto.dart` — Preference DTO for API/transport
-- `app_config_dto.dart` — AppConfig DTO for API/transport
-- `preference_validator.dart` — Preference input validation
+- `preference.dart` - Preference model with `@HiveType(typeId: 110)`
+- `app_config.dart` - AppConfig model with `@HiveType(typeId: 111)`
+- `feature_flag.dart` - FeatureFlag model with `@HiveType(typeId: 112)`
+- `preference_dto.dart` - Preference DTO for API/transport
+- `app_config_dto.dart` - AppConfig DTO for API/transport
+- `preference_validator.dart` - Preference input validation
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

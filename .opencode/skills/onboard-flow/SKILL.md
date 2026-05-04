@@ -16,20 +16,20 @@ Implements step progression, skip logic, and conditional paths for the onboardin
 - None. This skill consumes onboard-schema and onboard-provider outputs and produces flow artifacts.
 
 ## What It Does
-1. Implements **OnboardingNotifier** — Riverpod StateNotifier for onboarding step state
-2. Defines **step state** — current step index, completed steps, skipped steps, in-progress
-3. Implements **step progression logic** — next, previous, jump-to-step, complete-step
-4. Implements **skip logic** — conditional step skipping based on user choices or state
-5. Implements **conditional paths** — branch flows (e.g., new user vs returning, feature flags)
-6. Registers **onboardProvider** — Riverpod provider exposing OnboardingNotifier
-7. Handles **completion state** — mark onboarding complete, persist completion flag
-8. Coordinates with **onboard-provider** — load/save step state, completion status
+1. Implements **OnboardingNotifier** - Riverpod StateNotifier for onboarding step state
+2. Defines **step state** - current step index, completed steps, skipped steps, in-progress
+3. Implements **step progression logic** - next, previous, jump-to-step, complete-step
+4. Implements **skip logic** - conditional step skipping based on user choices or state
+5. Implements **conditional paths** - branch flows (e.g., new user vs returning, feature flags)
+6. Registers **onboardProvider** - Riverpod provider exposing OnboardingNotifier
+7. Handles **completion state** - mark onboarding complete, persist completion flag
+8. Coordinates with **onboard-provider** - load/save step state, completion status
 
 ## Output
-- `onboarding_notifier.dart` — OnboardingNotifier (StateNotifier<OnboardingState>)
-- `onboarding_state.dart` — OnboardingState with step index, completed/skipped steps
-- `onboard_provider.dart` — onboardProvider (Riverpod Provider)
-- `step_progression.dart` — progression logic (next, previous, skip, conditional branches)
+- `onboarding_notifier.dart` - OnboardingNotifier (StateNotifier<OnboardingState>)
+- `onboarding_state.dart` - OnboardingState with step index, completed/skipped steps
+- `onboard_provider.dart` - onboardProvider (Riverpod Provider)
+- `step_progression.dart` - progression logic (next, previous, skip, conditional branches)
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

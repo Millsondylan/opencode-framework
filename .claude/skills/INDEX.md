@@ -2,6 +2,8 @@
 
 All available skills in `.claude/skills/`. Each skill has a `SKILL.md` with domain-specific guidance.
 
+All skills are versioned at `1.0.0` (tier: `standard`) per Run 9 of the versioning upgrade. See `scripts/check_agent_versions.py` for the validator.
+
 | Skill | Path |
 |-------|------|
 | accessibility-agent | .claude/skills/accessibility-agent/ |

@@ -1,8 +1,9 @@
 ---
 name: payments-guard
 description: Implement entitlement checks, fraud detection, and purchase verification for the payments domain
+version: 1.0.0
+tier: standard
 ---
-
 # payments-guard - Payments Domain Guard
 
 Implements entitlement checks, fraud detection, and purchase verification. Fifth in the payments domain chain (5/6).
@@ -16,17 +17,17 @@ Implements entitlement checks, fraud detection, and purchase verification. Fifth
 - None. This skill consumes payments-schema, payments-provider, and payments-flow outputs and produces guard artifacts.
 
 ## What It Does
-1. Implements **EntitlementGuard** — blocks access to premium features when entitlement is missing or expired
-2. Implements **purchase verification** — validates receipts, subscription status, and entitlement claims before granting access
-3. Implements **fraud checks** — detects suspicious purchase patterns, velocity limits, device fingerprint anomalies
+1. Implements **EntitlementGuard** - blocks access to premium features when entitlement is missing or expired
+2. Implements **purchase verification** - validates receipts, subscription status, and entitlement claims before granting access
+3. Implements **fraud checks** - detects suspicious purchase patterns, velocity limits, device fingerprint anomalies
 4. Integrates with Riverpod payments state for guard decisions
 5. Handles redirect flows when guards fail (e.g., to paywall screen)
 6. Coordinates with PaymentsRepository for server-side verification when needed
 
 ## Output
-- `entitlement_guard.dart` — EntitlementGuard for premium feature protection
-- `purchase_verification.dart` — Purchase verification logic (receipt validation, entitlement claims)
-- `fraud_check.dart` — FraudCheck for suspicious activity detection
+- `entitlement_guard.dart` - EntitlementGuard for premium feature protection
+- `purchase_verification.dart` - Purchase verification logic (receipt validation, entitlement claims)
+- `fraud_check.dart` - FraudCheck for suspicious activity detection
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

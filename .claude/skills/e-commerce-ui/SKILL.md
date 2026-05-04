@@ -1,8 +1,9 @@
 ---
 name: e-commerce-ui
 description: Implement ProductGridScreen, CartScreen, and checkout for the e-commerce domain
+version: 1.0.0
+tier: standard
 ---
-
 # e-commerce-ui - E-Commerce Domain UI
 
 Implements ProductGridScreen, CartScreen, and checkout. Fourth in the e-commerce domain chain (4/6).
@@ -16,19 +17,19 @@ Implements ProductGridScreen, CartScreen, and checkout. Fourth in the e-commerce
 - None. This skill consumes e-commerce-flow outputs and produces UI artifacts.
 
 ## What It Does
-1. Implements **ProductGridScreen** — product grid, search, filter, category
-2. Implements **ProductDetailScreen** — product info, add to cart, reviews
-3. Implements **CartScreen** — cart items, quantity, remove, total
-4. Implements **CheckoutScreen** — payment form, order summary, confirm
-5. Implements **OrderTrackingScreen** — order status, timeline
-6. Uses **Material 3** — components, theming, typography
+1. Implements **ProductGridScreen** - product grid, search, filter, category
+2. Implements **ProductDetailScreen** - product info, add to cart, reviews
+3. Implements **CartScreen** - cart items, quantity, remove, total
+4. Implements **CheckoutScreen** - payment form, order summary, confirm
+5. Implements **OrderTrackingScreen** - order status, timeline
+6. Uses **Material 3** - components, theming, typography
 
 ## Output
-- `product_grid_screen.dart` — ProductGridScreen widget
-- `product_detail_screen.dart` — ProductDetailScreen widget
-- `cart_screen.dart` — CartScreen widget
-- `checkout_screen.dart` — CheckoutScreen widget
-- `order_tracking_screen.dart` — OrderTrackingScreen widget
+- `product_grid_screen.dart` - ProductGridScreen widget
+- `product_detail_screen.dart` - ProductDetailScreen widget
+- `cart_screen.dart` - CartScreen widget
+- `checkout_screen.dart` - CheckoutScreen widget
+- `order_tracking_screen.dart` - OrderTrackingScreen widget
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

@@ -16,18 +16,18 @@ Implements CameraScreen, GalleryPicker, and upload progress UI. Fourth in the me
 - None. This skill consumes media-flow outputs and produces UI artifacts.
 
 ## What It Does
-1. Implements **CameraScreen** — live camera preview, capture button
-2. Implements **GalleryPicker** — grid/list, multi-select, permissions
-3. Implements **UploadProgressWidget** — progress bar, cancel, retry
-4. Implements **MediaPreview** — thumbnail, full-screen preview
-5. Handles **error states** — snackbars, banners, inline messages
-6. Uses **Material 3** — components, theming, typography
+1. Implements **CameraScreen** - live camera preview, capture button
+2. Implements **GalleryPicker** - grid/list, multi-select, permissions
+3. Implements **UploadProgressWidget** - progress bar, cancel, retry
+4. Implements **MediaPreview** - thumbnail, full-screen preview
+5. Handles **error states** - snackbars, banners, inline messages
+6. Uses **Material 3** - components, theming, typography
 
 ## Output
-- `camera_screen.dart` — CameraScreen widget
-- `gallery_picker.dart` — GalleryPicker widget
-- `upload_progress_widget.dart` — UploadProgressWidget
-- `media_preview.dart` — MediaPreview widget
+- `camera_screen.dart` - CameraScreen widget
+- `gallery_picker.dart` - GalleryPicker widget
+- `upload_progress_widget.dart` - UploadProgressWidget
+- `media_preview.dart` - MediaPreview widget
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

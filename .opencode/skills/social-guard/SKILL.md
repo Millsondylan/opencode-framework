@@ -16,16 +16,16 @@ Implements block/mute and content reporting. Fifth in the social domain chain (5
 - None. This skill consumes social-schema and social-provider outputs and produces guard artifacts.
 
 ## What It Does
-1. Implements **BlockGuard** — block user, hide blocked content
-2. Implements **MuteGuard** — mute user, hide muted content
-3. Implements **ContentReportGuard** — report post, user, abuse flow
+1. Implements **BlockGuard** - block user, hide blocked content
+2. Implements **MuteGuard** - mute user, hide muted content
+3. Implements **ContentReportGuard** - report post, user, abuse flow
 4. Integrates with Riverpod social state for guard decisions
-5. Handles **blocked/muted list** — persistence, sync
+5. Handles **blocked/muted list** - persistence, sync
 
 ## Output
-- `block_guard.dart` — BlockGuard for user blocking
-- `mute_guard.dart` — MuteGuard for user muting
-- `content_report_guard.dart` — ContentReportGuard for reporting
+- `block_guard.dart` - BlockGuard for user blocking
+- `mute_guard.dart` - MuteGuard for user muting
+- `content_report_guard.dart` - ContentReportGuard for reporting
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

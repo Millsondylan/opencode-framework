@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>opencode framework telemetry</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #161a22;
+    --panel2: #1d2230;
+    --text: #e6e8ec;
+    --muted: #9aa3b2;
+    --accent: #7aa2f7;
+    --good: #73d19a;
+    --warn: #f0c674;
+    --bad: #f07178;
+    --opus: #bb9af7;
+    --sonnet: #7dcfff;
+    --border: #2a2f3a;
+    --mono: ui-monospace, Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.45;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+  h1 { margin: 0; font-size: 22px; letter-spacing: 0.5px; }
+  h2 { margin: 0 0 12px; font-size: 15px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .muted { color: var(--muted); font-family: var(--mono); font-size: 12px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    overflow: auto;
+  }
+  .panel.full { grid-column: 1 / -1; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td {
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  th { color: var(--muted); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  tbody tr:hover { background: var(--panel2); }
+  .mono { font-family: var(--mono); font-size: 12px; }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    background: var(--panel2);
+    color: var(--muted);
+  }
+  .badge.good { background: rgba(115,209,154,0.15); color: var(--good); }
+  .badge.warn { background: rgba(240,198,116,0.15); color: var(--warn); }
+  .badge.bad  { background: rgba(240,113,120,0.18); color: var(--bad); }
+  .kpi {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .kpi .card {
+    flex: 1 1 160px;
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .kpi .card .label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+  .kpi .card .value { font-size: 22px; font-weight: 600; margin-top: 6px; }
+  .kpi .card .delta { font-size: 12px; color: var(--muted); }
+  .bar-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 72px;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+    font-size: 12px;
+  }
+  .bar {
+    height: 10px;
+    background: var(--panel2);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .bar > span {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+  }
+  .anomaly {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 8px 10px;
+    background: rgba(240,113,120,0.08);
+    border: 1px solid rgba(240,113,120,0.35);
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+  .anomaly .kind { color: var(--bad); font-family: var(--mono); font-weight: 600; }
+  .empty { color: var(--muted); font-style: italic; padding: 8px 0; }
+  .pie-wrap { display: flex; align-items: center; gap: 20px; }
+  .pie {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: conic-gradient(var(--opus) 0 0, var(--sonnet) 0 100%);
+    flex-shrink: 0;
+  }
+  .legend { font-size: 13px; }
+  .legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+  .legend .opus-dot { background: var(--opus); }
+  .legend .sonnet-dot { background: var(--sonnet); }
+  footer { margin-top: 24px; color: var(--muted); font-size: 11px; text-align: center; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>opencode framework telemetry</h1>
+    <div class="muted" id="subhead">loading...</div>
+  </div>
+  <div class="muted" id="lastRollup">last rollup: ...</div>
+</header>
+
+<section class="panel full">
+  <div class="kpi" id="kpiRow">
+    <div class="card"><div class="label">mean confidence 7d</div><div class="value" id="kpiConf">...</div><div class="delta">target: 95</div></div>
+    <div class="card"><div class="label">total tokens 30d</div><div class="value" id="kpiTokens">...</div><div class="delta" id="kpiTokensDelta">.</div></div>
+    <div class="card"><div class="label">estimated cost 30d</div><div class="value" id="kpiCost">...</div><div class="delta">usd</div></div>
+    <div class="card"><div class="label">pipeline runs</div><div class="value" id="kpiRuns">...</div><div class="delta">recent</div></div>
+    <div class="card"><div class="label">golden pass rate</div><div class="value" id="kpiGolden">...</div><div class="delta" id="kpiGoldenDelta">.</div></div>
+  </div>
+</section>
+
+<div class="grid" style="margin-top: 16px;">
+
+  <section class="panel">
+    <h2>pipeline runs</h2>
+    <table>
+      <thead>
+        <tr><th>run</th><th>status</th><th>confidence</th><th>duration</th><th>when</th></tr>
+      </thead>
+      <tbody id="tblRuns"></tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>agent stats</h2>
+    <table>
+      <thead>
+        <tr><th>agent</th><th>count</th><th>mean conf</th><th>mean tokens</th><th>errors</th></tr>
+      </thead>
+      <tbody id="tblAgents"></tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>opus vs sonnet share</h2>
+    <div class="pie-wrap">
+      <div class="pie" id="modelPie"></div>
+      <div class="legend">
+        <div><span class="dot opus-dot"></span>opus: <span id="pieOpus">0%</span></div>
+        <div><span class="dot sonnet-dot"></span>sonnet: <span id="pieSonnet">0%</span></div>
+        <div class="muted" id="pieTotal">total invocations: 0</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>token spend last 30 days</h2>
+    <div id="spendBars"></div>
+  </section>
+
+  <section class="panel">
+    <h2>golden suite</h2>
+    <div id="goldenBlock">
+      <div class="muted">latest results</div>
+      <table>
+        <thead>
+          <tr><th>task</th><th>category</th><th>pass</th><th>latency</th><th>tokens</th><th>model</th></tr>
+        </thead>
+        <tbody id="tblGolden"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>anomalies</h2>
+    <div id="anomalies"></div>
+  </section>
+
+</div>
+
+<footer>static dashboard. data source: telemetry/dashboard/data/rollup.json</footer>
+
+<script>
+"use strict";
+
+function fmtInt(n) {
+  if (n === null || n === undefined) return "0";
+  return Number(n).toLocaleString();
+}
+
+function fmtNum(n, digits) {
+  if (n === null || n === undefined) return "0";
+  return Number(n).toFixed(digits === undefined ? 2 : digits);
+}
+
+function fmtUsd(n) {
+  if (n === null || n === undefined) return "$0.00";
+  return "$" + Number(n).toFixed(2);
+}
+
+function confBadge(score) {
+  if (score === null || score === undefined) return "<span class='badge'>n/a</span>";
+  const n = Number(score);
+  let cls = "good";
+  if (n < 90) cls = "bad";
+  else if (n < 95) cls = "warn";
+  return `<span class="badge ${cls}">${n.toFixed(1)}</span>`;
+}
+
+function passBadge(v) {
+  return v ? "<span class='badge good'>pass</span>" : "<span class='badge bad'>fail</span>";
+}
+
+function renderRuns(rows) {
+  const tbody = document.getElementById("tblRuns");
+  tbody.innerHTML = "";
+  if (!rows || rows.length === 0) {
+    tbody.innerHTML = "<tr><td colspan='5' class='empty'>no pipeline runs recorded</td></tr>";
+    return;
+  }
+  for (const r of rows) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="mono">${r.run_number}/${r.total_runs}</td>
+      <td><span class="badge ${r.status === 'COMPLETE' ? 'good' : (r.status === 'running' ? 'warn' : 'bad')}">${r.status || '.'}</span></td>
+      <td>${confBadge(r.mean_confidence)}</td>
+      <td class="mono">${r.duration_ms ? fmtInt(r.duration_ms) + "ms" : "."}</td>
+      <td class="mono">${r.ts_start || "."}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+function renderAgents(rows) {
+  const tbody = document.getElementById("tblAgents");
+  tbody.innerHTML = "";
+  if (!rows || rows.length === 0) {
+    tbody.innerHTML = "<tr><td colspan='5' class='empty'>no agent invocations recorded</td></tr>";
+    return;
+  }
+  for (const r of rows) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="mono">${r.agent_name}</td>
+      <td class="mono">${fmtInt(r.invocation_count)}</td>
+      <td>${confBadge(r.mean_confidence)}</td>
+      <td class="mono">${fmtNum(r.mean_tokens, 0)}</td>
+      <td class="mono">${r.error_count ? "<span class='badge bad'>" + r.error_count + "</span>" : "0"}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+function renderPie(share) {
+  const pie = document.getElementById("modelPie");
+  const opusPct = share && share.opus ? Number(share.opus) : 0;
+  const sonnetPct = share && share.sonnet ? Number(share.sonnet) : 0;
+  const opusDeg = Math.round((opusPct / 100) * 360);
+  pie.style.background = `conic-gradient(var(--opus) 0 ${opusDeg}deg, var(--sonnet) ${opusDeg}deg 360deg)`;
+  document.getElementById("pieOpus").textContent = opusPct.toFixed(1) + "%";
+  document.getElementById("pieSonnet").textContent = sonnetPct.toFixed(1) + "%";
+  document.getElementById("pieTotal").textContent =
+    "total invocations: " + fmtInt(share && share.total ? share.total : 0);
+}
+
+function renderSpend(daily) {
+  const target = document.getElementById("spendBars");
+  target.innerHTML = "";
+  if (!daily || daily.length === 0) {
+    target.innerHTML = "<div class='empty'>no daily rollups yet</div>";
+    return;
+  }
+  const maxTok = Math.max(
+    1,
+    ...daily.map(d => (d.tokens_in_total || 0) + (d.tokens_out_total || 0))
+  );
+  const recent = daily.slice(0, 30).reverse();
+  for (const d of recent) {
+    const total = (d.tokens_in_total || 0) + (d.tokens_out_total || 0);
+    const pct = (total / maxTok) * 100;
+    const row = document.createElement("div");
+    row.className = "bar-row";
+    row.innerHTML = `
+      <div class="mono">${d.rollup_date}</div>
+      <div class="bar"><span style="width: ${pct.toFixed(1)}%"></span></div>
+      <div class="mono" style="text-align:right">${fmtInt(total)}</div>
+    `;
+    target.appendChild(row);
+  }
+}
+
+function renderGolden(rows) {
+  const tbody = document.getElementById("tblGolden");
+  tbody.innerHTML = "";
+  if (!rows || rows.length === 0) {
+    tbody.innerHTML = "<tr><td colspan='6' class='empty'>no golden results</td></tr>";
+    document.getElementById("kpiGolden").textContent = "n/a";
+    return;
+  }
+  let pass = 0;
+  for (const r of rows) {
+    if (r.pass) pass += 1;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="mono">${r.task_id}</td>
+      <td class="mono">${r.category || '.'}</td>
+      <td>${passBadge(!!r.pass)}</td>
+      <td class="mono">${fmtInt(r.latency_ms)}ms</td>
+      <td class="mono">${fmtInt(r.tokens_total)}</td>
+      <td class="mono">${r.model || '.'}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+  const rate = rows.length ? (pass / rows.length) * 100 : 0;
+  document.getElementById("kpiGolden").textContent = rate.toFixed(1) + "%";
+  document.getElementById("kpiGoldenDelta").textContent =
+    pass + " / " + rows.length + " pass";
+}
+
+function renderAnomalies(rows) {
+  const target = document.getElementById("anomalies");
+  target.innerHTML = "";
+  if (!rows || rows.length === 0) {
+    target.innerHTML = "<div class='muted'>no active anomalies</div>";
+    return;
+  }
+  for (const r of rows) {
+    const div = document.createElement("div");
+    div.className = "anomaly";
+    div.innerHTML = `
+      <div class="kind">${r.kind}</div>
+      <div>${r.message}<div class="muted mono">${r.ts}</div></div>
+    `;
+    target.appendChild(div);
+  }
+}
+
+async function load() {
+  const subhead = document.getElementById("subhead");
+  const lastRollup = document.getElementById("lastRollup");
+  try {
+    const resp = await fetch("data/rollup.json", { cache: "no-store" });
+    if (!resp.ok) throw new Error("http " + resp.status);
+    const data = await resp.json();
+    subhead.textContent = "data loaded ok";
+    lastRollup.textContent = "last rollup: " + (data.generated_at || "unknown");
+
+    document.getElementById("kpiConf").innerHTML = confBadge(data.mean_confidence_7d);
+    const spend = data.token_spend_30d || {};
+    document.getElementById("kpiTokens").textContent = fmtInt(spend.total_tokens);
+    document.getElementById("kpiTokensDelta").textContent =
+      "opus out: " + fmtInt(spend.opus_tokens_out) + " | sonnet out: " + fmtInt(spend.sonnet_tokens_out);
+    document.getElementById("kpiCost").textContent = fmtUsd(spend.estimated_cost_usd);
+    document.getElementById("kpiRuns").textContent = fmtInt((data.pipeline_runs || []).length);
+
+    renderRuns(data.pipeline_runs || []);
+    renderAgents(data.agent_stats || []);
+    renderPie(data.opus_sonnet_share || {});
+    renderSpend(data.daily_rollups || []);
+    renderGolden(data.golden_results || []);
+    renderAnomalies(data.anomalies || []);
+  } catch (err) {
+    subhead.textContent = "failed to load rollup.json: " + err.message;
+    lastRollup.textContent = "";
+    renderRuns([]); renderAgents([]); renderSpend([]); renderGolden([]); renderAnomalies([]);
+    renderPie({ opus: 0, sonnet: 0, total: 0 });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", load);
+</script>
+</body>
+</html>

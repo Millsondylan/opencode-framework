@@ -16,15 +16,15 @@ Implements preference validation and schema migration. Fifth in the settings dom
 - None. This skill consumes settings-schema and settings-provider outputs and produces guard artifacts.
 
 ## What It Does
-1. Implements **PreferenceValidationGuard** — validates preference values before persist
-2. Implements **SchemaMigrationGuard** — migrates old preference formats to new
+1. Implements **PreferenceValidationGuard** - validates preference values before persist
+2. Implements **SchemaMigrationGuard** - migrates old preference formats to new
 3. Integrates with Riverpod settings state for guard decisions
-4. Handles **default fallback** — invalid values → defaults
-5. Handles **version compatibility** — app upgrade compatibility
+4. Handles **default fallback** - invalid values → defaults
+5. Handles **version compatibility** - app upgrade compatibility
 
 ## Output
-- `preference_validation_guard.dart` — PreferenceValidationGuard
-- `schema_migration_guard.dart` — SchemaMigrationGuard
+- `preference_validation_guard.dart` - PreferenceValidationGuard
+- `schema_migration_guard.dart` - SchemaMigrationGuard
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

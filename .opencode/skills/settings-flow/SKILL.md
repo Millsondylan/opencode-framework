@@ -16,17 +16,17 @@ Implements preference state and feature flags. Third in the settings domain chai
 - None. This skill consumes settings-schema and settings-provider outputs and produces flow artifacts.
 
 ## What It Does
-1. Implements **SettingsNotifier** — Riverpod StateNotifier for settings state
-2. Defines **SettingsState** — preferences, config, flags, loading, error
+1. Implements **SettingsNotifier** - Riverpod StateNotifier for settings state
+2. Defines **SettingsState** - preferences, config, flags, loading, error
 3. Registers **settingsProvider**, **preferenceProvider**, **featureFlagProvider**
-4. Orchestrates **preference state** — load, update, persist
-5. Orchestrates **feature flags** — fetch, cache, evaluate
-6. Handles **config sync** — remote config refresh
+4. Orchestrates **preference state** - load, update, persist
+5. Orchestrates **feature flags** - fetch, cache, evaluate
+6. Handles **config sync** - remote config refresh
 
 ## Output
-- `settings_notifier.dart` — SettingsNotifier (StateNotifier<SettingsState>)
-- `settings_state.dart` — SettingsState sealed class / union type
-- `settings_provider.dart` — settingsProvider (Riverpod Provider)
+- `settings_notifier.dart` - SettingsNotifier (StateNotifier<SettingsState>)
+- `settings_state.dart` - SettingsState sealed class / union type
+- `settings_provider.dart` - settingsProvider (Riverpod Provider)
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

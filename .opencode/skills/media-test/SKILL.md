@@ -17,18 +17,18 @@ Writes mock camera, upload tests, and guard tests. Sixth in the media domain cha
 
 ## What It Does
 1. Writes **unit tests** for media logic (validators, guards, compression)
-2. Provides **mock camera** — fake image capture for testing
-3. Writes **upload tests** — progress, retry, cancellation
-4. Writes **guard tests** — file size, format, EXIF stripping
+2. Provides **mock camera** - fake image capture for testing
+3. Writes **upload tests** - progress, retry, cancellation
+4. Writes **guard tests** - file size, format, EXIF stripping
 5. Achieves **>80% coverage** for media domain code
 6. Uses `mocktail` or `mockito` for mocking; `flutter_test` for widget/integration tests
 
 ## Output
-- `media_repository_test.dart` — Unit tests for MediaRepository
-- `media_notifier_test.dart` — Unit tests for MediaNotifier
-- `file_size_guard_test.dart` — FileSizeGuard tests
-- `format_guard_test.dart` — FormatGuard tests
-- `mock_camera_data_source.dart` — Mock camera for tests
+- `media_repository_test.dart` - Unit tests for MediaRepository
+- `media_notifier_test.dart` - Unit tests for MediaNotifier
+- `file_size_guard_test.dart` - FileSizeGuard tests
+- `format_guard_test.dart` - FormatGuard tests
+- `mock_camera_data_source.dart` - Mock camera for tests
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

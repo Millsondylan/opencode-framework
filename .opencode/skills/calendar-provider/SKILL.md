@@ -16,18 +16,18 @@ Implements device calendar and reminder scheduling. Second in the calendar domai
 - None. This skill consumes calendar-schema outputs and produces provider artifacts.
 
 ## What It Does
-1. Implements **CalendarRepository** — domain-facing repository interface
-2. Implements **DeviceCalendarDataSource** — device calendar plugin (iOS/Android)
-3. Implements **CalendarRemoteDataSource** — Supabase sync
-4. Implements **ReminderScheduler** — local notifications, reminder triggers
-5. Handles **event CRUD** — create, read, update, delete
-6. Handles **recurrence expansion** — expand recurring events to instances
+1. Implements **CalendarRepository** - domain-facing repository interface
+2. Implements **DeviceCalendarDataSource** - device calendar plugin (iOS/Android)
+3. Implements **CalendarRemoteDataSource** - Supabase sync
+4. Implements **ReminderScheduler** - local notifications, reminder triggers
+5. Handles **event CRUD** - create, read, update, delete
+6. Handles **recurrence expansion** - expand recurring events to instances
 
 ## Output
-- `calendar_repository.dart` — CalendarRepository implementation
-- `device_calendar_data_source.dart` — Device calendar plugin wrapper
-- `calendar_remote_data_source.dart` — Supabase client
-- `reminder_scheduler.dart` — Reminder scheduling
+- `calendar_repository.dart` - CalendarRepository implementation
+- `device_calendar_data_source.dart` - Device calendar plugin wrapper
+- `calendar_remote_data_source.dart` - Supabase client
+- `reminder_scheduler.dart` - Reminder scheduling
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

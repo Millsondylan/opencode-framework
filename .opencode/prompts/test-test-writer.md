@@ -1,7 +1,7 @@
 ---
 skill: test-writer
 category: quality
-description: "Test prompt for test-writer skill — produces minimal test artifacts"
+description: "Test prompt for test-writer skill - produces minimal test artifacts"
 ---
 
 # Test: test-writer (Quality Skill)

@@ -1,8 +1,9 @@
 ---
 name: auth-provider
 description: Implement Supabase Auth integration, repository, and secure token storage for the auth domain
+version: 1.0.0
+tier: standard
 ---
-
 # auth-provider - Auth Domain Provider
 
 Implements Supabase Auth integration, repository layer, remote data source, and secure token storage. Second in the auth domain chain (2/6).
@@ -17,15 +18,15 @@ Implements Supabase Auth integration, repository layer, remote data source, and 
 
 ## What It Does
 1. Integrates **Supabase Auth** (signUp, signIn, signOut, session)
-2. Implements **AuthRepository** — domain-facing repository interface
-3. Implements **AuthRemoteDataSource** — Supabase client wrapper
-4. Implements **secure token storage** — encrypted storage for access/refresh tokens
+2. Implements **AuthRepository** - domain-facing repository interface
+3. Implements **AuthRemoteDataSource** - Supabase client wrapper
+4. Implements **secure token storage** - encrypted storage for access/refresh tokens
 5. Handles token refresh and session persistence
 6. Supports OAuth providers (Google, Apple, etc.) via Supabase
 
 ## Output
-- `auth_repository.dart` — AuthRepository implementation
-- `auth_remote_data_source.dart` — AuthRemoteDataSource (Supabase Auth client)
+- `auth_repository.dart` - AuthRepository implementation
+- `auth_remote_data_source.dart` - AuthRemoteDataSource (Supabase Auth client)
 - Secure token storage implementation (e.g., flutter_secure_storage or platform-specific)
 
 ## What It Must NOT Do

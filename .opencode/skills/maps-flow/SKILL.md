@@ -16,18 +16,18 @@ Implements location tracking, place search, and route. Third in the maps domain 
 - None. This skill consumes maps-schema and maps-provider outputs and produces flow artifacts.
 
 ## What It Does
-1. Implements **MapsNotifier** — Riverpod StateNotifier for maps state
-2. Defines **MapsState** — location, places, route, loading, error
+1. Implements **MapsNotifier** - Riverpod StateNotifier for maps state
+2. Defines **MapsState** - location, places, route, loading, error
 3. Registers **mapsProvider**, **locationProvider**, **placeProvider**
-4. Orchestrates **location tracking** — start, stop, stream
-5. Orchestrates **place search** — query, results, select
-6. Orchestrates **route** — calculate, display, navigate
-7. Handles **geofence events** — enter, exit callbacks
+4. Orchestrates **location tracking** - start, stop, stream
+5. Orchestrates **place search** - query, results, select
+6. Orchestrates **route** - calculate, display, navigate
+7. Handles **geofence events** - enter, exit callbacks
 
 ## Output
-- `maps_notifier.dart` — MapsNotifier (StateNotifier<MapsState>)
-- `maps_state.dart` — MapsState sealed class / union type
-- `maps_provider.dart` — mapsProvider (Riverpod Provider)
+- `maps_notifier.dart` - MapsNotifier (StateNotifier<MapsState>)
+- `maps_state.dart` - MapsState sealed class / union type
+- `maps_provider.dart` - mapsProvider (Riverpod Provider)
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

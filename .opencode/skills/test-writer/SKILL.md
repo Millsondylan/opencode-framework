@@ -13,8 +13,8 @@ Writes comprehensive, real, fully functional tests with 100% coverage for implem
 ```
 
 ## Parameters
-- **TaskSpec** — Acceptance criteria to map tests against
-- **Source files** — Files under test (read first)
+- **TaskSpec** - Acceptance criteria to map tests against
+- **Source files** - Files under test (read first)
 
 ## What It Does
 1. Reads source code under test

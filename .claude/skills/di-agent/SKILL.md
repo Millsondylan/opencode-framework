@@ -1,11 +1,12 @@
 ---
 name: di-agent
-description: Riverpod DI — provider tree, service registration, wiring repositories
+description: Riverpod DI - provider tree, service registration, wiring repositories
+version: 1.0.0
+tier: standard
 ---
-
 # di-agent - Dependency Injection
 
-Configures Riverpod dependency injection — provider tree, service registration, and repository wiring. Does not implement repository logic.
+Configures Riverpod dependency injection - provider tree, service registration, and repository wiring. Does not implement repository logic.
 
 ## Usage
 ```
@@ -20,15 +21,15 @@ Configures Riverpod dependency injection — provider tree, service registration
 2. Registers **services** in Riverpod
 3. Wires **repositories** to providers (interfaces only, no impl)
 4. Configures **Supabase/API client** providers
-5. Outputs **core_providers.dart** — core/shared providers
-6. Outputs **repository_providers.dart** — repository provider bindings
-7. Outputs **service_providers.dart** — service registrations
+5. Outputs **core_providers.dart** - core/shared providers
+6. Outputs **repository_providers.dart** - repository provider bindings
+7. Outputs **service_providers.dart** - service registrations
 8. Outputs Supabase/API client provider modules
 
 ## Output
-- `core_providers.dart` — Core provider tree
-- `repository_providers.dart` — Repository provider bindings
-- `service_providers.dart` — Service registrations
+- `core_providers.dart` - Core provider tree
+- `repository_providers.dart` - Repository provider bindings
+- `service_providers.dart` - Service registrations
 - Supabase/API client provider modules
 
 ## What It Must NOT Do

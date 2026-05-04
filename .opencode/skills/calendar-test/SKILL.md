@@ -17,18 +17,18 @@ Writes recurrence and conflict tests. Sixth in the calendar domain chain (6/6).
 
 ## What It Does
 1. Writes **unit tests** for calendar logic (validators, guards, recurrence)
-2. Writes **recurrence tests** — expansion, RRULE parsing
-3. Writes **conflict tests** — overlap detection, resolution
+2. Writes **recurrence tests** - expansion, RRULE parsing
+3. Writes **conflict tests** - overlap detection, resolution
 4. Provides **mock calendar repository** for isolated testing
 5. Achieves **>80% coverage** for calendar domain code
 6. Uses `mocktail` or `mockito` for mocking; `flutter_test` for widget/integration tests
 
 ## Output
-- `calendar_repository_test.dart` — Unit tests for CalendarRepository
-- `calendar_notifier_test.dart` — Unit tests for CalendarNotifier
-- `recurrence_test.dart` — Recurrence expansion tests
-- `conflict_test.dart` — Conflict detection tests
-- `mock_calendar_repository.dart` — Mock calendar repository for tests
+- `calendar_repository_test.dart` - Unit tests for CalendarRepository
+- `calendar_notifier_test.dart` - Unit tests for CalendarNotifier
+- `recurrence_test.dart` - Recurrence expansion tests
+- `conflict_test.dart` - Conflict detection tests
+- `mock_calendar_repository.dart` - Mock calendar repository for tests
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

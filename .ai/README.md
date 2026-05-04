@@ -136,11 +136,11 @@ When conflicts arise:
 ### Model Specifications
 - Agents live in `.claude/agents/*.md` with `model: opus` or `model: sonnet` per **`CLAUDE.md`** (Opus for plan-agent and all build-agents; Sonnet for most other roles)
 - Context and output limits follow **Claude Code** runtime defaults for the chosen model
-- Do not override `model` from the Task tool — it comes from each agent file’s frontmatter
+- Do not override `model` from the Task tool - it comes from each agent file’s frontmatter
 - YAML frontmatter does NOT support `contextWindow` or `max_tokens` fields
 
 ### Pipeline-Scaler (Stage -2) - MANDATORY FIRST
-- **ALWAYS runs FIRST** — before prompt-optimizer, before everything
+- **ALWAYS runs FIRST** - before prompt-optimizer, before everything
 - Receives raw, unmodified user request (no optimization, no breakdown yet)
 - Analyzes request complexity across five dimensions: feature count, cross-dependencies, estimated file count, domain mixing, risk/urgency
 - Outputs a ScalingPlan specifying the number of sequential pipeline runs and per-run workstream partitioning

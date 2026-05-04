@@ -1,8 +1,9 @@
 ---
 name: test-writer
 description: Comprehensive tests, 100% coverage, NO mocks/placeholders/assert True. Maps tests to TaskSpec acceptance criteria.
+version: 1.0.0
+tier: standard
 ---
-
 # test-writer - Comprehensive Test Writer
 
 Writes comprehensive, real, fully functional tests with 100% coverage for implemented features. Maps every test to TaskSpec acceptance criteria. NO mocks, NO placeholders, NO assert True, NO pass stubs.
@@ -13,8 +14,8 @@ Writes comprehensive, real, fully functional tests with 100% coverage for implem
 ```
 
 ## Parameters
-- **TaskSpec** — Acceptance criteria to map tests against
-- **Source files** — Files under test (read first)
+- **TaskSpec** - Acceptance criteria to map tests against
+- **Source files** - Files under test (read first)
 
 ## What It Does
 1. Reads source code under test

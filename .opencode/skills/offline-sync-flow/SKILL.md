@@ -16,18 +16,18 @@ Implements connectivity state, sync triggers, and retry logic for offline-sync. 
 - None. This skill consumes offline-sync-schema and offline-sync-provider outputs and produces flow artifacts.
 
 ## What It Does
-1. Implements **SyncNotifier** — Riverpod StateNotifier for sync state
-2. Defines **SyncState** — idle, syncing, conflicted, offline, error
-3. Registers **syncProvider** — Riverpod provider exposing SyncNotifier
-4. Monitors **connectivity** — network status, online/offline transitions
-5. Implements **sync triggers** — app resume, connectivity change, manual trigger
-6. Implements **retry logic** — exponential backoff, max retries
-7. Handles **conflict resolution flow** — detect, present, resolve
+1. Implements **SyncNotifier** - Riverpod StateNotifier for sync state
+2. Defines **SyncState** - idle, syncing, conflicted, offline, error
+3. Registers **syncProvider** - Riverpod provider exposing SyncNotifier
+4. Monitors **connectivity** - network status, online/offline transitions
+5. Implements **sync triggers** - app resume, connectivity change, manual trigger
+6. Implements **retry logic** - exponential backoff, max retries
+7. Handles **conflict resolution flow** - detect, present, resolve
 
 ## Output
-- `sync_notifier.dart` — SyncNotifier (StateNotifier<SyncState>)
-- `sync_state.dart` — SyncState sealed class / union type
-- `sync_provider.dart` — syncProvider (Riverpod Provider)
+- `sync_notifier.dart` - SyncNotifier (StateNotifier<SyncState>)
+- `sync_state.dart` - SyncState sealed class / union type
+- `sync_provider.dart` - syncProvider (Riverpod Provider)
 - Connectivity monitoring integration
 
 ## What It Must NOT Do

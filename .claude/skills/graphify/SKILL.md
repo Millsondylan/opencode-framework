@@ -1,8 +1,9 @@
 ---
 name: graphify
 description: Build and use a knowledge graph for a code/docs corpus, then answer via graph structure before raw file searching.
+version: 1.0.0
+tier: standard
 ---
-
 # /graphify - Knowledge Graph Workflow
 
 Use this skill when a task needs fast architectural understanding across many files, docs, PDFs, screenshots, or mixed project artifacts.

@@ -24,12 +24,12 @@ Defines notification entities, channel definitions, preference schema, and DTOs 
 6. Defines notification state types (unread, read, dismissed, archived)
 
 ## Output
-- `notification_entity.dart` — Notification model with `@HiveType(typeId: 30)`
-- `notification_channel.dart` — Channel enum with `@HiveType(typeId: 31)`
-- `notification_preference.dart` — Preference model with `@HiveType(typeId: 32)`
-- `notification_dto.dart` — Notification DTO for API/transport
-- `notification_preference_dto.dart` — Preference DTO for API/transport
-- `notification_validator.dart` — Notification input validation
+- `notification_entity.dart` - Notification model with `@HiveType(typeId: 30)`
+- `notification_channel.dart` - Channel enum with `@HiveType(typeId: 31)`
+- `notification_preference.dart` - Preference model with `@HiveType(typeId: 32)`
+- `notification_dto.dart` - Notification DTO for API/transport
+- `notification_preference_dto.dart` - Preference DTO for API/transport
+- `notification_validator.dart` - Notification input validation
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

@@ -1,8 +1,9 @@
 ---
 name: consistency-critic
 description: Naming, file org, import style consistent across codebase
+version: 1.0.0
+tier: standard
 ---
-
 # consistency-critic - Consistency Validator
 
 Validates consistency: naming conventions, file organization, import style consistent across the codebase.
@@ -13,8 +14,8 @@ Validates consistency: naming conventions, file organization, import style consi
 ```
 
 ## Parameters
-- **Scope** — Directory to analyze (default: full app)
-- **Conventions** — Optional project-specific rules
+- **Scope** - Directory to analyze (default: full app)
+- **Conventions** - Optional project-specific rules
 
 ## What It Does
 1. Audits naming (files, classes, functions, variables)
@@ -24,7 +25,7 @@ Validates consistency: naming conventions, file organization, import style consi
 5. Produces structured report with recommendations
 
 ## Output
-- `consistency-report.json` — Inconsistencies, examples, recommended pattern
+- `consistency-report.json` - Inconsistencies, examples, recommended pattern
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

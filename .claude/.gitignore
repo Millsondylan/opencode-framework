@@ -1,4 +1,4 @@
-# Claude Code hooks — generated output (validators *.log, observability *.jsonl)
+# Claude Code hooks - generated output (validators *.log, observability *.jsonl)
 hooks/logs/
 
 # prompt-optimizer session prompts (see AGENTS.md / CLAUDE.md)

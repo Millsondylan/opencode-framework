@@ -17,16 +17,16 @@ Implements WebSocket/Realtime integration and message persistence. Second in the
 
 ## What It Does
 1. Integrates **Supabase Realtime** or **WebSocket** for live messaging
-2. Implements **MessagingRepository** — domain-facing repository interface
-3. Implements **MessagingRemoteDataSource** — Realtime/WebSocket client
-4. Implements **MessagingLocalDataSource** — Hive persistence for messages
-5. Handles **message persistence** — offline queue, sync on reconnect
-6. Handles **typing events** — subscribe, broadcast, debounce
+2. Implements **MessagingRepository** - domain-facing repository interface
+3. Implements **MessagingRemoteDataSource** - Realtime/WebSocket client
+4. Implements **MessagingLocalDataSource** - Hive persistence for messages
+5. Handles **message persistence** - offline queue, sync on reconnect
+6. Handles **typing events** - subscribe, broadcast, debounce
 
 ## Output
-- `messaging_repository.dart` — MessagingRepository implementation
-- `messaging_remote_data_source.dart` — Supabase Realtime/WebSocket client
-- `messaging_local_data_source.dart` — Hive persistence for messages
+- `messaging_repository.dart` - MessagingRepository implementation
+- `messaging_remote_data_source.dart` - Supabase Realtime/WebSocket client
+- `messaging_local_data_source.dart` - Hive persistence for messages
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

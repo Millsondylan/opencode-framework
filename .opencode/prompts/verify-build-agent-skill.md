@@ -1,7 +1,7 @@
 ---
 skill: auth-schema
 category: verification
-description: "Verification prompt — dispatches build-agent-1 with skill: auth-schema to verify skill activation"
+description: "Verification prompt - dispatches build-agent-1 with skill: auth-schema to verify skill activation"
 ---
 
 # Verification: Build-Agent Skill Activation

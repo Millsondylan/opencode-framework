@@ -16,18 +16,18 @@ Implements Google Maps/Mapbox integration and geocoding. Second in the maps doma
 - None. This skill consumes maps-schema outputs and produces provider artifacts.
 
 ## What It Does
-1. Implements **MapsRepository** — domain-facing repository interface
-2. Implements **LocationDataSource** — device GPS, position stream
-3. Implements **GeocodingDataSource** — reverse geocode, place search
-4. Implements **MapsRemoteDataSource** — Google Maps/Mapbox API client
-5. Handles **geofence monitoring** — enter/exit events
-6. Handles **route calculation** — directions, ETA
+1. Implements **MapsRepository** - domain-facing repository interface
+2. Implements **LocationDataSource** - device GPS, position stream
+3. Implements **GeocodingDataSource** - reverse geocode, place search
+4. Implements **MapsRemoteDataSource** - Google Maps/Mapbox API client
+5. Handles **geofence monitoring** - enter/exit events
+6. Handles **route calculation** - directions, ETA
 
 ## Output
-- `maps_repository.dart` — MapsRepository implementation
-- `location_data_source.dart` — Device location/GPS
-- `geocoding_data_source.dart` — Geocoding API client
-- `maps_remote_data_source.dart` — Google Maps/Mapbox client
+- `maps_repository.dart` - MapsRepository implementation
+- `location_data_source.dart` - Device location/GPS
+- `geocoding_data_source.dart` - Geocoding API client
+- `maps_remote_data_source.dart` - Google Maps/Mapbox client
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

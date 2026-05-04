@@ -1,8 +1,9 @@
 ---
 name: performance-agent
 description: Image caching, lazy loading, widget rebuild optimization, shader warmup
+version: 1.0.0
+tier: standard
 ---
-
 # performance-agent - Performance Optimization
 
 Configures image caching, lazy loading, widget rebuild optimization, and shader warmup. Produces performance recommendations and config.
@@ -19,15 +20,15 @@ Configures image caching, lazy loading, widget rebuild optimization, and shader 
 1. Configures **image caching** (cached_network_image, cache manager)
 2. Implements **lazy loading** patterns (ListView.builder, pagination)
 3. Applies **widget rebuild optimization** (const, keys, selectors)
-4. Configures **shader warmup** — precompile shaders to avoid jank
-5. Outputs **performance recommendations** — best practices doc
-6. Outputs **shader warmup list** — shaders to precompile
-7. Outputs **image caching config** — cache policy and setup
+4. Configures **shader warmup** - precompile shaders to avoid jank
+5. Outputs **performance recommendations** - best practices doc
+6. Outputs **shader warmup list** - shaders to precompile
+7. Outputs **image caching config** - cache policy and setup
 
 ## Output
-- Performance recommendations — optimization guide
-- Shader warmup list — shaders to precompile
-- Image caching config — cache manager configuration
+- Performance recommendations - optimization guide
+- Shader warmup list - shaders to precompile
+- Image caching config - cache manager configuration
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

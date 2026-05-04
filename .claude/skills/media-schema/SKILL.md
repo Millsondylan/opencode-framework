@@ -1,8 +1,9 @@
 ---
 name: media-schema
-description: Define media item, upload state, CDN, and type IDs 80–89 for the media domain
+description: Define media item, upload state, CDN, and type IDs 80-89 for the media domain
+version: 1.0.0
+tier: standard
 ---
-
 # media-schema - Media Domain Schema
 
 Defines media item, upload state, CDN references, and media types for the media domain. First in the media domain chain (1/6).
@@ -24,12 +25,12 @@ Defines media item, upload state, CDN references, and media types for the media 
 6. Defines media types (image, video, audio, document)
 
 ## Output
-- `media_item.dart` — MediaItem model with `@HiveType(typeId: 80)`
-- `upload_state.dart` — UploadState model with `@HiveType(typeId: 81)`
-- `cdn_url.dart` — CdnUrl model with `@HiveType(typeId: 82)`
-- `media_item_dto.dart` — MediaItem DTO for API/transport
-- `upload_state_dto.dart` — UploadState DTO for API/transport
-- `media_item_validator.dart` — MediaItem input validation
+- `media_item.dart` - MediaItem model with `@HiveType(typeId: 80)`
+- `upload_state.dart` - UploadState model with `@HiveType(typeId: 81)`
+- `cdn_url.dart` - CdnUrl model with `@HiveType(typeId: 82)`
+- `media_item_dto.dart` - MediaItem DTO for API/transport
+- `upload_state_dto.dart` - UploadState DTO for API/transport
+- `media_item_validator.dart` - MediaItem input validation
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

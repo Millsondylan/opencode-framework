@@ -1,8 +1,9 @@
 ---
 name: analytics-flow
 description: Implement event dispatch, session tracking, and screen logging for the analytics domain
+version: 1.0.0
+tier: standard
 ---
-
 # analytics-flow - Analytics Domain Flow
 
 Implements event dispatch, session tracking, and screen logging. Third in the analytics domain chain (3/6).
@@ -16,18 +17,18 @@ Implements event dispatch, session tracking, and screen logging. Third in the an
 - None. This skill consumes analytics-schema and analytics-provider outputs and produces flow artifacts.
 
 ## What It Does
-1. Implements **AnalyticsNotifier** — Riverpod StateNotifier for analytics state
-2. Defines **AnalyticsState** — enabled, disabled, consent-pending
-3. Registers **analyticsProvider** — Riverpod provider exposing AnalyticsNotifier
-4. Orchestrates **event dispatch** — log event → validate → batch → send
-5. Tracks **session** — start, end, duration, screen sequence
-6. Implements **screen logging** — automatic screen_view on navigation
-7. Handles **flush** — manual or scheduled batch send
+1. Implements **AnalyticsNotifier** - Riverpod StateNotifier for analytics state
+2. Defines **AnalyticsState** - enabled, disabled, consent-pending
+3. Registers **analyticsProvider** - Riverpod provider exposing AnalyticsNotifier
+4. Orchestrates **event dispatch** - log event → validate → batch → send
+5. Tracks **session** - start, end, duration, screen sequence
+6. Implements **screen logging** - automatic screen_view on navigation
+7. Handles **flush** - manual or scheduled batch send
 
 ## Output
-- `analytics_notifier.dart` — AnalyticsNotifier (StateNotifier<AnalyticsState>)
-- `analytics_state.dart` — AnalyticsState sealed class / union type
-- `analytics_provider.dart` — analyticsProvider (Riverpod Provider)
+- `analytics_notifier.dart` - AnalyticsNotifier (StateNotifier<AnalyticsState>)
+- `analytics_state.dart` - AnalyticsState sealed class / union type
+- `analytics_provider.dart` - analyticsProvider (Riverpod Provider)
 - Session and screen logging integration
 
 ## What It Must NOT Do

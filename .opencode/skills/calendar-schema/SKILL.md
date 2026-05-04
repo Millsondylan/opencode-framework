@@ -1,6 +1,6 @@
 ---
 name: calendar-schema
-description: Define event, recurrence, reminder, and type IDs 140–149 for the calendar domain
+description: Define event, recurrence, reminder, and type IDs 140-149 for the calendar domain
 ---
 
 # calendar-schema - Calendar Domain Schema
@@ -24,12 +24,12 @@ Defines event, recurrence, reminder, and calendar state types for the calendar d
 6. Defines recurrence rules (daily, weekly, monthly, custom)
 
 ## Output
-- `calendar_event.dart` — CalendarEvent model with `@HiveType(typeId: 140)`
-- `recurrence.dart` — Recurrence model with `@HiveType(typeId: 141)`
-- `reminder.dart` — Reminder model with `@HiveType(typeId: 142)`
-- `calendar_event_dto.dart` — CalendarEvent DTO for API/transport
-- `recurrence_dto.dart` — Recurrence DTO for API/transport
-- `calendar_event_validator.dart` — CalendarEvent input validation
+- `calendar_event.dart` - CalendarEvent model with `@HiveType(typeId: 140)`
+- `recurrence.dart` - Recurrence model with `@HiveType(typeId: 141)`
+- `reminder.dart` - Reminder model with `@HiveType(typeId: 142)`
+- `calendar_event_dto.dart` - CalendarEvent DTO for API/transport
+- `recurrence_dto.dart` - Recurrence DTO for API/transport
+- `calendar_event_validator.dart` - CalendarEvent input validation
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

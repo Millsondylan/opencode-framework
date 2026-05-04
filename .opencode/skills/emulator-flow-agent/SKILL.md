@@ -1,6 +1,6 @@
 ---
 name: emulator-flow-agent
-description: Emulator scripts — rotation, font scaling, locale, dark mode
+description: Emulator scripts - rotation, font scaling, locale, dark mode
 ---
 
 # emulator-flow-agent - Emulator Flow Scripts
@@ -13,8 +13,8 @@ Creates emulator test scripts for rotation, font scaling, locale switching, and 
 ```
 
 ## Parameters
-- **Flows** — rotation, font scaling, locale, dark mode (or subset)
-- **Platform** — Android, iOS, or both
+- **Flows** - rotation, font scaling, locale, dark mode (or subset)
+- **Platform** - Android, iOS, or both
 
 ## What It Does
 1. Writes scripts to trigger rotation (portrait ↔ landscape)
@@ -24,7 +24,7 @@ Creates emulator test scripts for rotation, font scaling, locale switching, and 
 5. Outputs runnable scripts for CI or manual QA
 
 ## Output
-- `test/emulator-flows/` — Shell or Dart scripts for emulator flows
+- `test/emulator-flows/` - Shell or Dart scripts for emulator flows
 - Documentation for running each flow
 
 ## What It Must NOT Do

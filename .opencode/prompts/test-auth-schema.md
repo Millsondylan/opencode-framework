@@ -1,7 +1,7 @@
 ---
 skill: auth-schema
 category: domain-chain
-description: "Test prompt for auth-schema skill — produces minimal auth schema artifacts"
+description: "Test prompt for auth-schema skill - produces minimal auth schema artifacts"
 ---
 
 # Test: auth-schema (Domain Chain Skill)

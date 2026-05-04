@@ -16,18 +16,18 @@ Implements CalendarView, EventFormScreen, and agenda. Fourth in the calendar dom
 - None. This skill consumes calendar-flow outputs and produces UI artifacts.
 
 ## What It Does
-1. Implements **CalendarView** — month/week/day view, date picker
-2. Implements **EventFormScreen** — create/edit event, recurrence picker
-3. Implements **AgendaView** — event list for selected date
-4. Implements **EventTile** — event display, time, title, reminder
-5. Handles **conflict UI** — warn on overlap, suggest alternatives
-6. Uses **Material 3** — components, theming, typography
+1. Implements **CalendarView** - month/week/day view, date picker
+2. Implements **EventFormScreen** - create/edit event, recurrence picker
+3. Implements **AgendaView** - event list for selected date
+4. Implements **EventTile** - event display, time, title, reminder
+5. Handles **conflict UI** - warn on overlap, suggest alternatives
+6. Uses **Material 3** - components, theming, typography
 
 ## Output
-- `calendar_view.dart` — CalendarView widget
-- `event_form_screen.dart` — EventFormScreen widget
-- `agenda_view.dart` — AgendaView widget
-- `event_tile.dart` — EventTile widget
+- `calendar_view.dart` - CalendarView widget
+- `event_form_screen.dart` - EventFormScreen widget
+- `agenda_view.dart` - AgendaView widget
+- `event_tile.dart` - EventTile widget
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

@@ -1,8 +1,9 @@
 ---
 name: onboard-schema
 description: Define onboarding step models and user preference capture schema for the onboarding domain
+version: 1.0.0
+tier: standard
 ---
-
 # onboard-schema - Onboarding Domain Schema
 
 Defines onboarding step models, user preference capture schema, and DTOs for the onboarding domain. First in the onboarding domain chain (1/6).
@@ -24,13 +25,13 @@ Defines onboarding step models, user preference capture schema, and DTOs for the
 6. Defines onboarding state types (welcome, preferences, complete, skipped)
 
 ## Output
-- `onboarding_step.dart` — OnboardingStep model/enum with `@HiveType(typeId: 50)`
-- `user_preference.dart` — UserPreference model with `@HiveType(typeId: 51)`
-- `onboarding_progress.dart` — OnboardingProgress model with `@HiveType(typeId: 52)`
-- `onboarding_step_dto.dart` — OnboardingStep DTO for API/transport
-- `user_preference_dto.dart` — UserPreference DTO for API/transport
-- `onboarding_progress_dto.dart` — OnboardingProgress DTO for API/transport
-- `user_preference_validator.dart` — User preference input validation
+- `onboarding_step.dart` - OnboardingStep model/enum with `@HiveType(typeId: 50)`
+- `user_preference.dart` - UserPreference model with `@HiveType(typeId: 51)`
+- `onboarding_progress.dart` - OnboardingProgress model with `@HiveType(typeId: 52)`
+- `onboarding_step_dto.dart` - OnboardingStep DTO for API/transport
+- `user_preference_dto.dart` - UserPreference DTO for API/transport
+- `onboarding_progress_dto.dart` - OnboardingProgress DTO for API/transport
+- `user_preference_validator.dart` - User preference input validation
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

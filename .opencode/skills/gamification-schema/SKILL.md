@@ -1,6 +1,6 @@
 ---
 name: gamification-schema
-description: Define points, badge, leaderboard, and type IDs 160–169 for the gamification domain
+description: Define points, badge, leaderboard, and type IDs 160-169 for the gamification domain
 ---
 
 # gamification-schema - Gamification Domain Schema
@@ -24,12 +24,12 @@ Defines points, badge, leaderboard, and gamification state types for the gamific
 6. Defines badge types (achievement, milestone, special)
 
 ## Output
-- `points.dart` — Points model with `@HiveType(typeId: 160)`
-- `badge.dart` — Badge model with `@HiveType(typeId: 161)`
-- `leaderboard_entry.dart` — LeaderboardEntry model with `@HiveType(typeId: 162)`
-- `points_dto.dart` — Points DTO for API/transport
-- `badge_dto.dart` — Badge DTO for API/transport
-- `points_validator.dart` — Points input validation
+- `points.dart` - Points model with `@HiveType(typeId: 160)`
+- `badge.dart` - Badge model with `@HiveType(typeId: 161)`
+- `leaderboard_entry.dart` - LeaderboardEntry model with `@HiveType(typeId: 162)`
+- `points_dto.dart` - Points DTO for API/transport
+- `badge_dto.dart` - Badge DTO for API/transport
+- `points_validator.dart` - Points input validation
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

@@ -1,8 +1,9 @@
 ---
 name: media-flow
 description: Implement capture flow, upload progress, and retry logic for the media domain
+version: 1.0.0
+tier: standard
 ---
-
 # media-flow - Media Domain Flow
 
 Implements capture flow, upload progress, and retry logic. Third in the media domain chain (3/6).
@@ -16,18 +17,18 @@ Implements capture flow, upload progress, and retry logic. Third in the media do
 - None. This skill consumes media-schema and media-provider outputs and produces flow artifacts.
 
 ## What It Does
-1. Implements **MediaNotifier** — Riverpod StateNotifier for media state
-2. Defines **MediaState** — idle, capturing, uploading, error, completed
-3. Registers **mediaProvider** — Riverpod provider exposing MediaNotifier
-4. Orchestrates **capture flow** — camera/gallery → validate → compress
-5. Orchestrates **upload flow** — progress tracking, retry on failure
-6. Handles **retry logic** — exponential backoff, max retries
-7. Manages **media list** — cache, refresh, delete
+1. Implements **MediaNotifier** - Riverpod StateNotifier for media state
+2. Defines **MediaState** - idle, capturing, uploading, error, completed
+3. Registers **mediaProvider** - Riverpod provider exposing MediaNotifier
+4. Orchestrates **capture flow** - camera/gallery → validate → compress
+5. Orchestrates **upload flow** - progress tracking, retry on failure
+6. Handles **retry logic** - exponential backoff, max retries
+7. Manages **media list** - cache, refresh, delete
 
 ## Output
-- `media_notifier.dart` — MediaNotifier (StateNotifier<MediaState>)
-- `media_state.dart` — MediaState sealed class / union type
-- `media_provider.dart` — mediaProvider (Riverpod Provider)
+- `media_notifier.dart` - MediaNotifier (StateNotifier<MediaState>)
+- `media_state.dart` - MediaState sealed class / union type
+- `media_provider.dart` - mediaProvider (Riverpod Provider)
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

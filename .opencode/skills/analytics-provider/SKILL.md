@@ -17,16 +17,16 @@ Implements Firebase/Mixpanel integration, event batching, and persistence. Secon
 
 ## What It Does
 1. Integrates **Firebase Analytics** or **Mixpanel** (logEvent, setUserProperties)
-2. Implements **AnalyticsRepository** — domain-facing repository interface
-3. Implements **AnalyticsRemoteDataSource** — Firebase/Mixpanel client wrapper
-4. Implements **event batching** — buffer events, flush on threshold or timer
-5. Implements **AnalyticsLocalDataSource** — Hive persistence for offline queue
-6. Handles **user identification** — anonymous ID, user ID when authenticated
+2. Implements **AnalyticsRepository** - domain-facing repository interface
+3. Implements **AnalyticsRemoteDataSource** - Firebase/Mixpanel client wrapper
+4. Implements **event batching** - buffer events, flush on threshold or timer
+5. Implements **AnalyticsLocalDataSource** - Hive persistence for offline queue
+6. Handles **user identification** - anonymous ID, user ID when authenticated
 
 ## Output
-- `analytics_repository.dart` — AnalyticsRepository implementation
-- `analytics_remote_data_source.dart` — Firebase/Mixpanel client wrapper
-- `analytics_local_data_source.dart` — Hive persistence for offline events
+- `analytics_repository.dart` - AnalyticsRepository implementation
+- `analytics_remote_data_source.dart` - Firebase/Mixpanel client wrapper
+- `analytics_local_data_source.dart` - Hive persistence for offline events
 - Event batching utilities
 
 ## What It Must NOT Do

@@ -157,7 +157,7 @@ Agent tool:
     Analyze the codebase and create a RepoProfile...
 ```
 
-**NO prompt-optimizer needed** — orchestrator prepares the prompt directly.
+**NO prompt-optimizer needed** - orchestrator prepares the prompt directly.
 
 ---
 

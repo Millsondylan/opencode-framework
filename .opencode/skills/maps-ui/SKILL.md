@@ -16,18 +16,18 @@ Implements MapScreen, place details, and directions. Fourth in the maps domain c
 - None. This skill consumes maps-flow outputs and produces UI artifacts.
 
 ## What It Does
-1. Implements **MapScreen** — map widget, markers, user location
-2. Implements **PlaceDetailsSheet** — bottom sheet with place info
-3. Implements **DirectionsView** — route display, steps, ETA
-4. Implements **PlaceSearchBar** — search input, suggestions
-5. Handles **permission states** — request, denied, granted
-6. Uses **Material 3** — components, theming, typography
+1. Implements **MapScreen** - map widget, markers, user location
+2. Implements **PlaceDetailsSheet** - bottom sheet with place info
+3. Implements **DirectionsView** - route display, steps, ETA
+4. Implements **PlaceSearchBar** - search input, suggestions
+5. Handles **permission states** - request, denied, granted
+6. Uses **Material 3** - components, theming, typography
 
 ## Output
-- `map_screen.dart` — MapScreen widget
-- `place_details_sheet.dart` — PlaceDetailsSheet widget
-- `directions_view.dart` — DirectionsView widget
-- `place_search_bar.dart` — PlaceSearchBar widget
+- `map_screen.dart` - MapScreen widget
+- `place_details_sheet.dart` - PlaceDetailsSheet widget
+- `directions_view.dart` - DirectionsView widget
+- `place_search_bar.dart` - PlaceSearchBar widget
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)

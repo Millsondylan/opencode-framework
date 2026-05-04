@@ -2,7 +2,7 @@
 
 ## HOW TO DISPATCH (Claude Code)
 
-Custom agents in `.claude/agents/` are loaded at session start. Dispatch them by `name` using `subagent_type`. The agent's `model` and `tools` come from its frontmatter — do NOT override them.
+Custom agents in `.claude/agents/` are loaded at session start. Dispatch them by `name` using `subagent_type`. The agent's `model` and `tools` come from its frontmatter - do NOT override them.
 
 ```
 Agent tool:
@@ -27,8 +27,8 @@ Agent tool:
 - `integration-agent` - Stage 14 (integration testing specialist)
 - `review-agent` - Stage 15
 - `decide-agent` - Stage 16
-- `claude-in-chrome` - Utility — **required** for Chrome, live browser, interactive websites, real-page screenshots/DOM (see `01-pipeline-orchestration.md`); has MCP + Read/WebSearch/WebFetch
-- `project-customizer`, `perfection-validator`, `web-syntax-researcher` — optional / utility per agent definitions
+- `claude-in-chrome` - Utility - **required** for Chrome, live browser, interactive websites, real-page screenshots/DOM (see `01-pipeline-orchestration.md`); has MCP + Read/WebSearch/WebFetch
+- `project-customizer`, `perfection-validator`, `web-syntax-researcher` - optional / utility per agent definitions
 
 ### `claude-in-chrome` (browser / website)
 
@@ -68,7 +68,7 @@ debugger → debugger-2 → ... → debugger-11
 
 ## Available Skills
 
-**Skills index:** `.opencode/skills/INDEX.md` — lists all 126+ domain skills (auth-schema, auth-provider, analytics-flow, etc.). Each skill has `.opencode/skills/{skill}/SKILL.md` with domain-specific guidance.
+**Skills index:** `.opencode/skills/INDEX.md` - lists all 126+ domain skills (auth-schema, auth-provider, analytics-flow, etc.). Each skill has `.opencode/skills/{skill}/SKILL.md` with domain-specific guidance.
 
 **Orchestrator MUST pass skill to build-agent:** When plan-agent assigns a skill to a batch (e.g., `**Skill:** auth-schema`), the orchestrator MUST include it in the build-agent prompt as `skill: {name}`. Example: `skill: auth-schema`. The build-agent will read the skill file and follow its guidance. Never omit the skill when the plan batch specifies one.
 
@@ -80,7 +80,7 @@ debugger → debugger-2 → ... → debugger-11
 
 - **NEVER** use the Task tool to dispatch other agents
 - **NEVER** run multiple agents in parallel or in one response
-- **Only** output a REQUEST tag when you need another agent — the orchestrator parses and dispatches
+- **Only** output a REQUEST tag when you need another agent - the orchestrator parses and dispatches
 - **Only** the orchestrator decides which agent runs next
 
 ---
@@ -126,7 +126,7 @@ debugger → debugger-2 → ... → debugger-11
 
 ## BUILD SUB-PIPELINE
 
-**ORCHESTRATOR-ONLY:** The sub-pipeline (pre-checks, build, post-checks, debug loop) is managed by the orchestrator. Build agents do NOT run this sub-pipeline; they implement 1–2 files per invocation.
+**ORCHESTRATOR-ONLY:** The sub-pipeline (pre-checks, build, post-checks, debug loop) is managed by the orchestrator. Build agents do NOT run this sub-pipeline; they implement 1-2 files per invocation.
 
 Each build-agent invocation is wrapped in a nested sub-pipeline to ensure quality at every step:
 
@@ -338,7 +338,7 @@ Agent tool:
   prompt: "[context + instructions]"
 ```
 
-The agent's model and tools come from `.claude/agents/build-agent-1.md` frontmatter — do NOT override.
+The agent's model and tools come from `.claude/agents/build-agent-1.md` frontmatter - do NOT override.
 
 **Build agent prompt template:**
 ```markdown
@@ -399,7 +399,7 @@ Priority: normal
 - **REQUEST is output text**, not a tool call. Subagents output `REQUEST: [agent] - [reason]` in their response.
 - **Orchestrator parses** REQUEST tags and dispatches the target agent via the Task tool.
 - **Subagents must NOT** use the Task tool. They only output the REQUEST tag.
-- **CAN request** lists are agent-specific; use the canonical list per agent (see Agent Request Rules in each agent definition). Do not use vague "any agent" — specify the target agent by name.
+- **CAN request** lists are agent-specific; use the canonical list per agent (see Agent Request Rules in each agent definition). Do not use vague "any agent" - specify the target agent by name.
 
 ### Quality Enforcement
 

@@ -43,7 +43,7 @@ You have access to domain skills. See `.opencode/skills/INDEX.md` for the full l
 **When the orchestrator assigns a skill** (e.g., `skill: auth-schema` in the prompt):
 1. You MUST activate it by reading `.opencode/skills/{name}/SKILL.md`
 2. Follow its guidance during implementation
-3. Do not skip — skills provide domain-specific patterns and conventions
+3. Do not skip - skills provide domain-specific patterns and conventions
 
 If no skill is assigned, proceed without activating a skill.
 
@@ -148,10 +148,10 @@ Justification: {1-3 sentences}
 ```
 
 **Rules:**
-- Score yourself **honestly** — 99% correct = report 99, not 100
+- Score yourself **honestly** - 99% correct = report 99, not 100
 - The four dimension scores must sum to the total score
 - Justification is **mandatory** for every score
 - If you deducted any dimension points: enumerate specific gaps by rubric dimension
-- **NEVER inflate your score** — brutal honesty is required
+- **NEVER inflate your score** - brutal honesty is required
 - The orchestrator **cannot** tell you to score higher
 - See `.opencode/rules/09-confidence-scoring.md` for full details

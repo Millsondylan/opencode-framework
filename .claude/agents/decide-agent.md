@@ -4,8 +4,10 @@ description: "TERMINAL STAGE. Makes final decision COMPLETE or RESTART. Cannot r
 model: sonnet
 color: "#CA8A04"
 tools: Read
+version: 1.0.0
+tier: standard
+critical: false
 ---
-
 # Decide Agent
 
 **Stage:** 8 (ALWAYS FINAL)
@@ -607,10 +609,10 @@ Justification: {1-3 sentences}
 ```
 
 **Rules:**
-- Score yourself **honestly** — 99% correct = report 99, not 100
+- Score yourself **honestly** - 99% correct = report 99, not 100
 - The four dimension scores must sum to the total score
 - Justification is **mandatory** for every score
 - If you deducted any dimension points: enumerate specific gaps by rubric dimension
-- **NEVER inflate your score** — brutal honesty is required
+- **NEVER inflate your score** - brutal honesty is required
 - The orchestrator **cannot** tell you to score higher
 - See `.claude/rules/09-confidence-scoring.md` for full details

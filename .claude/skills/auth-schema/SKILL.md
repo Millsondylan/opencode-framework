@@ -1,8 +1,9 @@
 ---
 name: auth-schema
 description: Define auth data models and types for the authentication domain
+version: 1.0.0
+tier: standard
 ---
-
 # auth-schema - Auth Domain Schema
 
 Defines the User model, token models, role enums, and auth state types for the authentication domain. First in the auth domain chain (1/6).
@@ -24,12 +25,12 @@ Defines the User model, token models, role enums, and auth state types for the a
 6. Defines auth state types (signed-in, signed-out, loading, error)
 
 ## Output
-- `user_entity.dart` — User model with `@HiveType(typeId: 10)`
-- `auth_token.dart` — Token model with `@HiveType(typeId: 11)`
-- `role.dart` — Role enum with `@HiveType(typeId: 12)`
-- `user_dto.dart` — User DTO for API/transport
-- `auth_token_dto.dart` — Auth token DTO for API/transport
-- `user_validator.dart` — User input validation
+- `user_entity.dart` - User model with `@HiveType(typeId: 10)`
+- `auth_token.dart` - Token model with `@HiveType(typeId: 11)`
+- `role.dart` - Role enum with `@HiveType(typeId: 12)`
+- `user_dto.dart` - User DTO for API/transport
+- `auth_token_dto.dart` - Auth token DTO for API/transport
+- `user_validator.dart` - User input validation
 
 ## What It Must NOT Do
 - Call other agents or use the Task tool (emit `REQUEST:` if delegation needed)
