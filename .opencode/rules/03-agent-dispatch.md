@@ -1,12 +1,13 @@
 # Agent Dispatch & Build Pipeline Rules
 
-## HOW TO DISPATCH
+## HOW TO DISPATCH (Claude Code)
 
-**Use agent name as subagent_type:**
+Custom agents in `.claude/agents/` are loaded at session start. Dispatch them by `name` using `subagent_type`. The agent's `model` and `tools` come from its frontmatter - do NOT override them.
 
 ```
-task tool:
+Agent tool:
   subagent_type: "task-breakdown"
+  description: "Decompose request into TaskSpec"
   prompt: "[context from previous stages + user's request]"
 ```
 
@@ -26,6 +27,19 @@ task tool:
 - `integration-agent` - Stage 14 (integration testing specialist)
 - `review-agent` - Stage 15
 - `decide-agent` - Stage 16
+- `claude-in-chrome` - Utility - **required** for Chrome, live browser, interactive websites, real-page screenshots/DOM (see `01-pipeline-orchestration.md`); has MCP + Read/WebSearch/WebFetch
+- `project-customizer`, `perfection-validator`, `web-syntax-researcher` - optional / utility per agent definitions
+
+### `claude-in-chrome` (browser / website)
+
+Dispatch with the Agent tool when the user needs a **real browser** (not static fetch only). **Example:**
+
+```
+Agent tool:
+  subagent_type: "claude-in-chrome"
+  description: "Automate Chrome for user task"
+  prompt: "[URLs, steps, what to verify on the live page]"
+```
 
 **Build Agent Chaining (Stage 9) - CYCLES:**
 ```
@@ -52,13 +66,21 @@ debugger → debugger-2 → ... → debugger-11
 
 ---
 
+## Available Skills
+
+**Skills index:** `.opencode/skills/INDEX.md` - lists all 126+ domain skills (auth-schema, auth-provider, analytics-flow, etc.). Each skill has `.opencode/skills/{skill}/SKILL.md` with domain-specific guidance.
+
+**Orchestrator MUST pass skill to build-agent:** When plan-agent assigns a skill to a batch (e.g., `**Skill:** auth-schema`), the orchestrator MUST include it in the build-agent prompt as `skill: {name}`. Example: `skill: auth-schema`. The build-agent will read the skill file and follow its guidance. Never omit the skill when the plan batch specifies one.
+
+---
+
 ## Anti-Orchestration Rules
 
 **Subagents do NOT orchestrate. Only the orchestrator dispatches agents.**
 
 - **NEVER** use the Task tool to dispatch other agents
 - **NEVER** run multiple agents in parallel or in one response
-- **Only** output a REQUEST tag when you need another agent — the orchestrator parses and dispatches
+- **Only** output a REQUEST tag when you need another agent - the orchestrator parses and dispatches
 - **Only** the orchestrator decides which agent runs next
 
 ---
@@ -98,9 +120,13 @@ debugger → debugger-2 → ... → debugger-11
    - Note any deviations from specification
    - Flag any potential issues
 
+**Skill activation (when plan assigns a skill):** If the prompt includes `skill: {name}` (e.g. `skill: auth-schema`), read `.opencode/skills/{name}/SKILL.md` before step 4 and follow its guidance during implementation.
+
 ---
 
 ## BUILD SUB-PIPELINE
+
+**ORCHESTRATOR-ONLY:** The sub-pipeline (pre-checks, build, post-checks, debug loop) is managed by the orchestrator. Build agents do NOT run this sub-pipeline; they implement 1-2 files per invocation.
 
 Each build-agent invocation is wrapped in a nested sub-pipeline to ensure quality at every step:
 
@@ -273,7 +299,7 @@ tools:
 ---
 ```
 
-Note: OpenCode uses structured YAML `tools:` map (not comma-separated string) and full model IDs like `kimi-for-coding/k2p5` and `alibaba-coding-plan/glm-5` (not shorthand like `opus`, `sonnet`, `haiku`). plan-agent uses `alibaba-coding-plan/kimi-k2.5` per default model.
+Note: OpenCode uses structured YAML `tools:` map (not comma-separated string) and full provider model IDs (e.g. `kimi-for-coding/k2p5`, `zai-coding-plan/glm-5`, `anthropic/claude-opus-4-6`). All **build-agent** subagents (`build-agent` and `build-agent-1` … `build-agent-55`) use `anthropic/claude-opus-4-6`; **plan-agent** uses `anthropic/claude-opus-4-6`; **perfection-validator** uses `anthropic/claude-sonnet-4-6`; other agents use Kimi/GLM IDs as defined in each file’s frontmatter. Claude Code’s `.claude/agents/*.md` uses shorthand `opus`, `sonnet`, etc. Each agent has a distinct `color: "#hex"` in frontmatter for UI differentiation.
 
 ### Agent Capabilities by Type
 
@@ -304,6 +330,16 @@ Note: OpenCode uses structured YAML `tools:` map (not comma-separated string) an
 4. **Implementation Plan** - Specific files and changes
 5. **Previous stage outputs** - Any relevant context
 
+**Agent tool call format (Claude Code):**
+```
+Agent tool:
+  subagent_type: "build-agent-1"
+  description: "Implement batch 1"
+  prompt: "[context + instructions]"
+```
+
+The agent's model and tools come from `.claude/agents/build-agent-1.md` frontmatter - do NOT override.
+
 **Build agent prompt template:**
 ```markdown
 <task>Implement features F1 and F2 per the plan</task>
@@ -320,14 +356,20 @@ Note: OpenCode uses structured YAML `tools:` map (not comma-separated string) an
 
 ## Implementation Plan
 [paste relevant batch]
+
+## Skill (REQUIRED when plan batch specifies one)
+skill: auth-schema
 </context>
 
 <requirements>
 - Follow RepoProfile conventions exactly
+- If skill assigned: read .opencode/skills/{skill}/SKILL.md before implementing
 - Create real tests with actual assertions
 - Complete every feature fully
 </requirements>
 ```
+
+**Orchestrator rule:** When the plan batch includes `**Skill:** {name}`, you MUST add `skill: {name}` to the build-agent prompt. The build-agent expects this and will activate the skill.
 
 ### Agent Communication Protocol
 
@@ -357,7 +399,7 @@ Priority: normal
 - **REQUEST is output text**, not a tool call. Subagents output `REQUEST: [agent] - [reason]` in their response.
 - **Orchestrator parses** REQUEST tags and dispatches the target agent via the Task tool.
 - **Subagents must NOT** use the Task tool. They only output the REQUEST tag.
-- **CAN request** lists are agent-specific; use the canonical list per agent (see Agent Request Rules in each agent definition). Do not use vague "any agent" — specify the target agent by name.
+- **CAN request** lists are agent-specific; use the canonical list per agent (see Agent Request Rules in each agent definition). Do not use vague "any agent" - specify the target agent by name.
 
 ### Quality Enforcement
 

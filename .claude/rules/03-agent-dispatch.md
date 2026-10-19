@@ -1,12 +1,13 @@
 # Agent Dispatch & Build Pipeline Rules
 
-## HOW TO DISPATCH
+## HOW TO DISPATCH (Claude Code)
 
-**Use agent name as subagent_type:**
+Custom agents in `.claude/agents/` are loaded at session start. Dispatch them by `name` using `subagent_type`. The agent's `model` and `tools` come from its frontmatter - do NOT override them.
 
 ```
-Task tool:
+Agent tool:
   subagent_type: "task-breakdown"
+  description: "Decompose request into TaskSpec"
   prompt: "[context from previous stages + user's request]"
 ```
 
@@ -26,6 +27,19 @@ Task tool:
 - `integration-agent` - Stage 14 (integration testing specialist)
 - `review-agent` - Stage 15
 - `decide-agent` - Stage 16
+- `claude-in-chrome` - Utility - **required** for Chrome, live browser, interactive websites, real-page screenshots/DOM (see `01-pipeline-orchestration.md`); has MCP + Read/WebSearch/WebFetch
+- `project-customizer`, `perfection-validator`, `web-syntax-researcher` - optional / utility per agent definitions
+
+### `claude-in-chrome` (browser / website)
+
+Dispatch with the Agent tool when the user needs a **real browser** (not static fetch only). **Example:**
+
+```
+Agent tool:
+  subagent_type: "claude-in-chrome"
+  description: "Automate Chrome for user task"
+  prompt: "[URLs, steps, what to verify on the live page]"
+```
 
 **Build Agent Chaining (Stage 9) - CYCLES:**
 ```
@@ -49,6 +63,25 @@ debugger → debugger-2 → ... → debugger-11
 - If errors remain → dispatch next agent (debugger→2→...→11→debugger→...)
 - Pass: what's fixed + what remains
 - Cycle continues until all errors resolved
+
+---
+
+## Available Skills
+
+**Skills index:** `.claude/skills/INDEX.md` - lists all 126+ domain skills (auth-schema, auth-provider, analytics-flow, etc.). Each skill has `.claude/skills/{skill}/SKILL.md` with domain-specific guidance.
+
+**Orchestrator MUST pass skill to build-agent:** When plan-agent assigns a skill to a batch (e.g., `**Skill:** auth-schema`), the orchestrator MUST include it in the build-agent prompt as `skill: {name}`. Example: `skill: auth-schema`. The build-agent will read the skill file and follow its guidance. Never omit the skill when the plan batch specifies one.
+
+---
+
+## Anti-Orchestration Rules
+
+**Subagents do NOT orchestrate. Only the orchestrator dispatches agents.**
+
+- **NEVER** use the Task tool to dispatch other agents
+- **NEVER** run multiple agents in parallel or in one response
+- **Only** output a REQUEST tag when you need another agent - the orchestrator parses and dispatches
+- **Only** the orchestrator decides which agent runs next
 
 ---
 
@@ -87,9 +120,13 @@ debugger → debugger-2 → ... → debugger-11
    - Note any deviations from specification
    - Flag any potential issues
 
+**Skill activation (when plan assigns a skill):** If the prompt includes `skill: {name}` (e.g. `skill: auth-schema`), read `.claude/skills/{name}/SKILL.md` before step 4 and follow its guidance during implementation.
+
 ---
 
 ## BUILD SUB-PIPELINE
+
+**ORCHESTRATOR-ONLY:** The sub-pipeline (pre-checks, build, post-checks, debug loop) is managed by the orchestrator. Build agents do NOT run this sub-pipeline; they implement 1-2 files per invocation.
 
 Each build-agent invocation is wrapped in a nested sub-pipeline to ensure quality at every step:
 
@@ -247,13 +284,22 @@ All agent definitions are stored in `.claude/agents/{agent-name}.md` with YAML f
 
 ```yaml
 ---
-name: {agent-name}
 description: {when to use this agent}
-tools: {comma-separated list of available tools}
-model: opus
-color: blue
+mode: subagent
+model: {opus|sonnet|…}
+hidden: true
+color: "#HEXCOLOR"
+tools:
+  write: true
+  read: true
+  edit: true
+  grep: true
+  glob: true
+  bash: true
 ---
 ```
+
+Note: **Claude Code** loads each agent from `.claude/agents/{name}.md`. Frontmatter includes `model` (`opus`, `sonnet`, etc., per the project model policy in `CLAUDE.md`), a `tools:` list (comma-separated tool names for this agent), and optional `color: "#hex"` for visual distinction. **plan-agent**, all **build-agent** roles, and **debugger** through **debugger-11** use **Opus**; most other pipeline agents use **Sonnet**, unless a file states otherwise.
 
 ### Agent Capabilities by Type
 
@@ -266,7 +312,7 @@ color: blue
 | **plan-agent** | Read, Grep, Glob, Bash | Create batched implementation plan |
 | **docs-researcher** | Read, WebSearch, WebFetch | Research library documentation |
 | **pre-flight-checker** | Read, Bash, Glob | Pre-implementation sanity checks |
-| **build-agent-1 to 55** | Write, Read, Edit, Grep, Glob, Bash, TodoWrite | Implement code changes |
+| **build-agent-1 to 55** | write, read, edit, grep, glob, bash, todowrite | Implement code changes |
 | **test-writer** | Write, Read, Edit, Grep, Glob, Bash | Write tests for implemented features |
 | **debugger to debugger-11** | Read, Edit, Grep, Glob, Bash | Fix errors and bugs |
 | **logical-agent** | Read, Grep, Glob | Verify code logic correctness |
@@ -284,6 +330,16 @@ color: blue
 4. **Implementation Plan** - Specific files and changes
 5. **Previous stage outputs** - Any relevant context
 
+**Agent tool call format (Claude Code):**
+```
+Agent tool:
+  subagent_type: "build-agent-1"
+  description: "Implement batch 1"
+  prompt: "[context + instructions]"
+```
+
+The agent's model and tools come from `.claude/agents/build-agent-1.md` frontmatter - do NOT override.
+
 **Build agent prompt template:**
 ```markdown
 <task>Implement features F1 and F2 per the plan</task>
@@ -300,14 +356,20 @@ color: blue
 
 ## Implementation Plan
 [paste relevant batch]
+
+## Skill (REQUIRED when plan batch specifies one)
+skill: auth-schema
 </context>
 
 <requirements>
 - Follow RepoProfile conventions exactly
+- If skill assigned: read .claude/skills/{skill}/SKILL.md before implementing
 - Create real tests with actual assertions
 - Complete every feature fully
 </requirements>
 ```
+
+**Orchestrator rule:** When the plan batch includes `**Skill:** {name}`, you MUST add `skill: {name}` to the build-agent prompt. The build-agent expects this and will activate the skill.
 
 ### Agent Communication Protocol
 
@@ -331,6 +393,13 @@ REQUEST: build-agent-2 - F3 implementation incomplete
 Context: F1 and F2 complete, need to continue with F3
 Priority: normal
 ```
+
+### REQUEST Semantics
+
+- **REQUEST is output text**, not a tool call. Subagents output `REQUEST: [agent] - [reason]` in their response.
+- **Orchestrator parses** REQUEST tags and dispatches the target agent via the Task tool.
+- **Subagents must NOT** use the Task tool. They only output the REQUEST tag.
+- **CAN request** lists are agent-specific; use the canonical list per agent (see Agent Request Rules in each agent definition). Do not use vague "any agent" - specify the target agent by name.
 
 ### Quality Enforcement
 

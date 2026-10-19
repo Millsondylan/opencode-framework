@@ -86,7 +86,7 @@ Stage 6 completes -> stage_outputs.stage_2_plan = ImplementationPlan
 | Stage 5 | user_request, TaskSpec |
 | Stage 6 | user_request, TaskSpec, RepoProfile |
 | Stage 7 | user_request, TaskSpec, Plan |
-| Stage 9 | user_request, TaskSpec, RepoProfile, Plan, Docs |
+| Stage 9 | user_request, TaskSpec, RepoProfile, Plan, Docs, skill (from Plan batch) |
 | Stage 10 | user_request, TaskSpec, RepoProfile, BuildReports |
 | Stage 11 | user_request, TaskSpec, BuildReports, TestReport |
 | Stage 12 | user_request, TaskSpec, BuildReports |
@@ -136,7 +136,7 @@ When an agent outputs a REQUEST:
 
 **Always include in agent prompts:**
 1. **User's original request** (what they asked for)
-2. **ACM rules note** — "Follow: read before edit, EDIT not write for existing files, no secrets, real tests for new files"
+2. **ACM rules note** - "Follow: read before edit, EDIT not write for existing files, no secrets, real tests for new files"
 3. **Previous stage outputs** (TaskSpec, RepoProfile, Plan, etc.)
 4. **Specific instructions** (what THIS agent should focus on)
 5. **Quality expectations** (be specific, follow conventions, etc.)

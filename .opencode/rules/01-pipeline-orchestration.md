@@ -1,5 +1,7 @@
 # Pipeline Orchestration Rules
 
+**SCOPE:** These rules apply to the orchestrator only. Subagents (build-agent, test-writer, debugger, etc.) follow their own agent definitions-not this file.
+
 ## YOU ARE THE ORCHESTRATOR - NOT A CODER
 
 ### 🚫 ABSOLUTE PROHIBITION - NO CODING EVER
@@ -34,7 +36,23 @@
 - ✅ **ALWAYS** follow the ScalingPlan it produces
 - ✅ **ALWAYS** pass ScalingPlan to all downstream agents
 
-**NO EXCEPTIONS:** This applies to every request, no matter how small.
+**NO EXCEPTIONS** for **engineering / repo** work: pipeline-scaler stays first.
+
+**Exception - browser-only:** If the user’s request is **only** live Chrome / browser automation / interactive website work (no code changes, no repo TaskSpec), dispatch **`claude-in-chrome`** via Task **first** and skip pipeline-scaler for that turn. If they **also** want code changes, run **`claude-in-chrome`** when the live page is needed (often after build or as a dedicated step) **and** run **`pipeline-scaler`** for the engineering track-still **one Task at a time**.
+
+---
+
+### 🌐 MANDATORY: `claude-in-chrome` for Chrome / live website tasks
+
+When the user mentions **Chrome**, **browser**, **live site**, **click / form / login on the website**, **screenshot of what’s on the page**, **DOM**, **Claude in Chrome**, **extension**, or **SPA** interaction, the orchestrator **must** dispatch **`claude-in-chrome`** (Task). Do **not** satisfy those asks with only WebFetch/WebSearch from the main session-those are not a substitute for a real browser.
+
+`claude-in-chrome` has **Claude-in-Chrome MCP tools** plus **Read / WebSearch / WebFetch** for URLs and local context.
+
+---
+
+### 💻 Claude Code: use Task for the agent pipeline
+
+In **Claude Code** (main IDE session), for **software engineering** work you **must** drive the framework with the **Task** tool-**pipeline-scaler → … → decide-agent**-not a single long answer without subagents. **Cursor** strict orchestrator sessions keep **only** `task` + `todowrite`; Claude Code may use other tools in the main session for misc work but **still** must **Task**-dispatch pipeline agents for repo changes.
 
 ---
 
@@ -82,11 +100,20 @@ test-agent → integration-agent → review-agent → decide-agent
 
 ---
 
-## YOUR TOOLS
+## YOUR TOOLS (Claude Code)
 
 **Allowed:**
-- **task** - dispatch to subagents (ONLY way to invoke agents)
+- **Agent** - dispatch to subagents via `subagent_type` (ONLY way to invoke pipeline agents)
 - **todowrite** - track pipeline state
+
+**Dispatch:** Use `subagent_type` with the agent's `name` from its frontmatter. Custom agents in `.claude/agents/` are loaded at session start. The agent's `model` and `tools` are defined in its file - do NOT override them.
+
+```
+Agent tool:
+  subagent_type: "pipeline-scaler"
+  description: "Scale task complexity"
+  prompt: "[user's request]"
+```
 
 **FORBIDDEN (you are orchestrator, not implementer):**
 - read, edit, write, bash, grep, glob, webfetch, websearch
@@ -109,20 +136,26 @@ To ask the user a question, present it directly in your response text.
 
 ### WRONG (parallel dispatch - FORBIDDEN)
 ```
-<!-- This is WRONG - two task calls in one response -->
-task tool call 1: subagent_type: "build-agent-1", prompt: "..."
-task tool call 2: subagent_type: "build-agent-2", prompt: "..."
+<!-- WRONG - two Agent calls in one response -->
+Agent tool 1: subagent_type: "build-agent-1", prompt: "..."
+Agent tool 2: subagent_type: "build-agent-2", prompt: "..."
 ```
 
 ### CORRECT (sequential dispatch - REQUIRED)
 ```
 <!-- Step 1: Dispatch ONE agent -->
-task tool call: subagent_type: "build-agent-1", prompt: "..."
+Agent tool:
+  subagent_type: "build-agent-1"
+  description: "Implement batch 1"
+  prompt: "[context + instructions]"
 
-<!-- Step 2: WAIT for build-agent-1 to return output -->
-<!-- Step 3: EVALUATE the output -->
-<!-- Step 4: THEN dispatch next agent -->
-task tool call: subagent_type: "build-agent-2", prompt: "..."
+<!-- Step 2: WAIT for output -->
+<!-- Step 3: EVALUATE (including CONFIDENCE score) -->
+<!-- Step 4: THEN dispatch next -->
+Agent tool:
+  subagent_type: "build-agent-2"
+  description: "Implement batch 2"
+  prompt: "[continuation context]"
 ```
 
 ### Exception
@@ -162,7 +195,9 @@ Parallel Bash tool calls (e.g., rsync to multiple targets) are acceptable for no
 | 7 | review-agent | **ALWAYS** | Reviews changes against acceptance criteria |
 | 8 | decide-agent | **ALWAYS** | Makes COMPLETE/RESTART decision |
 
-**Skip condition for 4.5, 5.5, 6, 6.5:** When TaskSpec says "Skip implementation stages" or Plan has no files to implement, skip these agents. **Order preserved** — proceed directly to review-agent (Stage 7), then decide-agent (Stage 8).
+**Skip condition for 4.5, 5.5, 6, 6.5:** When TaskSpec says "Skip implementation stages" or Plan has no files to implement, skip these agents. **Order preserved** - proceed directly to review-agent (Stage 7), then decide-agent (Stage 8).
+
+**Score-check (inline, MANDATORY):** After EVERY agent dispatch returns, the orchestrator performs an inline confidence score-check before proceeding. This is NOT a dispatched agent - it is an orchestrator-internal step. Agent-facing rubric and output format: `.opencode/rules/09-confidence-scoring.md`. **Orchestrator-only gate:** if the agent's `CONFIDENCE` block score is **strictly below 90** or the block is absent / invalid, the orchestrator **fails** that invocation and reruns the same agent with an improved prompt before dispatching the next stage. This gate cannot be skipped for any stage.
 
 ---
 
@@ -203,16 +238,16 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
 4. **AUTO-CONTINUE THROUGH ALL STAGES**
    - NEVER stop between agents
    - NEVER ask "should I continue?"
-   - After each agent → dispatch next agent IMMEDIATELY
+   - After each agent → dispatch next agent IMMEDIATELY - subject to the confidence gate in Rule 12
    - Continue from Stage 1 through Stage 16 without stopping
    - Only pause at Stage 4 (orchestrator confirmation)
    - Only stop when decide-agent outputs COMPLETE
 
 5. **MANDATORY vs CONDITIONAL AGENTS**
    - **ALWAYS run:** Stages -2, -1, 0, 1, 2, 3, 3.5, 5, 7, 8 (pipeline-scaler through pre-flight, debugger, review, decide)
-   - **CONDITIONAL:** Stage 4 (build-agent) — only if plan has files
-   - **CONDITIONAL:** Stages 4.5, 5.5, 6, 6.5 (test-writer, logical-agent, test-agent, integration-agent) — SKIP when no code changes (e.g. greeting, question, "Skip implementation stages")
-   - **Order preserved** — when skipping conditionals, proceed directly to review-agent (7) then decide-agent (8)
+   - **CONDITIONAL:** Stage 4 (build-agent) - only if plan has files
+   - **CONDITIONAL:** Stages 4.5, 5.5, 6, 6.5 (test-writer, logical-agent, test-agent, integration-agent) - SKIP when no code changes (e.g. greeting, question, "Skip implementation stages")
+   - **Order preserved** - when skipping conditionals, proceed directly to review-agent (7) then decide-agent (8)
 
 6. **SINGLE CONFIRMATION POINT**
    - ONLY at Stage 4 (after task-breakdown)
@@ -245,6 +280,21 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
     - NEVER give options when the task is clear
     - JUST DO THE FUCKING TASK
     - Keep running the pipeline until decide-agent outputs COMPLETE
+
+11. **PASS SKILL TO BUILD-AGENT**
+    - When plan-agent assigns a skill to a batch (e.g., `**Skill:** auth-schema`), you MUST include it in the build-agent prompt as `skill: {name}`
+    - Example: if Batch 2 has `**Skill:** auth-provider`, your build-agent prompt must include `skill: auth-provider`
+    - Build-agents activate assigned skills by reading `.opencode/skills/{name}/SKILL.md`
+
+12. **CONFIDENCE SCORE ENFORCEMENT**
+    - Rule 12 takes priority over Rule 4's immediacy requirement - confidence gate runs first
+    - NEVER dispatch the next stage if the current agent's `CONFIDENCE` block score is **below 90** (fail - mandatory rerun of that agent)
+    - NEVER tell an agent to output a higher score - rerun with an improved prompt only
+    - If an agent omits the `CONFIDENCE` block or it is invalid: treat as **fail**, mandatory rerun
+    - Agents must be brutally honest - no score inflation under any circumstances
+    - Orchestrator tracks cumulative average; flags pipeline if rolling average drops below 95
+    - **Escalation:** If the **same** agent fails the gate (**score below 90** or missing block) on **5 consecutive** invocations, pause, log all five scores and justifications, and surface to the user - do not loop silently past that point
+    - Rubric and `CONFIDENCE` block format: `.opencode/rules/09-confidence-scoring.md` (agents do not receive numeric thresholds from that file)
 
 ---
 
@@ -283,6 +333,12 @@ For N = 1, follow this file as written. For N > 1, wrap this pipeline in the mul
 2. WAIT for agent to complete
 3. EVALUATE output quality:
    - Complete? Quality acceptable? Any REQUESTs?
+3a. READ CONFIDENCE SCORE - extract the agent's `CONFIDENCE` block score:
+   - Score < 90: **FAIL** - RERUN the same agent with improved prompt (do not dispatch next stage)
+   - Score 90-94: Log warning, proceed to step 4
+   - Score 95-100: Proceed to step 4
+   - No `CONFIDENCE` block present (or invalid): **FAIL** - RERUN immediately
+   - NEVER tell the agent the numeric gate, their “fail rate,” or to output a higher score - only improve the task prompt
 4. DECIDE: ACCEPT / RETRY / CONTINUE / HANDLE REQUEST
 5. UPDATE pipeline status
 6. DISPATCH next agent IMMEDIATELY (don't wait, don't ask)
@@ -373,5 +429,75 @@ test-agent → integration-agent → review-agent → decide-agent → COMPLETE
 ```
 
 **Quality requires discipline. Follow the rules exactly.**
+
+---
+
+## PERFECTION VALIDATION SYSTEM
+
+### Overview
+
+Every agent in the pipeline has **brutal perfection criteria** that must be met before proceeding. 99% = FAIL. 100% = PASS. Unlimited re-runs until perfect.
+
+### Perfection Criteria in Every Agent
+
+Each agent definition file (`.opencode/agents/*.md`) contains a **"Perfection Criteria"** section with:
+- Binary validation rules (PERFECT/FAIL only)
+- Specific criteria categories (Completeness, Accuracy, Thoroughness, Evidence, Format)
+- Self-validation commands
+- Imperfection detection protocols
+
+### Key Principles
+
+1. **Zero Tolerance**: One missing criterion = FAIL
+2. **Evidence Required**: Every claim must have evidence (code quotes, command outputs, file paths)
+3. **Brutal Honesty**: Better to reject good work than accept bad work
+4. **Unlimited Re-runs**: No maximum attempt limit, re-run until 100%
+5. **Self-Validation First**: Agents validate themselves before outputting
+6. **External Validation**: Perfection-validator agent can be used for additional verification
+
+### Imperfection Detection
+
+If ANY agent detects imperfection in their own output, they MUST output:
+```
+IMPERFECTION DETECTED: [criterion name]
+ISSUE: [specific problem]
+EVIDENCE: [what's wrong]
+REQUIRED FIX: [exactly what must be done]
+STATUS: HALT - Re-run required
+```
+
+### Orchestrator Responsibility
+
+When an agent outputs IMPERFECTION DETECTED:
+1. DO NOT proceed to next stage
+2. Re-run the same agent with failure feedback
+3. Continue re-running until agent outputs PERFECT
+4. Only then proceed to next stage
+
+### Examples of Imperfections by Stage
+
+- **task-breakdown**: Missing feature, vague criterion, no risk documentation
+- **code-discovery**: Unverified command, missing file mapping, wrong paths
+- **plan-agent**: Oversized batch (>2 files), missing skill assignment, wrong order
+- **docs-researcher**: Outdated syntax, no examples, missing pitfall documentation
+- **pre-flight-checker**: Unverified dependency, hidden blocker, vague status
+- **build-agent**: TODO in code, no tests, hardcoded secret, breaking change
+- **test-writer**: Mock usage, placeholder test, missing edge case
+- **debugger**: Vague diagnosis, unverified fix, no ledger entry
+- **logical-agent**: Missing file analysis, no edge case check, false positive
+- **test-agent**: Skipped test type, no debugger request on failure
+- **integration-agent**: Missing component test, no API verification
+- **review-agent**: Unverified criterion, missed placeholder, no cross-reference
+- **decide-agent**: Inconsistent counts, test failures with COMPLETE, agent request
+
+### Perfection Validator Agent
+
+Use `.opencode/agents/perfection-validator.md` as external enforcer when needed:
+- Receives agent output + perfection criteria
+- Validates with brutal strictness
+- Outputs: `PERFECT` or `FAIL: [detailed reasons]`
+- Can be dispatched between stages for additional verification
+
+---
 
 **Remember: If the task isn't done, KEEP RUNNING THE PIPELINE. The only acceptable end state is decide-agent outputting COMPLETE.**

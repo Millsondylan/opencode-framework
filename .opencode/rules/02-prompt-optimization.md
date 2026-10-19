@@ -114,8 +114,9 @@ original_request: "..."                   # REQUIRED - COMPLETE user request
 
 **Step 1: Dispatch to prompt-optimizer (Stage 2)**
 ```
-task tool:
+Agent tool:
   subagent_type: "prompt-optimizer"
+  description: "Optimize prompt for task-breakdown"
   prompt: |
     target_agent: task-breakdown
     stage: 0
@@ -128,16 +129,12 @@ task tool:
 - Prompt-optimizer saves to `.claude/.prompts/{timestamp}_task-breakdown_stage0.md`
 - Returns XML-structured prompt
 
-**Step 3: Verify prompt file was created**
-```bash
-ls -la .claude/.prompts/
+**Step 3: Dispatch optimized prompt to task-breakdown (Stage 3)**
 ```
-
-**Step 4: Dispatch optimized prompt to task-breakdown (Stage 3)**
-```
-task tool:
+Agent tool:
   subagent_type: "task-breakdown"
-  prompt: [the optimized XML prompt from step 2]
+  description: "Decompose request into TaskSpec"
+  prompt: "[the optimized XML prompt from step 2]"
 ```
 
 ---
@@ -146,20 +143,21 @@ task tool:
 
 **After task-breakdown completes, dispatch to code-discovery:**
 ```
-task tool:
+Agent tool:
   subagent_type: "code-discovery"
+  description: "Analyze codebase for RepoProfile"
   prompt: |
     ## TaskSpec
     [TaskSpec from task-breakdown]
-    
+
     ## Context
     Original request: [full request]
-    
+
     ## Your Task
     Analyze the codebase and create a RepoProfile...
 ```
 
-**NO prompt-optimizer needed** — orchestrator prepares the prompt directly.
+**NO prompt-optimizer needed** - orchestrator prepares the prompt directly.
 
 ---
 
