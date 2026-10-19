@@ -20,11 +20,9 @@ ln -sf ~/Claude-code-agents/.claude/agents ~/.claude/agents
 ln -sf ~/Claude-code-agents/.claude/commands ~/.claude/commands
 ```
 
-### Model Switching Setup (Kimi + Claude)
+### Models (Claude Code)
 
-This repo includes portable model switching. See:
-
-`docs/MODEL_SWITCHING.md`
+Each subagent’s `model` is set in `.claude/agents/*.md` (`opus`, `sonnet`, …). See **`CLAUDE.md`** for the project model policy. Do not override `model` from Task calls.
 
 ### Per-Project Installation
 

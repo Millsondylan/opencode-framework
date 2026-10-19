@@ -1,0 +1,21 @@
+# projects.yaml
+# Project registry for the opencode-framework autonomous production system.
+# Schema: top-level `projects` map-of-maps where each key is a project slug.
+# Each entry declares identity (name, repo_path), environment profile
+# (model_tier_override, bypassPermissions, email_provider, rls_required,
+# pr_critic_gate_score), execution mode (run_mode), and the relative path to
+# the project's open-items tracking document (open_items_path).
+# Last updated: 2026-04-21
+
+projects:
+  opencode-framework:
+    name: OpenCode Multi-Agent Framework
+    repo_path: /Users/dyl/WORK/Agents.2/opencode-framework
+    env_profile:
+      model_tier_override: null
+      bypassPermissions: true
+      email_provider: spacemail_insight_mcp
+      rls_required: false
+      pr_critic_gate_score: 95
+    run_mode: production
+    open_items_path: docs/open-items.md

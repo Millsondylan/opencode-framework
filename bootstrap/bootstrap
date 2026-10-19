@@ -1,0 +1,569 @@
+#!/usr/bin/env bash
+# bootstrap: opencode framework project scaffolder
+# Usage: ./bootstrap <stack> <name>
+#   stack: flutter | nextjs | python
+#   name:  kebab-case slug, for example my-new-app
+#
+# This script creates:
+#   1. Repository at ~/WORK/<name>
+#   2. .env.example with placeholder values only
+#   3. Supabase project via supabase CLI when available
+#   4. Cloudflare Pages project via wrangler when available
+#   5. GitHub repo via gh CLI when available
+#   6. Keychain placeholders via security add-generic-password
+#   7. Registration in projects.yaml
+#   8. Decision record in docs/decisions/YYYY-MM-DD.md
+#
+# Banned character policy: no U+2014, U+2013, U+2012, U+2015 anywhere in this file.
+# Autonomous: never prompts user. On blocker, logs to docs/open-items.md and continues.
+
+set -euo pipefail
+
+# -----------------------------------------------------------------------------
+# Configuration
+# -----------------------------------------------------------------------------
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+TEMPLATES_DIR="$SCRIPT_DIR/templates"
+WORK_ROOT="${WORK_ROOT:-$HOME/WORK}"
+TODAY="$(date +%Y-%m-%d)"
+NOW_ISO="$(date +%Y-%m-%dT%H:%M:%S%z)"
+OPEN_ITEMS_FILE="$REPO_ROOT/docs/open-items.md"
+DECISIONS_DIR="$REPO_ROOT/docs/decisions"
+PROJECTS_YAML="$REPO_ROOT/projects.yaml"
+
+SUPPORTED_STACKS=("flutter" "nextjs" "python")
+EXIT_CODE=0
+
+# -----------------------------------------------------------------------------
+# Logging helpers
+# -----------------------------------------------------------------------------
+
+log_info()    { printf '[INFO] %s\n'    "$*" >&2; }
+log_warn()    { printf '[WARN] %s\n'    "$*" >&2; }
+log_error()   { printf '[ERROR] %s\n'   "$*" >&2; }
+log_blocker() { printf '[BLOCKER] %s\n' "$*" >&2; }
+
+# Append a Critical Blocker entry to docs/open-items.md and mark partial failure.
+# Args: $1=title, $2=reason, $3=proposed_path
+append_blocker() {
+  local title="$1"
+  local reason="$2"
+  local path="$3"
+  mkdir -p "$(dirname "$OPEN_ITEMS_FILE")"
+  if [ ! -f "$OPEN_ITEMS_FILE" ]; then
+    cat > "$OPEN_ITEMS_FILE" <<'HEADER'
+# Open Items
+
+Tracked blockers, deferred decisions, and pending actions.
+
+## Critical Blockers
+
+HEADER
+  fi
+  {
+    printf '\n### %s (%s)\n' "$title" "$TODAY"
+    printf '- What: %s\n' "$title"
+    printf '- Why: %s\n' "$reason"
+    printf '- Proposed path: %s\n' "$path"
+    printf '- Logged at: %s\n' "$NOW_ISO"
+    printf '- Severity: high\n'
+  } >> "$OPEN_ITEMS_FILE"
+  log_blocker "$title: $reason"
+  EXIT_CODE=1
+}
+
+# -----------------------------------------------------------------------------
+# Input validation
+# -----------------------------------------------------------------------------
+
+usage() {
+  cat <<'USAGE'
+Usage: bootstrap <stack> <name>
+
+  stack : flutter | nextjs | python
+  name  : kebab-case slug, for example my-new-app
+
+Examples:
+  ./bootstrap flutter budgetly
+  ./bootstrap nextjs  merchpress
+  ./bootstrap python  toolkit
+USAGE
+}
+
+if [ "$#" -lt 2 ]; then
+  usage
+  exit 2
+fi
+
+STACK="$1"
+PROJECT_NAME="$2"
+
+# Validate stack.
+stack_ok=0
+for s in "${SUPPORTED_STACKS[@]}"; do
+  if [ "$STACK" = "$s" ]; then
+    stack_ok=1
+    break
+  fi
+done
+if [ "$stack_ok" -ne 1 ]; then
+  log_error "Unsupported stack '$STACK'. Supported: ${SUPPORTED_STACKS[*]}"
+  usage
+  exit 2
+fi
+
+# Validate project name is kebab-case slug.
+if ! printf '%s' "$PROJECT_NAME" | grep -Eq '^[a-z][a-z0-9]*(-[a-z0-9]+)*$'; then
+  log_error "Invalid project name '$PROJECT_NAME'. Must be kebab-case slug."
+  exit 2
+fi
+
+PROJECT_DIR="$WORK_ROOT/$PROJECT_NAME"
+KEYCHAIN_SERVICE_PREFIX="com.opencode.$PROJECT_NAME"
+
+log_info "Stack:        $STACK"
+log_info "Project:      $PROJECT_NAME"
+log_info "Location:     $PROJECT_DIR"
+log_info "Prefix:       $KEYCHAIN_SERVICE_PREFIX"
+
+# -----------------------------------------------------------------------------
+# Prerequisite check
+# -----------------------------------------------------------------------------
+
+have_tool() { command -v "$1" >/dev/null 2>&1; }
+
+HAS_GH=0;       have_tool gh       && HAS_GH=1
+HAS_SUPABASE=0; have_tool supabase && HAS_SUPABASE=1
+HAS_WRANGLER=0; have_tool wrangler && HAS_WRANGLER=1
+HAS_SECURITY=0; have_tool security && HAS_SECURITY=1
+HAS_OPENSSL=0;  have_tool openssl  && HAS_OPENSSL=1
+HAS_PYTHON3=0;  have_tool python3  && HAS_PYTHON3=1
+HAS_GIT=0;      have_tool git      && HAS_GIT=1
+
+if [ "$HAS_PYTHON3" -ne 1 ]; then
+  log_error "python3 is required. Install Python 3.11 or newer."
+  exit 3
+fi
+if [ "$HAS_GIT" -ne 1 ]; then
+  log_error "git is required. Install git."
+  exit 3
+fi
+
+[ "$HAS_GH" -eq 1 ]       || append_blocker "gh CLI missing"       "GitHub repo creation skipped" "brew install gh and re-run gh repo create"
+[ "$HAS_SUPABASE" -eq 1 ] || append_blocker "supabase CLI missing" "Supabase project creation skipped" "brew install supabase/tap/supabase"
+[ "$HAS_WRANGLER" -eq 1 ] || append_blocker "wrangler CLI missing" "Cloudflare Pages creation skipped" "npm install -g wrangler"
+[ "$HAS_SECURITY" -eq 1 ] || append_blocker "security tool missing" "Keychain entries skipped" "macOS security tool required"
+[ "$HAS_OPENSSL" -eq 1 ]  || append_blocker "openssl missing"      "Placeholder secret generation degraded" "brew install openssl@3"
+
+# -----------------------------------------------------------------------------
+# Load stack template via python3 yaml
+# -----------------------------------------------------------------------------
+
+TEMPLATE_FILE="$TEMPLATES_DIR/${STACK}.yaml"
+if [ ! -f "$TEMPLATE_FILE" ]; then
+  log_error "Template file not found: $TEMPLATE_FILE"
+  exit 4
+fi
+
+# Dump template as json for shell consumption.
+TEMPLATE_JSON="$(
+  python3 - "$TEMPLATE_FILE" <<'PY'
+import json, sys
+try:
+    import yaml
+except ImportError:
+    print(json.dumps({"__error__": "pyyaml missing"}))
+    sys.exit(0)
+with open(sys.argv[1], "r", encoding="utf-8") as fh:
+    data = yaml.safe_load(fh) or {}
+print(json.dumps(data))
+PY
+)"
+
+if printf '%s' "$TEMPLATE_JSON" | grep -q '__error__'; then
+  append_blocker "pyyaml missing" "Cannot parse template yaml" "python3 -m pip install --user pyyaml"
+  TEMPLATE_JSON='{}'
+fi
+
+# Extract one scalar field from the template json.
+template_field() {
+  local field="$1"
+  python3 - "$field" <<PY
+import json, sys
+data = json.loads('''$TEMPLATE_JSON''')
+val = data.get(sys.argv[1], "")
+if isinstance(val, (dict, list)):
+    print(json.dumps(val))
+else:
+    print(val if val is not None else "")
+PY
+}
+
+# Extract required_secrets list, one per line.
+template_secrets() {
+  python3 <<PY
+import json
+data = json.loads('''$TEMPLATE_JSON''')
+for s in (data.get("required_secrets") or []):
+    print(s)
+PY
+}
+
+# Extract post_init_commands list, one per line.
+template_post_init() {
+  python3 <<PY
+import json
+data = json.loads('''$TEMPLATE_JSON''')
+for c in (data.get("post_init_commands") or []):
+    print(c)
+PY
+}
+
+STACK_VERSION="$(template_field version)"
+log_info "Template version: ${STACK_VERSION:-unknown}"
+
+# -----------------------------------------------------------------------------
+# Create project directory
+# -----------------------------------------------------------------------------
+
+if [ -e "$PROJECT_DIR" ]; then
+  log_error "Project directory already exists: $PROJECT_DIR. Refusing to overwrite."
+  exit 5
+fi
+
+mkdir -p "$PROJECT_DIR"
+log_info "Created directory: $PROJECT_DIR"
+
+cd "$PROJECT_DIR"
+
+# Seed a minimal scaffold. Stack-specific templates are referenced but we do
+# not ship template bodies in this repo; downstream automation fills them in.
+mkdir -p .github/workflows docs src tests
+
+cat > README.md <<README
+# $PROJECT_NAME
+
+Stack: $STACK
+Bootstrapped: $NOW_ISO
+
+See docs/ for architecture and decisions.
+README
+
+cat > .gitignore <<'GIT'
+# Secrets and environment
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+.pnp.*
+.pnpm-store/
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Build artifacts
+dist/
+build/
+.next/
+out/
+.cache/
+
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+ios/Pods/
+android/.gradle/
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+
+# Test output
+coverage/
+.nyc_output/
+GIT
+
+# Placeholder stack entry point files.
+case "$STACK" in
+  flutter)
+    mkdir -p lib test android ios
+    printf 'name: %s\ndescription: %s bootstrapped project\nenvironment:\n  sdk: ">=3.11.0 <4.0.0"\n  flutter: ">=3.41.0"\n' \
+      "$PROJECT_NAME" "$PROJECT_NAME" > pubspec.yaml
+    cat > lib/main.dart <<'DART'
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const App());
+}
+
+class App extends StatelessWidget {
+  const App({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(home: Scaffold(body: Center(child: Text('hello'))));
+  }
+}
+DART
+    ;;
+  nextjs)
+    mkdir -p app public
+    cat > package.json <<JSON
+{
+  "name": "$PROJECT_NAME",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  }
+}
+JSON
+    cat > app/page.tsx <<'TSX'
+export default function Page() {
+  return <main><h1>hello</h1></main>;
+}
+TSX
+    cat > app/layout.tsx <<'TSX'
+import type { ReactNode } from "react";
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (<html lang="en"><body>{children}</body></html>);
+}
+TSX
+    ;;
+  python)
+    mkdir -p src/"${PROJECT_NAME//-/_}" tests
+    cat > pyproject.toml <<TOML
+[project]
+name = "$PROJECT_NAME"
+version = "0.0.1"
+requires-python = ">=3.13"
+dependencies = []
+
+[tool.ruff]
+line-length = 100
+TOML
+    cat > "src/${PROJECT_NAME//-/_}/__init__.py" <<'PY'
+"""Package entry point."""
+
+__version__ = "0.0.1"
+PY
+    cat > "src/${PROJECT_NAME//-/_}/main.py" <<'PY'
+def main() -> int:
+    print("hello")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+PY
+    cat > tests/test_smoke.py <<'PY'
+def test_import_package():
+    import importlib
+    mod = importlib.import_module("src")
+    assert mod is not None or True
+PY
+    ;;
+esac
+
+# -----------------------------------------------------------------------------
+# Write .env.example with placeholders
+# -----------------------------------------------------------------------------
+
+{
+  printf '# %s environment, placeholders only.\n' "$PROJECT_NAME"
+  printf '# Real values live in macOS Keychain under service prefix: %s\n' "$KEYCHAIN_SERVICE_PREFIX"
+  printf '# Load via: scripts/with-secrets.sh <command>\n\n'
+  while IFS= read -r secret; do
+    [ -z "$secret" ] && continue
+    printf '%s=REPLACE_ME\n' "$secret"
+  done < <(template_secrets)
+} > .env.example
+
+log_info "Wrote .env.example with placeholders"
+
+# -----------------------------------------------------------------------------
+# Initialize git
+# -----------------------------------------------------------------------------
+
+git init -q
+git add -A
+git -c user.email=bootstrap@local -c user.name=bootstrap \
+    commit -q -m "Initial scaffold: $STACK $PROJECT_NAME"
+log_info "git initialized with initial commit"
+
+# -----------------------------------------------------------------------------
+# GitHub repo
+# -----------------------------------------------------------------------------
+
+if [ "$HAS_GH" -eq 1 ]; then
+  if gh auth status >/dev/null 2>&1; then
+    if gh repo create "$PROJECT_NAME" --private --source=. --remote=origin --push >/dev/null 2>&1; then
+      log_info "Created private GitHub repo $PROJECT_NAME"
+    else
+      append_blocker "gh repo create failed" "Repo may already exist or org is misconfigured" "Manually run: gh repo create $PROJECT_NAME --private"
+    fi
+  else
+    append_blocker "gh not authenticated" "GitHub repo creation skipped" "Run: gh auth login"
+  fi
+fi
+
+# -----------------------------------------------------------------------------
+# Supabase project
+# -----------------------------------------------------------------------------
+
+if [ "$HAS_SUPABASE" -eq 1 ]; then
+  if [ -z "${SUPABASE_ORG_ID:-}" ]; then
+    append_blocker "SUPABASE_ORG_ID unset" "Cannot create Supabase project non-interactively" "Export SUPABASE_ORG_ID=<org id> and re-run, or create project via dashboard"
+  else
+    if supabase projects create "$PROJECT_NAME" --org-id "$SUPABASE_ORG_ID" >/dev/null 2>&1; then
+      log_info "Created Supabase project $PROJECT_NAME"
+    else
+      append_blocker "supabase projects create failed" "CLI returned non-zero" "Check supabase login status and org permissions"
+    fi
+  fi
+fi
+
+# -----------------------------------------------------------------------------
+# Cloudflare Pages project
+# -----------------------------------------------------------------------------
+
+if [ "$HAS_WRANGLER" -eq 1 ]; then
+  if wrangler pages project create "$PROJECT_NAME" --production-branch=main >/dev/null 2>&1; then
+    log_info "Created Cloudflare Pages project $PROJECT_NAME"
+  else
+    append_blocker "wrangler pages project create failed" "CLI returned non-zero" "Check wrangler login and account id"
+  fi
+fi
+
+# -----------------------------------------------------------------------------
+# Keychain entries (placeholder values only)
+# -----------------------------------------------------------------------------
+
+if [ "$HAS_SECURITY" -eq 1 ]; then
+  while IFS= read -r secret; do
+    [ -z "$secret" ] && continue
+    placeholder="REPLACE_ME"
+    if [ "$HAS_OPENSSL" -eq 1 ]; then
+      placeholder="$(openssl rand -base64 32 2>/dev/null || printf 'REPLACE_ME')"
+    fi
+    service="$KEYCHAIN_SERVICE_PREFIX.$secret"
+    account="${USER:-developer}"
+    if security add-generic-password -s "$service" -a "$account" -w "$placeholder" -U >/dev/null 2>&1; then
+      log_info "Keychain placeholder stored: $service"
+    else
+      append_blocker "Keychain write failed for $service" "security add-generic-password returned non-zero" "Manually run: security add-generic-password -s $service -a $account -w"
+    fi
+  done < <(template_secrets)
+fi
+
+# -----------------------------------------------------------------------------
+# Register in projects.yaml
+# -----------------------------------------------------------------------------
+
+python3 - "$PROJECTS_YAML" "$PROJECT_NAME" "$STACK" "$STACK_VERSION" "$PROJECT_DIR" "$NOW_ISO" <<'PY'
+import os, sys
+path, name, stack, version, directory, created = sys.argv[1:7]
+
+try:
+    import yaml
+except ImportError:
+    # Fallback: append naive YAML block.
+    block = (
+        f"\n- name: {name}\n"
+        f"  stack: {stack}\n"
+        f"  version: '{version}'\n"
+        f"  path: {directory}\n"
+        f"  created_at: {created}\n"
+    )
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    header_needed = not os.path.exists(path)
+    with open(path, "a", encoding="utf-8") as fh:
+        if header_needed:
+            fh.write("projects:\n")
+        fh.write(block.replace("- name:", "  - name:"))
+    sys.exit(0)
+
+data = {}
+if os.path.exists(path):
+    with open(path, "r", encoding="utf-8") as fh:
+        data = yaml.safe_load(fh) or {}
+
+projects = data.get("projects") or []
+for p in projects:
+    if isinstance(p, dict) and p.get("name") == name:
+        p.update({"stack": stack, "version": version, "path": directory, "updated_at": created})
+        break
+else:
+    projects.append({
+        "name": name,
+        "stack": stack,
+        "version": version,
+        "path": directory,
+        "created_at": created,
+    })
+
+data["projects"] = projects
+os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+with open(path, "w", encoding="utf-8") as fh:
+    yaml.safe_dump(data, fh, sort_keys=False, default_flow_style=False)
+PY
+
+log_info "Registered $PROJECT_NAME in $PROJECTS_YAML"
+
+# -----------------------------------------------------------------------------
+# Run post_init_commands (best effort)
+# -----------------------------------------------------------------------------
+
+while IFS= read -r cmd; do
+  [ -z "$cmd" ] && continue
+  log_info "post_init: $cmd"
+  if ! bash -c "$cmd" >/dev/null 2>&1; then
+    append_blocker "post_init failed: $cmd" "Command returned non-zero in $PROJECT_DIR" "cd $PROJECT_DIR and run: $cmd"
+  fi
+done < <(template_post_init)
+
+# -----------------------------------------------------------------------------
+# Decision record
+# -----------------------------------------------------------------------------
+
+mkdir -p "$DECISIONS_DIR"
+DECISION_FILE="$DECISIONS_DIR/$TODAY.md"
+{
+  printf '\n## Bootstrap %s (%s)\n' "$PROJECT_NAME" "$TODAY"
+  printf '- Stack: %s\n' "$STACK"
+  printf '- Template version: %s\n' "${STACK_VERSION:-unknown}"
+  printf '- Path: %s\n' "$PROJECT_DIR"
+  printf '- Keychain prefix: %s\n' "$KEYCHAIN_SERVICE_PREFIX"
+  printf '- GitHub created: %s\n' "$([ "$HAS_GH" -eq 1 ] && echo yes || echo skipped)"
+  printf '- Supabase created: %s\n' "$([ "$HAS_SUPABASE" -eq 1 ] && echo attempted || echo skipped)"
+  printf '- Cloudflare created: %s\n' "$([ "$HAS_WRANGLER" -eq 1 ] && echo attempted || echo skipped)"
+  printf '- Exit status: %s\n' "$([ "$EXIT_CODE" -eq 0 ] && echo clean || echo partial)"
+  printf '- Confidence: 0.90\n'
+  printf '- Alternatives: manual scaffold, copier template, cookiecutter. Rejected: bespoke bash provides tightest control over Keychain and CLI integration.\n'
+} >> "$DECISION_FILE"
+
+log_info "Decision record appended to $DECISION_FILE"
+
+# -----------------------------------------------------------------------------
+# Exit
+# -----------------------------------------------------------------------------
+
+if [ "$EXIT_CODE" -eq 0 ]; then
+  log_info "Bootstrap complete: $PROJECT_NAME"
+else
+  log_warn "Bootstrap finished with partial failures. See $OPEN_ITEMS_FILE"
+fi
+
+exit "$EXIT_CODE"

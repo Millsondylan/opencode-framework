@@ -1,0 +1,174 @@
+# Next.js 16 stack template for opencode bootstrap.
+# Consumed by bootstrap/bootstrap at project creation time.
+# Banned characters (U+2014, U+2013, U+2012, U+2015) must not appear anywhere.
+
+stack: nextjs
+version: "16.x"
+node_version: "22.x"
+package_manager: "pnpm"
+pnpm_version: "9.12.0"
+description: "Next.js 16 app router, Supabase SSR, Cloudflare Pages deployment."
+
+# Package dependencies. Versions pinned to stable majors as of 2026 Q1.
+dependencies:
+  next: "^16.0.0"
+  react: "^19.0.0"
+  react-dom: "^19.0.0"
+  "@supabase/ssr": "^0.5.0"
+  "@supabase/supabase-js": "^2.45.0"
+  "@tanstack/react-query": "^5.59.0"
+  "@tanstack/react-query-devtools": "^5.59.0"
+  zod: "^3.23.8"
+  clsx: "^2.1.1"
+  tailwind-merge: "^2.5.3"
+  "lucide-react": "^0.446.0"
+  "framer-motion": "^11.9.0"
+  "date-fns": "^4.1.0"
+  "next-themes": "^0.3.0"
+  "@sentry/nextjs": "^8.30.0"
+  "posthog-js": "^1.161.0"
+  "server-only": "^0.0.1"
+  "react-hook-form": "^7.53.0"
+  "@hookform/resolvers": "^3.9.0"
+
+dev_dependencies:
+  typescript: "^5.6.2"
+  "@types/node": "^22.7.0"
+  "@types/react": "^19.0.0"
+  "@types/react-dom": "^19.0.0"
+  eslint: "^9.11.0"
+  "eslint-config-next": "^16.0.0"
+  "@typescript-eslint/parser": "^8.7.0"
+  "@typescript-eslint/eslint-plugin": "^8.7.0"
+  prettier: "^3.3.3"
+  "prettier-plugin-tailwindcss": "^0.6.8"
+  tailwindcss: "^3.4.13"
+  postcss: "^8.4.47"
+  autoprefixer: "^10.4.20"
+  vitest: "^2.1.1"
+  "@vitest/ui": "^2.1.1"
+  "@testing-library/react": "^16.0.1"
+  "@testing-library/jest-dom": "^6.5.0"
+  playwright: "^1.47.2"
+  wrangler: "^3.78.0"
+  "@cloudflare/next-on-pages": "^1.13.5"
+
+# Files to copy from the bootstrap template bundle into the new project.
+files_to_copy:
+  - src: "package.json.template"
+    dst: "package.json"
+  - src: "next.config.js.template"
+    dst: "next.config.js"
+  - src: "tsconfig.json.template"
+    dst: "tsconfig.json"
+  - src: "tailwind.config.ts.template"
+    dst: "tailwind.config.ts"
+  - src: "postcss.config.js.template"
+    dst: "postcss.config.js"
+  - src: "eslint.config.mjs.template"
+    dst: "eslint.config.mjs"
+  - src: "prettier.config.mjs.template"
+    dst: "prettier.config.mjs"
+  - src: "proxy.ts.template"
+    dst: "proxy.ts"
+  - src: "layout.tsx.template"
+    dst: "app/layout.tsx"
+  - src: "page.tsx.template"
+    dst: "app/page.tsx"
+  - src: "globals.css.template"
+    dst: "app/globals.css"
+  - src: "supabase_client.ts.template"
+    dst: "lib/supabase/client.ts"
+  - src: "supabase_server.ts.template"
+    dst: "lib/supabase/server.ts"
+  - src: "wrangler.toml.template"
+    dst: "wrangler.toml"
+  - src: "github_workflow.yaml.template"
+    dst: ".github/workflows/ci.yaml"
+
+# Commands executed after scaffold lands.
+post_init_commands:
+  - "pnpm install"
+  - "pnpm lint"
+  - "pnpm exec tsc --noEmit"
+  - "pnpm run build"
+
+# Secrets registered as Keychain placeholders.
+required_secrets:
+  - SUPABASE_URL
+  - SUPABASE_ANON_KEY
+  - SUPABASE_SERVICE_ROLE_KEY
+  - CLOUDFLARE_API_TOKEN
+  - CLOUDFLARE_ACCOUNT_ID
+  - SENTRY_DSN
+  - SENTRY_AUTH_TOKEN
+  - POSTHOG_API_KEY
+  - GITHUB_TOKEN
+
+# Non-secret environment variables.
+env_vars:
+  NODE_VERSION: "22"
+  PNPM_VERSION: "9.12.0"
+  NEXT_TELEMETRY_DISABLED: "1"
+  NEXT_PUBLIC_APP_URL: "http://localhost:3000"
+
+# Next.js configuration highlights.
+next_config:
+  output: "standalone"
+  react_strict_mode: true
+  experimental:
+    typed_routes: true
+    server_actions_body_size_limit: "2mb"
+    optimize_package_imports:
+      - "lucide-react"
+      - "date-fns"
+  image_domains: []
+  turbopack: true
+
+# Deployment.
+deployment:
+  platform: "cloudflare_pages"
+  adapter: "@cloudflare/next-on-pages"
+  build_command: "pnpm exec @cloudflare/next-on-pages"
+  output_dir: ".vercel/output/static"
+  production_branch: "main"
+  preview_branches: "all"
+  compatibility_date: "2025-11-15"
+  compatibility_flags:
+    - "nodejs_compat"
+
+# Testing configuration.
+testing:
+  coverage_target: 80
+  unit_framework: "vitest"
+  e2e_framework: "playwright"
+  test_types:
+    - "unit"
+    - "component"
+    - "integration"
+    - "e2e"
+
+# Directory layout created in the new project.
+directories:
+  - "app"
+  - "app/api"
+  - "app/(marketing)"
+  - "app/(app)"
+  - "components"
+  - "components/ui"
+  - "lib"
+  - "lib/supabase"
+  - "lib/utils"
+  - "public"
+  - "styles"
+  - "tests"
+  - "tests/unit"
+  - "tests/e2e"
+
+# Linting and formatting.
+lints:
+  eslint_config: "next/core-web-vitals"
+  prettier_enabled: true
+  strict_typescript: true
+  no_explicit_any: true
+  exhaustive_deps: "error"
